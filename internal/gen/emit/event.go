@@ -85,6 +85,14 @@ func writeEventFile(w io.Writer, s *schema.Schema, ec schema.EventClass) error {
 	if eventHasValidatableRequired(s, ec) {
 		imports[rootPkg] = true
 	}
+	// Enum membership and class-level constraint checks also
+	// construct *ocsf.ValidationError. Classes with any enum
+	// attribute or any constraints block need the root import
+	// even if they have no required field of a validatable
+	// type.
+	if eventHasEnumOrConstraints(ec) {
+		imports[rootPkg] = true
+	}
 	if len(imports) > 0 {
 		impPaths := make([]string, 0, len(imports))
 		for p := range imports {
@@ -204,6 +212,9 @@ func writeEventValidate(w io.Writer, s *schema.Schema, ec schema.EventClass, typ
 	if err := writeEnumValidate(w, nil, ec, classUID); err != nil {
 		return err
 	}
+	if err := writeConstraintValidate(w, ec, classUID); err != nil {
+		return err
+	}
 	if _, err := fmt.Fprintln(w, "\treturn nil"); err != nil {
 		return err
 	}
@@ -211,6 +222,161 @@ func writeEventValidate(w io.Writer, s *schema.Schema, ec schema.EventClass, typ
 		return err
 	}
 	return nil
+}
+
+// writeConstraintValidate emits checks for the class-level
+// constraint groups upstream declares — `at_least_one` and
+// `just_one`. Both predicates count how many of the listed
+// fields are non-zero by the same rules as the required-field
+// check (pointer != nil, slice non-empty, string non-empty,
+// json.RawMessage non-empty); numeric and boolean fields can't
+// participate by codegen-time choice (their zero value is
+// indistinguishable from absence on the wire) and are excluded
+// from the count.
+//
+// at_least_one: count must be >= 1.
+// just_one:     count must be == 1.
+//
+// Per the OCSF-20 scope note ("capture only the constraints the
+// schema explicitly calls out"), nothing here invents rules —
+// at_least_one and just_one are the two constraint kinds the
+// upstream metaschema defines in its `constraints` block.
+// Cross-field rules that aren't expressed as constraints (e.g.
+// status_id == 99 implies status_detail) stay out of scope
+// until upstream codifies them.
+//
+// The check runs after required-field and enum checks so a
+// fully-missing class surfaces as "missing required field"
+// rather than "violated constraint" — the more actionable
+// error.
+func writeConstraintValidate(w io.Writer, ec schema.EventClass, classUID int) error {
+	attrByName := map[string]schema.ClassAttr{}
+	for _, a := range ec.Attributes { //nolint:gocritic // copy fine in codegen path
+		attrByName[a.Name] = a
+	}
+	if len(ec.Constraints.AtLeastOne) > 0 {
+		if err := writeAtLeastOneCheck(w, ec.Constraints.AtLeastOne, attrByName, classUID); err != nil {
+			return err
+		}
+	}
+	if len(ec.Constraints.JustOne) > 0 {
+		if err := writeJustOneCheck(w, ec.Constraints.JustOne, attrByName, classUID); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// writeAtLeastOneCheck emits an OR-chain over the "field is
+// present" expressions for each listed attribute. If none are
+// present, returns a constraint ValidationError naming the
+// joined attribute list (so the consumer knows what to look
+// at).
+func writeAtLeastOneCheck(w io.Writer, fields []string, attrByName map[string]schema.ClassAttr, classUID int) error {
+	checks := constraintFieldExprs(fields, attrByName, "e.")
+	if len(checks) == 0 {
+		// Every attribute had a non-checkable type or wasn't on
+		// the class. Skip emitting a tautological check.
+		return nil
+	}
+	if _, err := fmt.Fprintf(w, "\tif !(%s) {\n", strings.Join(checks, " || ")); err != nil {
+		return err
+	}
+	if _, err := fmt.Fprintf(w, "\t\treturn &ocsf.ValidationError{ClassUID: %d, Field: %q, Rule: \"constraint\", Reason: \"at_least_one: at least one of these fields must be set\"}\n", classUID, strings.Join(fields, ",")); err != nil {
+		return err
+	}
+	if _, err := fmt.Fprintln(w, "\t}"); err != nil {
+		return err
+	}
+	return nil
+}
+
+// writeJustOneCheck emits a count expression: convert each
+// "field present" predicate to int via a tiny inline helper
+// (1 if present, 0 otherwise), sum them, and assert == 1.
+//
+// Implementation note: Go has no direct bool→int conversion,
+// so the generated code uses one-line ternary-style assignments
+// (count := 0; if X { count++ } ...) inside an anonymous
+// scope. The verbose form is what gofmt produces; cuter
+// alternatives (map sums, reflect-based counts) would
+// undermine the cheap "emitted code is obvious Go" goal.
+func writeJustOneCheck(w io.Writer, fields []string, attrByName map[string]schema.ClassAttr, classUID int) error {
+	checks := constraintFieldExprs(fields, attrByName, "e.")
+	if len(checks) == 0 {
+		return nil
+	}
+	if _, err := fmt.Fprintln(w, "\t{"); err != nil {
+		return err
+	}
+	if _, err := fmt.Fprintln(w, "\t\tcount := 0"); err != nil {
+		return err
+	}
+	for _, c := range checks {
+		if _, err := fmt.Fprintf(w, "\t\tif %s {\n\t\t\tcount++\n\t\t}\n", c); err != nil {
+			return err
+		}
+	}
+	if _, err := fmt.Fprintln(w, "\t\tif count != 1 {"); err != nil {
+		return err
+	}
+	if _, err := fmt.Fprintf(w, "\t\t\treturn &ocsf.ValidationError{ClassUID: %d, Field: %q, Rule: \"constraint\", Reason: \"just_one: exactly one of these fields must be set\"}\n", classUID, strings.Join(fields, ",")); err != nil {
+		return err
+	}
+	if _, err := fmt.Fprintln(w, "\t\t}"); err != nil {
+		return err
+	}
+	if _, err := fmt.Fprintln(w, "\t}"); err != nil {
+		return err
+	}
+	return nil
+}
+
+// constraintFieldExprs returns the "field is present"
+// expressions for the named fields, in input order, skipping
+// fields whose Go type doesn't permit a defensible
+// present-vs-absent check (numeric / bool, per the same
+// reasoning as required-field emission) or that aren't on the
+// class at all. The prefix is prepended to each field
+// reference (typically "e." for the value receiver).
+func constraintFieldExprs(fields []string, attrByName map[string]schema.ClassAttr, prefix string) []string {
+	out := make([]string, 0, len(fields))
+	for _, f := range fields {
+		attr, ok := attrByName[f]
+		if !ok {
+			continue
+		}
+		expr, ok := constraintPresentExpr(attr, prefix+goFieldName(attr.Name))
+		if !ok {
+			continue
+		}
+		out = append(out, expr)
+	}
+	return out
+}
+
+// constraintPresentExpr returns the Go boolean expression that
+// is true when the given attribute is present on the wire (not
+// the zero value of its Go type). Mirrors requiredFieldCheck's
+// rules but emits the positive form ("is present") rather than
+// the negative form ("is missing").
+func constraintPresentExpr(a schema.ClassAttr, fieldRef string) (string, bool) {
+	if a.IsArray {
+		return "len(" + fieldRef + ") != 0", true
+	}
+	if p := primitiveGoType(a.Type); p != "" {
+		switch p {
+		case "string":
+			return fieldRef + " != \"\"", true
+		case "json.RawMessage":
+			return "len(" + fieldRef + ") != 0", true
+		}
+		// int / int64 / float64 / bool — zero indistinguishable
+		// from absent, skip.
+		return "", false
+	}
+	// Object reference (non-primitive type) — pointer.
+	return fieldRef + " != nil", true
 }
 
 // writeEnumValidate emits the enum-membership and
@@ -415,6 +581,18 @@ func sortedEnumIDsInt(enum map[string]schema.EnumValue) []string {
 		return ai < bi
 	})
 	return out
+}
+
+// eventHasEnumOrConstraints reports whether ec has at least
+// one enum-bearing attribute or any class-level constraint
+// group. Either one triggers an import of the root ocsf
+// package because the emitted Validate body constructs
+// *ocsf.ValidationError on violation.
+func eventHasEnumOrConstraints(ec schema.EventClass) bool {
+	if len(ec.Constraints.AtLeastOne) > 0 || len(ec.Constraints.JustOne) > 0 {
+		return true
+	}
+	return len(enumAttrsForValidate(ec)) > 0
 }
 
 // eventHasValidatableRequired reports whether ec has at least

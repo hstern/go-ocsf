@@ -643,6 +643,9 @@ func (e EventLog) Validate() error {
 			}
 		}
 	}
+	if !(e.LogName != "" || e.LogProvider != "" || e.LogType != "") {
+		return &ocsf.ValidationError{ClassUID: 1008, Field: "log_file,log_name,log_provider,log_type,log_type_id", Rule: "constraint", Reason: "at_least_one: at least one of these fields must be set"}
+	}
 	return nil
 }
 

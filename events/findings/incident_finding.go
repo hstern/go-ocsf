@@ -600,6 +600,9 @@ func (e IncidentFinding) Validate() error {
 			}
 		}
 	}
+	if !(e.Assignee != nil || e.AssigneeGroup != nil) {
+		return &ocsf.ValidationError{ClassUID: 2005, Field: "assignee,assignee_group", Rule: "constraint", Reason: "at_least_one: at least one of these fields must be set"}
+	}
 	return nil
 }
 

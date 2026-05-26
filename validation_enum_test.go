@@ -24,6 +24,8 @@ func fullyPopulatedAuth() iam.Authentication {
 		Metadata: &objects.Metadata{Product: &objects.Product{Name: "p"}, Version: "1.3.0"},
 		Osint:    []objects.Osint{{}},
 		User:     &objects.User{Name: "alice"},
+		// Satisfies the at_least_one constraint added in OCSF-20.
+		Service: &objects.Service{Name: "ldap"},
 	}
 }
 

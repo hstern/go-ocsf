@@ -432,6 +432,9 @@ func (e GroupManagement) Validate() error {
 			}
 		}
 	}
+	if !(len(e.Privileges) != 0 || e.User != nil) {
+		return &ocsf.ValidationError{ClassUID: 3006, Field: "privileges,user", Rule: "constraint", Reason: "at_least_one: at least one of these fields must be set"}
+	}
 	return nil
 }
 

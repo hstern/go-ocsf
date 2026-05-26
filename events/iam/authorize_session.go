@@ -430,6 +430,18 @@ func (e AuthorizeSession) Validate() error {
 			}
 		}
 	}
+	{
+		count := 0
+		if len(e.Privileges) != 0 {
+			count++
+		}
+		if e.Group != nil {
+			count++
+		}
+		if count != 1 {
+			return &ocsf.ValidationError{ClassUID: 3003, Field: "privileges,group", Rule: "constraint", Reason: "just_one: exactly one of these fields must be set"}
+		}
+	}
 	return nil
 }
 
