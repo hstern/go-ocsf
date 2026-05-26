@@ -18,6 +18,16 @@
 // specific library version.
 package ocsf
 
+// Regenerate the events/, objects/, and enums/ packages from the
+// vendored OCSF schema. The schema-version directory passed via
+// -schema must match SchemaVersion below; when the version bumps
+// the path in this directive bumps with it. The `codegen-diff` CI
+// job runs this directive and fails on any diff against the
+// committed output, catching silent drift between the schema
+// version we pin and the generated types we ship.
+//
+//go:generate go run ./internal/gen -schema internal/schema/v1.3.0 -emit -out .
+
 // SchemaVersion is the OCSF schema version this package's generated
 // types track on the wire. It is the single source of truth for the
 // schema version pinned by this library release.

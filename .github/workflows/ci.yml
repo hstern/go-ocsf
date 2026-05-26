@@ -82,3 +82,29 @@ jobs:
         with:
           version: ${{ env.GOLANGCI_LINT_VERSION }}
           args: --timeout=5m
+
+  codegen-diff:
+    name: codegen-diff
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          check-latest: false
+          cache: true
+
+      - name: go generate ./...
+        run: go generate ./...
+
+      - name: verify generated files are up to date
+        # If the committed events/, objects/, or enums/ tree drifts
+        # from what the vendored schema produces, git diff reports
+        # the change and this step fails. Run go generate locally
+        # and commit the result to fix.
+        run: |
+          if ! git diff --exit-code; then
+            echo "::error::generated files are out of date — run 'go generate ./...' and commit the result"
+            exit 1
+          fi
