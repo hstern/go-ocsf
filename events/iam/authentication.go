@@ -606,6 +606,9 @@ func (e Authentication) Validate() error {
 			}
 		}
 	}
+	if !(e.Service != nil || e.DstEndpoint != nil) {
+		return &ocsf.ValidationError{ClassUID: 3002, Field: "service,dst_endpoint", Rule: "constraint", Reason: "at_least_one: at least one of these fields must be set"}
+	}
 	return nil
 }
 

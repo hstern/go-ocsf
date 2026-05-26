@@ -668,6 +668,9 @@ func (e DatastoreActivity) Validate() error {
 			}
 		}
 	}
+	if !(e.Database != nil || e.Databucket != nil || e.Table != nil) {
+		return &ocsf.ValidationError{ClassUID: 6005, Field: "database,databucket,table", Rule: "constraint", Reason: "at_least_one: at least one of these fields must be set"}
+	}
 	return nil
 }
 

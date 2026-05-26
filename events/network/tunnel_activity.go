@@ -753,6 +753,9 @@ func (e TunnelActivity) Validate() error {
 			}
 		}
 	}
+	if !(e.ConnectionInfo != nil || e.Session != nil || e.SrcEndpoint != nil || e.Traffic != nil || e.TunnelInterface != nil) {
+		return &ocsf.ValidationError{ClassUID: 4014, Field: "connection_info,session,src_endpoint,traffic,tunnel_interface,tunnel_type_id", Rule: "constraint", Reason: "at_least_one: at least one of these fields must be set"}
+	}
 	return nil
 }
 
