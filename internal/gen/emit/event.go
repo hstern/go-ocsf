@@ -66,6 +66,16 @@ func writeEventFile(w io.Writer, s *schema.Schema, ec schema.EventClass) error {
 			imports[imp] = true
 		}
 	}
+	// Concrete event classes (UID != 0) register themselves with
+	// the root ocsf package's class registry via an init()
+	// function, which requires an import of the root package.
+	// Abstract category-root classes (iam, network, finding,
+	// base_event) skip registration entirely — they have UID 0
+	// and aren't on the wire as themselves.
+	registers := s.ClassUID(ec) != 0
+	if registers {
+		imports[rootPkg] = true
+	}
 	if len(imports) > 0 {
 		impPaths := make([]string, 0, len(imports))
 		for p := range imports {
@@ -112,6 +122,38 @@ func writeEventFile(w io.Writer, s *schema.Schema, ec schema.EventClass) error {
 		return err
 	}
 	if err := writeEventMethods(w, s, ec, typeName); err != nil {
+		return err
+	}
+	if registers {
+		if err := writeEventRegistration(w, s, ec, typeName); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// writeEventRegistration emits the init() function that puts a
+// concrete event class into the root package's class registry.
+// Required for [ocsf.Parse] to dispatch incoming payloads to
+// the right typed event class without consumers explicitly
+// importing each events/<category>/ subpackage by hand —
+// importing any one of them side-effects the registration.
+//
+// The factory returns a pointer to a freshly-zeroed struct
+// because json.Unmarshal needs an addressable target. Pointer
+// satisfies Event automatically since the value-receiver
+// methods promote to *T's method set.
+func writeEventRegistration(w io.Writer, s *schema.Schema, ec schema.EventClass, typeName string) error {
+	if _, err := fmt.Fprintln(w); err != nil {
+		return err
+	}
+	if _, err := fmt.Fprintf(w, "func init() {\n"); err != nil {
+		return err
+	}
+	if _, err := fmt.Fprintf(w, "\tocsf.RegisterClass(%d, func() ocsf.Event { return &%s{} })\n", s.ClassUID(ec), typeName); err != nil {
+		return err
+	}
+	if _, err := fmt.Fprintln(w, "}"); err != nil {
 		return err
 	}
 	return nil

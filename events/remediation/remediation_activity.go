@@ -7,6 +7,7 @@ package remediation
 
 import (
 	"encoding/json"
+	"github.com/hstern/go-ocsf"
 	"github.com/hstern/go-ocsf/objects"
 )
 
@@ -258,3 +259,7 @@ func (RemediationActivity) OCSFCategoryUID() int { return 7 }
 
 // OCSFCategoryName returns the OCSF category_name (remediation).
 func (RemediationActivity) OCSFCategoryName() string { return "remediation" }
+
+func init() {
+	ocsf.RegisterClass(7001, func() ocsf.Event { return &RemediationActivity{} })
+}

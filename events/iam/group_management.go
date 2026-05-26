@@ -7,6 +7,7 @@ package iam
 
 import (
 	"encoding/json"
+	"github.com/hstern/go-ocsf"
 	"github.com/hstern/go-ocsf/objects"
 )
 
@@ -266,3 +267,7 @@ func (GroupManagement) OCSFCategoryUID() int { return 3 }
 
 // OCSFCategoryName returns the OCSF category_name (iam).
 func (GroupManagement) OCSFCategoryName() string { return "iam" }
+
+func init() {
+	ocsf.RegisterClass(3006, func() ocsf.Event { return &GroupManagement{} })
+}

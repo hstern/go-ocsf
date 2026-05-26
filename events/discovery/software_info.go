@@ -7,6 +7,7 @@ package discovery
 
 import (
 	"encoding/json"
+	"github.com/hstern/go-ocsf"
 	"github.com/hstern/go-ocsf/objects"
 )
 
@@ -248,3 +249,7 @@ func (SoftwareInfo) OCSFCategoryUID() int { return 5 }
 
 // OCSFCategoryName returns the OCSF category_name (discovery).
 func (SoftwareInfo) OCSFCategoryName() string { return "discovery" }
+
+func init() {
+	ocsf.RegisterClass(5020, func() ocsf.Event { return &SoftwareInfo{} })
+}

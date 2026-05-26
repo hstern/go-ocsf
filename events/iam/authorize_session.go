@@ -7,6 +7,7 @@ package iam
 
 import (
 	"encoding/json"
+	"github.com/hstern/go-ocsf"
 	"github.com/hstern/go-ocsf/objects"
 )
 
@@ -272,3 +273,7 @@ func (AuthorizeSession) OCSFCategoryUID() int { return 3 }
 
 // OCSFCategoryName returns the OCSF category_name (iam).
 func (AuthorizeSession) OCSFCategoryName() string { return "iam" }
+
+func init() {
+	ocsf.RegisterClass(3003, func() ocsf.Event { return &AuthorizeSession{} })
+}

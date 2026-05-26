@@ -7,6 +7,7 @@ package application
 
 import (
 	"encoding/json"
+	"github.com/hstern/go-ocsf"
 	"github.com/hstern/go-ocsf/objects"
 )
 
@@ -344,3 +345,7 @@ func (DatastoreActivity) OCSFCategoryUID() int { return 6 }
 
 // OCSFCategoryName returns the OCSF category_name (application).
 func (DatastoreActivity) OCSFCategoryName() string { return "application" }
+
+func init() {
+	ocsf.RegisterClass(6005, func() ocsf.Event { return &DatastoreActivity{} })
+}

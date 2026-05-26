@@ -7,6 +7,7 @@ package network
 
 import (
 	"encoding/json"
+	"github.com/hstern/go-ocsf"
 	"github.com/hstern/go-ocsf/objects"
 )
 
@@ -407,3 +408,7 @@ func (TunnelActivity) OCSFCategoryUID() int { return 4 }
 
 // OCSFCategoryName returns the OCSF category_name (network).
 func (TunnelActivity) OCSFCategoryName() string { return "network" }
+
+func init() {
+	ocsf.RegisterClass(4014, func() ocsf.Event { return &TunnelActivity{} })
+}

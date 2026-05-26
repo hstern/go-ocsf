@@ -7,6 +7,7 @@ package network
 
 import (
 	"encoding/json"
+	"github.com/hstern/go-ocsf"
 	"github.com/hstern/go-ocsf/objects"
 )
 
@@ -298,3 +299,7 @@ func (EmailURLActivity) OCSFCategoryUID() int { return 4 }
 
 // OCSFCategoryName returns the OCSF category_name (network).
 func (EmailURLActivity) OCSFCategoryName() string { return "network" }
+
+func init() {
+	ocsf.RegisterClass(4012, func() ocsf.Event { return &EmailURLActivity{} })
+}

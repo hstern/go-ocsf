@@ -7,6 +7,7 @@ package discovery
 
 import (
 	"encoding/json"
+	"github.com/hstern/go-ocsf"
 	"github.com/hstern/go-ocsf/objects"
 )
 
@@ -282,3 +283,7 @@ func (DeviceConfigStateChange) OCSFCategoryUID() int { return 5 }
 
 // OCSFCategoryName returns the OCSF category_name (discovery).
 func (DeviceConfigStateChange) OCSFCategoryName() string { return "discovery" }
+
+func init() {
+	ocsf.RegisterClass(5019, func() ocsf.Event { return &DeviceConfigStateChange{} })
+}
