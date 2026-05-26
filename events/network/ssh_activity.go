@@ -416,6 +416,24 @@ func (SSHActivity) OCSFCategoryUID() int { return 4 }
 // OCSFCategoryName returns the OCSF category_name (network).
 func (SSHActivity) OCSFCategoryName() string { return "network" }
 
+// Validate checks the required-field rules for SSHActivity.
+// Returns the first violation found, or nil if all required fields are present.
+func (e SSHActivity) Validate() error {
+	if e.Cloud == nil {
+		return &ocsf.ValidationError{ClassUID: 4007, Field: "cloud", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.DstEndpoint == nil {
+		return &ocsf.ValidationError{ClassUID: 4007, Field: "dst_endpoint", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Metadata == nil {
+		return &ocsf.ValidationError{ClassUID: 4007, Field: "metadata", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.Osint) == 0 {
+		return &ocsf.ValidationError{ClassUID: 4007, Field: "osint", Rule: "required", Reason: "required field is missing"}
+	}
+	return nil
+}
+
 func init() {
 	ocsf.RegisterClass(4007, func() ocsf.Event { return &SSHActivity{} })
 }

@@ -265,6 +265,30 @@ func (FileHosting) OCSFCategoryUID() int { return 6 }
 // OCSFCategoryName returns the OCSF category_name (application).
 func (FileHosting) OCSFCategoryName() string { return "application" }
 
+// Validate checks the required-field rules for FileHosting.
+// Returns the first violation found, or nil if all required fields are present.
+func (e FileHosting) Validate() error {
+	if e.Actor == nil {
+		return &ocsf.ValidationError{ClassUID: 6006, Field: "actor", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Cloud == nil {
+		return &ocsf.ValidationError{ClassUID: 6006, Field: "cloud", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.File == nil {
+		return &ocsf.ValidationError{ClassUID: 6006, Field: "file", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Metadata == nil {
+		return &ocsf.ValidationError{ClassUID: 6006, Field: "metadata", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.Osint) == 0 {
+		return &ocsf.ValidationError{ClassUID: 6006, Field: "osint", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.SrcEndpoint == nil {
+		return &ocsf.ValidationError{ClassUID: 6006, Field: "src_endpoint", Rule: "required", Reason: "required field is missing"}
+	}
+	return nil
+}
+
 func init() {
 	ocsf.RegisterClass(6006, func() ocsf.Event { return &FileHosting{} })
 }

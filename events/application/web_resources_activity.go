@@ -370,6 +370,24 @@ func (WebResourcesActivity) OCSFCategoryUID() int { return 6 }
 // OCSFCategoryName returns the OCSF category_name (application).
 func (WebResourcesActivity) OCSFCategoryName() string { return "application" }
 
+// Validate checks the required-field rules for WebResourcesActivity.
+// Returns the first violation found, or nil if all required fields are present.
+func (e WebResourcesActivity) Validate() error {
+	if e.Cloud == nil {
+		return &ocsf.ValidationError{ClassUID: 6001, Field: "cloud", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Metadata == nil {
+		return &ocsf.ValidationError{ClassUID: 6001, Field: "metadata", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.Osint) == 0 {
+		return &ocsf.ValidationError{ClassUID: 6001, Field: "osint", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.WebResources) == 0 {
+		return &ocsf.ValidationError{ClassUID: 6001, Field: "web_resources", Rule: "required", Reason: "required field is missing"}
+	}
+	return nil
+}
+
 func init() {
 	ocsf.RegisterClass(6001, func() ocsf.Event { return &WebResourcesActivity{} })
 }

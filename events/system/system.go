@@ -7,6 +7,7 @@ package system
 
 import (
 	"encoding/json"
+	"github.com/hstern/go-ocsf"
 	"github.com/hstern/go-ocsf/objects"
 )
 
@@ -290,3 +291,24 @@ func (System) OCSFCategoryUID() int { return 1 }
 
 // OCSFCategoryName returns the OCSF category_name (system).
 func (System) OCSFCategoryName() string { return "system" }
+
+// Validate checks the required-field rules for System.
+// Returns the first violation found, or nil if all required fields are present.
+func (e System) Validate() error {
+	if e.Actor == nil {
+		return &ocsf.ValidationError{ClassUID: 0, Field: "actor", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Cloud == nil {
+		return &ocsf.ValidationError{ClassUID: 0, Field: "cloud", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Device == nil {
+		return &ocsf.ValidationError{ClassUID: 0, Field: "device", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Metadata == nil {
+		return &ocsf.ValidationError{ClassUID: 0, Field: "metadata", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.Osint) == 0 {
+		return &ocsf.ValidationError{ClassUID: 0, Field: "osint", Rule: "required", Reason: "required field is missing"}
+	}
+	return nil
+}

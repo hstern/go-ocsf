@@ -257,6 +257,24 @@ func (KernelObjectQuery) OCSFCategoryUID() int { return 5 }
 // OCSFCategoryName returns the OCSF category_name (discovery).
 func (KernelObjectQuery) OCSFCategoryName() string { return "discovery" }
 
+// Validate checks the required-field rules for KernelObjectQuery.
+// Returns the first violation found, or nil if all required fields are present.
+func (e KernelObjectQuery) Validate() error {
+	if e.Cloud == nil {
+		return &ocsf.ValidationError{ClassUID: 5006, Field: "cloud", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Kernel == nil {
+		return &ocsf.ValidationError{ClassUID: 5006, Field: "kernel", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Metadata == nil {
+		return &ocsf.ValidationError{ClassUID: 5006, Field: "metadata", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.Osint) == 0 {
+		return &ocsf.ValidationError{ClassUID: 5006, Field: "osint", Rule: "required", Reason: "required field is missing"}
+	}
+	return nil
+}
+
 func init() {
 	ocsf.RegisterClass(5006, func() ocsf.Event { return &KernelObjectQuery{} })
 }

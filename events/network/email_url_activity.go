@@ -300,6 +300,27 @@ func (EmailURLActivity) OCSFCategoryUID() int { return 4 }
 // OCSFCategoryName returns the OCSF category_name (network).
 func (EmailURLActivity) OCSFCategoryName() string { return "network" }
 
+// Validate checks the required-field rules for EmailURLActivity.
+// Returns the first violation found, or nil if all required fields are present.
+func (e EmailURLActivity) Validate() error {
+	if e.Cloud == nil {
+		return &ocsf.ValidationError{ClassUID: 4012, Field: "cloud", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.EmailUID == "" {
+		return &ocsf.ValidationError{ClassUID: 4012, Field: "email_uid", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Metadata == nil {
+		return &ocsf.ValidationError{ClassUID: 4012, Field: "metadata", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.Osint) == 0 {
+		return &ocsf.ValidationError{ClassUID: 4012, Field: "osint", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.URL == nil {
+		return &ocsf.ValidationError{ClassUID: 4012, Field: "url", Rule: "required", Reason: "required field is missing"}
+	}
+	return nil
+}
+
 func init() {
 	ocsf.RegisterClass(4012, func() ocsf.Event { return &EmailURLActivity{} })
 }

@@ -312,6 +312,24 @@ func (ScanActivity) OCSFCategoryUID() int { return 6 }
 // OCSFCategoryName returns the OCSF category_name (application).
 func (ScanActivity) OCSFCategoryName() string { return "application" }
 
+// Validate checks the required-field rules for ScanActivity.
+// Returns the first violation found, or nil if all required fields are present.
+func (e ScanActivity) Validate() error {
+	if e.Cloud == nil {
+		return &ocsf.ValidationError{ClassUID: 6007, Field: "cloud", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Metadata == nil {
+		return &ocsf.ValidationError{ClassUID: 6007, Field: "metadata", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.Osint) == 0 {
+		return &ocsf.ValidationError{ClassUID: 6007, Field: "osint", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Scan == nil {
+		return &ocsf.ValidationError{ClassUID: 6007, Field: "scan", Rule: "required", Reason: "required field is missing"}
+	}
+	return nil
+}
+
 func init() {
 	ocsf.RegisterClass(6007, func() ocsf.Event { return &ScanActivity{} })
 }

@@ -299,6 +299,27 @@ func (ComplianceFinding) OCSFCategoryUID() int { return 2 }
 // OCSFCategoryName returns the OCSF category_name (findings).
 func (ComplianceFinding) OCSFCategoryName() string { return "findings" }
 
+// Validate checks the required-field rules for ComplianceFinding.
+// Returns the first violation found, or nil if all required fields are present.
+func (e ComplianceFinding) Validate() error {
+	if e.Cloud == nil {
+		return &ocsf.ValidationError{ClassUID: 2003, Field: "cloud", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Compliance == nil {
+		return &ocsf.ValidationError{ClassUID: 2003, Field: "compliance", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.FindingInfo == nil {
+		return &ocsf.ValidationError{ClassUID: 2003, Field: "finding_info", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Metadata == nil {
+		return &ocsf.ValidationError{ClassUID: 2003, Field: "metadata", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.Osint) == 0 {
+		return &ocsf.ValidationError{ClassUID: 2003, Field: "osint", Rule: "required", Reason: "required field is missing"}
+	}
+	return nil
+}
+
 func init() {
 	ocsf.RegisterClass(2003, func() ocsf.Event { return &ComplianceFinding{} })
 }

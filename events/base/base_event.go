@@ -7,6 +7,7 @@ package base
 
 import (
 	"encoding/json"
+	"github.com/hstern/go-ocsf"
 	"github.com/hstern/go-ocsf/objects"
 )
 
@@ -224,3 +225,18 @@ func (BaseEvent) OCSFCategoryUID() int { return 0 }
 
 // OCSFCategoryName returns the OCSF category_name (other).
 func (BaseEvent) OCSFCategoryName() string { return "other" }
+
+// Validate checks the required-field rules for BaseEvent.
+// Returns the first violation found, or nil if all required fields are present.
+func (e BaseEvent) Validate() error {
+	if e.Cloud == nil {
+		return &ocsf.ValidationError{ClassUID: 0, Field: "cloud", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Metadata == nil {
+		return &ocsf.ValidationError{ClassUID: 0, Field: "metadata", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.Osint) == 0 {
+		return &ocsf.ValidationError{ClassUID: 0, Field: "osint", Rule: "required", Reason: "required field is missing"}
+	}
+	return nil
+}

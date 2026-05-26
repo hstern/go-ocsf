@@ -295,6 +295,27 @@ func (ScheduledJobActivity) OCSFCategoryUID() int { return 1 }
 // OCSFCategoryName returns the OCSF category_name (system).
 func (ScheduledJobActivity) OCSFCategoryName() string { return "system" }
 
+// Validate checks the required-field rules for ScheduledJobActivity.
+// Returns the first violation found, or nil if all required fields are present.
+func (e ScheduledJobActivity) Validate() error {
+	if e.Cloud == nil {
+		return &ocsf.ValidationError{ClassUID: 1006, Field: "cloud", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Device == nil {
+		return &ocsf.ValidationError{ClassUID: 1006, Field: "device", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Job == nil {
+		return &ocsf.ValidationError{ClassUID: 1006, Field: "job", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Metadata == nil {
+		return &ocsf.ValidationError{ClassUID: 1006, Field: "metadata", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.Osint) == 0 {
+		return &ocsf.ValidationError{ClassUID: 1006, Field: "osint", Rule: "required", Reason: "required field is missing"}
+	}
+	return nil
+}
+
 func init() {
 	ocsf.RegisterClass(1006, func() ocsf.Event { return &ScheduledJobActivity{} })
 }

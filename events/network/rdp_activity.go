@@ -426,6 +426,24 @@ func (RDPActivity) OCSFCategoryUID() int { return 4 }
 // OCSFCategoryName returns the OCSF category_name (network).
 func (RDPActivity) OCSFCategoryName() string { return "network" }
 
+// Validate checks the required-field rules for RDPActivity.
+// Returns the first violation found, or nil if all required fields are present.
+func (e RDPActivity) Validate() error {
+	if e.Cloud == nil {
+		return &ocsf.ValidationError{ClassUID: 4005, Field: "cloud", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.DstEndpoint == nil {
+		return &ocsf.ValidationError{ClassUID: 4005, Field: "dst_endpoint", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Metadata == nil {
+		return &ocsf.ValidationError{ClassUID: 4005, Field: "metadata", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.Osint) == 0 {
+		return &ocsf.ValidationError{ClassUID: 4005, Field: "osint", Rule: "required", Reason: "required field is missing"}
+	}
+	return nil
+}
+
 func init() {
 	ocsf.RegisterClass(4005, func() ocsf.Event { return &RDPActivity{} })
 }

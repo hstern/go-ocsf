@@ -418,6 +418,27 @@ func (NTPActivity) OCSFCategoryUID() int { return 4 }
 // OCSFCategoryName returns the OCSF category_name (network).
 func (NTPActivity) OCSFCategoryName() string { return "network" }
 
+// Validate checks the required-field rules for NTPActivity.
+// Returns the first violation found, or nil if all required fields are present.
+func (e NTPActivity) Validate() error {
+	if e.Cloud == nil {
+		return &ocsf.ValidationError{ClassUID: 4013, Field: "cloud", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.DstEndpoint == nil {
+		return &ocsf.ValidationError{ClassUID: 4013, Field: "dst_endpoint", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Metadata == nil {
+		return &ocsf.ValidationError{ClassUID: 4013, Field: "metadata", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.Osint) == 0 {
+		return &ocsf.ValidationError{ClassUID: 4013, Field: "osint", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Version == "" {
+		return &ocsf.ValidationError{ClassUID: 4013, Field: "version", Rule: "required", Reason: "required field is missing"}
+	}
+	return nil
+}
+
 func init() {
 	ocsf.RegisterClass(4013, func() ocsf.Event { return &NTPActivity{} })
 }

@@ -238,6 +238,24 @@ func (InventoryInfo) OCSFCategoryUID() int { return 5 }
 // OCSFCategoryName returns the OCSF category_name (discovery).
 func (InventoryInfo) OCSFCategoryName() string { return "discovery" }
 
+// Validate checks the required-field rules for InventoryInfo.
+// Returns the first violation found, or nil if all required fields are present.
+func (e InventoryInfo) Validate() error {
+	if e.Cloud == nil {
+		return &ocsf.ValidationError{ClassUID: 5001, Field: "cloud", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Device == nil {
+		return &ocsf.ValidationError{ClassUID: 5001, Field: "device", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Metadata == nil {
+		return &ocsf.ValidationError{ClassUID: 5001, Field: "metadata", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.Osint) == 0 {
+		return &ocsf.ValidationError{ClassUID: 5001, Field: "osint", Rule: "required", Reason: "required field is missing"}
+	}
+	return nil
+}
+
 func init() {
 	ocsf.RegisterClass(5001, func() ocsf.Event { return &InventoryInfo{} })
 }

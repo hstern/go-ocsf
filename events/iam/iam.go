@@ -7,6 +7,7 @@ package iam
 
 import (
 	"encoding/json"
+	"github.com/hstern/go-ocsf"
 	"github.com/hstern/go-ocsf/objects"
 )
 
@@ -247,3 +248,18 @@ func (IAM) OCSFCategoryUID() int { return 3 }
 
 // OCSFCategoryName returns the OCSF category_name (iam).
 func (IAM) OCSFCategoryName() string { return "iam" }
+
+// Validate checks the required-field rules for IAM.
+// Returns the first violation found, or nil if all required fields are present.
+func (e IAM) Validate() error {
+	if e.Cloud == nil {
+		return &ocsf.ValidationError{ClassUID: 0, Field: "cloud", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Metadata == nil {
+		return &ocsf.ValidationError{ClassUID: 0, Field: "metadata", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.Osint) == 0 {
+		return &ocsf.ValidationError{ClassUID: 0, Field: "osint", Rule: "required", Reason: "required field is missing"}
+	}
+	return nil
+}

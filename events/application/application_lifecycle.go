@@ -242,6 +242,24 @@ func (ApplicationLifecycle) OCSFCategoryUID() int { return 6 }
 // OCSFCategoryName returns the OCSF category_name (application).
 func (ApplicationLifecycle) OCSFCategoryName() string { return "application" }
 
+// Validate checks the required-field rules for ApplicationLifecycle.
+// Returns the first violation found, or nil if all required fields are present.
+func (e ApplicationLifecycle) Validate() error {
+	if e.App == nil {
+		return &ocsf.ValidationError{ClassUID: 6002, Field: "app", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Cloud == nil {
+		return &ocsf.ValidationError{ClassUID: 6002, Field: "cloud", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Metadata == nil {
+		return &ocsf.ValidationError{ClassUID: 6002, Field: "metadata", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.Osint) == 0 {
+		return &ocsf.ValidationError{ClassUID: 6002, Field: "osint", Rule: "required", Reason: "required field is missing"}
+	}
+	return nil
+}
+
 func init() {
 	ocsf.RegisterClass(6002, func() ocsf.Event { return &ApplicationLifecycle{} })
 }
