@@ -3,21 +3,23 @@
 
 // Command gen is the internal codegen tool for go-ocsf. It reads
 // the vendored OCSF schema, builds an in-memory model (the
-// internal/gen/schema package), and — in subsequent build phases —
-// emits per-event-class and per-object Go types under events/ and
-// objects/.
+// internal/gen/schema package), and emits per-object and (in
+// later phases) per-event-class Go types into the objects/ and
+// events/ subpackages of the module.
 //
-// At the OCSF-8 milestone the emission step is not yet wired up;
-// running the tool simply loads the schema and prints a one-line
-// summary, exercising the reader end-to-end against the vendored
-// 1.3.0 tree.
+// Usage:
 //
-// Invocation:
-//
+//	# Summary mode — load schema and print a one-line summary.
 //	go run ./internal/gen -schema internal/schema/v1.3.0
 //
-// The schema flag is required so future schema-version bumps can
-// pass a different vendored directory without code changes.
+//	# Emit mode — load schema and write per-object Go files.
+//	go run ./internal/gen -schema internal/schema/v1.3.0 -emit -out .
+//
+// The -schema flag is required so future schema-version bumps
+// pass a different vendored directory without code changes. The
+// -out flag, when -emit is set, is the repository-root path
+// under which the emitter writes objects/<name>.go (and, in
+// later phases, events/<category>/<name>.go).
 package main
 
 import (
@@ -26,6 +28,7 @@ import (
 	"io"
 	"os"
 
+	"github.com/hstern/go-ocsf/internal/gen/emit"
 	"github.com/hstern/go-ocsf/internal/gen/schema"
 )
 
@@ -37,6 +40,9 @@ func run(args []string, stdout, stderr io.Writer) int {
 	fs := flag.NewFlagSet("gen", flag.ContinueOnError)
 	fs.SetOutput(stderr)
 	schemaDir := fs.String("schema", "", "path to a vendored OCSF schema directory (e.g. internal/schema/v1.3.0)")
+	emitMode := fs.Bool("emit", false, "write Go source files for the loaded schema")
+	outDir := fs.String("out", ".", "output directory when -emit is set (writes <out>/objects/*.go)")
+	modulePath := fs.String("module", "github.com/hstern/go-ocsf", "Go module path of the repository being emitted into")
 	if err := fs.Parse(args); err != nil {
 		return 2
 	}
@@ -63,5 +69,20 @@ func run(args []string, stdout, stderr io.Writer) int {
 		len(s.Objects),
 		len(s.Events),
 	)
+
+	if !*emitMode {
+		return 0
+	}
+
+	r, err := emit.Emit(emit.Options{
+		Schema:     s,
+		OutDir:     *outDir,
+		ModulePath: *modulePath,
+	})
+	if err != nil {
+		_, _ = fmt.Fprintf(stderr, "gen: emit: %v\n", err)
+		return 1
+	}
+	_, _ = fmt.Fprintf(stdout, "emit: wrote %d object files under %s/objects/\n", len(r.ObjectFiles), *outDir)
 	return 0
 }
