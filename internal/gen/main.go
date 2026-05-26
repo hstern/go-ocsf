@@ -84,8 +84,8 @@ func run(args []string, stdout, stderr io.Writer) int {
 		return 1
 	}
 	_, _ = fmt.Fprintf(stdout,
-		"emit: wrote %d object files under %s/objects/ and %d event files under %s/events/\n",
-		len(r.ObjectFiles), *outDir, len(r.EventFiles), *outDir,
+		"emit: wrote %d objects, %d events, %d enums under %s/\n",
+		len(r.ObjectFiles), len(r.EventFiles), len(r.EnumFiles), *outDir,
 	)
 	return 0
 }

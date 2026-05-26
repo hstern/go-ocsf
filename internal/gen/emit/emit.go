@@ -49,6 +49,7 @@ type Options struct {
 type Result struct {
 	ObjectFiles []string // sorted by file path
 	EventFiles  []string // sorted by file path
+	EnumFiles   []string // sorted by file path
 }
 
 // Emit runs the codegen pass, writing one *.go file per OCSF
@@ -104,7 +105,11 @@ func Emit(opts Options) (*Result, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &Result{ObjectFiles: written, EventFiles: eventFiles}, nil
+	enumFiles, err := emitEnums(opts)
+	if err != nil {
+		return nil, err
+	}
+	return &Result{ObjectFiles: written, EventFiles: eventFiles, EnumFiles: enumFiles}, nil
 }
 
 // emitEvents writes one Go file per OCSF event class under
