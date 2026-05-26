@@ -74,32 +74,50 @@ func primitiveGoType(name string) string {
 	return ""
 }
 
+// objectsPkg is the Go-import path of the generated objects/
+// package. Centralized here so a future module-path override
+// flows through one constant rather than scattered strings.
+const objectsPkg = "github.com/hstern/go-ocsf/objects"
+
 // fieldImports lists every import path the package needs for a
-// given attribute's Go type. Returned in slice form to keep
-// ordering deterministic at the call site (caller dedupes and
-// sorts).
-func fieldImports(a schema.ClassAttr) []string {
+// given attribute's Go type, given the currently-emitting Go
+// package name. Returned in slice form to keep ordering
+// deterministic at the call site (caller dedupes and sorts).
+//
+// currentPkg is the short Go package name being emitted (e.g.
+// "objects", "iam", "network", "base"). When currentPkg ==
+// "objects", an object-reference attribute doesn't need an
+// import (the type is in scope). When emitting an event class
+// in any other package, object references trigger an import of
+// the objects package.
+func fieldImports(a schema.ClassAttr, currentPkg string) []string {
+	var out []string
 	if primitiveGoType(a.Type) == "json.RawMessage" {
-		return []string{"encoding/json"}
+		out = append(out, "encoding/json")
 	}
-	return nil
+	if a.Type != "" && primitiveGoType(a.Type) == "" && currentPkg != "objects" {
+		out = append(out, objectsPkg)
+	}
+	return out
 }
 
 // fieldGoType returns the Go-source-text representation of the
-// attribute's wire-level type within an objects package (no
-// `objects.` qualifier needed). Pointer-ness reflects the
-// attribute's requirement and whether it's a struct kind:
+// attribute's wire-level type. currentPkg is the short Go
+// package name being emitted; object references emitted from
+// any package other than `objects` are qualified with
+// `objects.`.
 //
-//   - object refs that are NOT array fields and NOT required use
-//     *T so JSON omitempty can drop the field when absent. Object
-//     refs that ARE array fields use []T (slice nullability is
-//     the slice itself).
-//   - primitive scalars use their Go type directly, omitempty
-//     handling falls out from Go's zero-value semantics on the
+// Pointer-ness reflects the attribute's repeated-ness:
+//
+//   - object refs that are NOT array fields use *T so JSON
+//     omitempty can drop the field when absent. Array refs use
+//     []T (slice nullability is the slice itself).
+//   - primitive scalars use their Go type directly; omitempty
+//     handling falls out of Go's zero-value semantics on the
 //     marshal side.
 //   - json.RawMessage stays a value (not pointer); a nil
 //     RawMessage already omits.
-func fieldGoType(s *schema.Schema, a schema.ClassAttr) (string, error) {
+func fieldGoType(s *schema.Schema, a schema.ClassAttr, currentPkg string) (string, error) {
 	if a.Type == "" {
 		// An attribute whose dictionary lookup failed at load
 		// time. Treat as opaque JSON so the field still
@@ -123,6 +141,9 @@ func fieldGoType(s *schema.Schema, a schema.ClassAttr) (string, error) {
 		return "", fmt.Errorf("attribute %q references unknown object type %q", a.Name, a.Type)
 	}
 	tn := goName(a.Type)
+	if currentPkg != "objects" {
+		tn = "objects." + tn
+	}
 	if a.IsArray {
 		return "[]" + tn, nil
 	}

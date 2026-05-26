@@ -83,6 +83,9 @@ func run(args []string, stdout, stderr io.Writer) int {
 		_, _ = fmt.Fprintf(stderr, "gen: emit: %v\n", err)
 		return 1
 	}
-	_, _ = fmt.Fprintf(stdout, "emit: wrote %d object files under %s/objects/\n", len(r.ObjectFiles), *outDir)
+	_, _ = fmt.Fprintf(stdout,
+		"emit: wrote %d object files under %s/objects/ and %d event files under %s/events/\n",
+		len(r.ObjectFiles), *outDir, len(r.EventFiles), *outDir,
+	)
 	return 0
 }

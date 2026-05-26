@@ -120,7 +120,7 @@ func TestFieldGoType_PrimitivesAndArrays(t *testing.T) {
 	s.Objects["user"] = schema.ObjectClass{Name: "user"}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
-			got, err := fieldGoType(s, c.attr)
+			got, err := fieldGoType(s, c.attr, "objects")
 			if c.wantErr {
 				if err == nil {
 					t.Fatalf("fieldGoType(%+v) = %q, want error", c.attr, got)
