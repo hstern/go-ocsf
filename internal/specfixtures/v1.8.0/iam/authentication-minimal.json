@@ -1,1 +1,1 @@
-{"category_uid":3,"class_uid":3002,"activity_id":1,"severity_id":1,"metadata":{"product":{"name":"go-ocsf-conformance"},"version":"1.3.0"},"time":1618524549901,"type_uid":300201,"user":{"name":"alice"},"service":{"name":"ldap"},"cloud":{"provider":"aws"},"osint":[{}]}
+{"category_uid":3,"class_uid":3002,"activity_id":1,"severity_id":1,"metadata":{"product":{"name":"go-ocsf-conformance"},"version":"1.8.0"},"time":1618524549901,"type_uid":300201,"user":{"name":"alice"},"service":{"name":"ldap"},"cloud":{"provider":"aws"},"osint":[{}]}
