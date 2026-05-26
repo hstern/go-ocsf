@@ -14,28 +14,28 @@ type Display struct {
 	// ColorDepth is the Color Depth. The numeric color depth.
 	//
 	// OCSF: color_depth (type integer_t, requirement optional)
-	ColorDepth int `json:"color_depth,omitempty"`
+	ColorDepth *int `json:"color_depth,omitempty"`
 
 	// PhysicalHeight is the Physical Height. The numeric physical height of
 	// display.
 	//
 	// OCSF: physical_height (type integer_t, requirement optional)
-	PhysicalHeight int `json:"physical_height,omitempty"`
+	PhysicalHeight *int `json:"physical_height,omitempty"`
 
 	// PhysicalOrientation is the Physical Orientation. The numeric physical
 	// orientation of display.
 	//
 	// OCSF: physical_orientation (type integer_t, requirement optional)
-	PhysicalOrientation int `json:"physical_orientation,omitempty"`
+	PhysicalOrientation *int `json:"physical_orientation,omitempty"`
 
 	// PhysicalWidth is the Physical Width. The numeric physical width of
 	// display.
 	//
 	// OCSF: physical_width (type integer_t, requirement optional)
-	PhysicalWidth int `json:"physical_width,omitempty"`
+	PhysicalWidth *int `json:"physical_width,omitempty"`
 
 	// ScaleFactor is the Scale Factor. The numeric scale factor of display.
 	//
 	// OCSF: scale_factor (type integer_t, requirement optional)
-	ScaleFactor int `json:"scale_factor,omitempty"`
+	ScaleFactor *int `json:"scale_factor,omitempty"`
 }

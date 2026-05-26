@@ -131,5 +131,5 @@ type Compliance struct {
 	// compliance check.
 	//
 	// OCSF: status_id (type integer_t, requirement recommended)
-	StatusID int `json:"status_id,omitempty"`
+	StatusID *int `json:"status_id,omitempty"`
 }

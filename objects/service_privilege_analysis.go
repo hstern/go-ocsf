@@ -17,25 +17,25 @@ type ServicePrivilegeAnalysis struct {
 	// all privileges within this service are unused.
 	//
 	// OCSF: all_privileges_unused (type boolean_t, requirement optional)
-	AllPrivilegesUnused bool `json:"all_privileges_unused,omitempty"`
+	AllPrivilegesUnused *bool `json:"all_privileges_unused,omitempty"`
 
 	// AnalyzedPrivilegesCount is the Analyzed Privileges Count. The total
 	// count of privileges analyzed within this service.
 	//
 	// OCSF: analyzed_privileges_count (type integer_t, requirement optional)
-	AnalyzedPrivilegesCount int `json:"analyzed_privileges_count,omitempty"`
+	AnalyzedPrivilegesCount *int `json:"analyzed_privileges_count,omitempty"`
 
 	// ExecuteCount is the Execute Privilege Count. The count of execute-type
 	// privileges within this service.
 	//
 	// OCSF: execute_count (type integer_t, requirement optional)
-	ExecuteCount int `json:"execute_count,omitempty"`
+	ExecuteCount *int `json:"execute_count,omitempty"`
 
 	// LastUsedTime is the Last Used Time. The most recent time any privilege
 	// in this service was used.
 	//
 	// OCSF: last_used_time (type timestamp_t, requirement optional)
-	LastUsedTime int64 `json:"last_used_time,omitempty"`
+	LastUsedTime *int64 `json:"last_used_time,omitempty"`
 
 	// Name is the Name. The service or namespace identifier. Examples: s3,
 	// ec2 (AWS); Microsoft.Storage (Azure); storage (GCP).
@@ -53,17 +53,17 @@ type ServicePrivilegeAnalysis struct {
 	// privileges within this service.
 	//
 	// OCSF: read_count (type integer_t, requirement optional)
-	ReadCount int `json:"read_count,omitempty"`
+	ReadCount *int `json:"read_count,omitempty"`
 
 	// UnusedPrivilegesCount is the Unused Privileges Count. The count of
 	// unused privileges within this service.
 	//
 	// OCSF: unused_privileges_count (type integer_t, requirement optional)
-	UnusedPrivilegesCount int `json:"unused_privileges_count,omitempty"`
+	UnusedPrivilegesCount *int `json:"unused_privileges_count,omitempty"`
 
 	// WriteCount is the Write Privilege Count. The count of write-type
 	// privileges within this service.
 	//
 	// OCSF: write_count (type integer_t, requirement optional)
-	WriteCount int `json:"write_count,omitempty"`
+	WriteCount *int `json:"write_count,omitempty"`
 }

@@ -15,13 +15,13 @@ type RPCInterface struct {
 	// reason code or additional information about the acknowledgment result.
 	//
 	// OCSF: ack_reason (type integer_t, requirement recommended)
-	AckReason int `json:"ack_reason,omitempty"`
+	AckReason *int `json:"ack_reason,omitempty"`
 
 	// AckResult is the Acknowledgement Result. An integer that denotes the
 	// acknowledgment result of the DCE/RPC call.
 	//
 	// OCSF: ack_result (type integer_t, requirement recommended)
-	AckResult int `json:"ack_result,omitempty"`
+	AckResult *int `json:"ack_result,omitempty"`
 
 	// UUID is the UUID. The unique identifier of the particular remote
 	// procedure or service.

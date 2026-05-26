@@ -21,5 +21,5 @@ type SecurityState struct {
 	// entity.
 	//
 	// OCSF: state_id (type integer_t, requirement recommended)
-	StateID int `json:"state_id,omitempty"`
+	StateID *int `json:"state_id,omitempty"`
 }

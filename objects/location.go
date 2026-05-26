@@ -82,7 +82,7 @@ type Location struct {
 	// on-premises.
 	//
 	// OCSF: is_on_premises (type boolean_t, requirement optional)
-	IsOnPremises bool `json:"is_on_premises,omitempty"`
+	IsOnPremises *bool `json:"is_on_premises,omitempty"`
 
 	// Isp is the ISP Name. The name of the Internet Service Provider (ISP).
 	//
@@ -95,13 +95,13 @@ type Location struct {
 	// in Decimal Degrees (DD). For example: 42.361145.
 	//
 	// OCSF: lat (type float_t, requirement optional)
-	Lat float64 `json:"lat,omitempty"`
+	Lat *float64 `json:"lat,omitempty"`
 
 	// Long is the Longitude. The geographical Longitude coordinate
 	// represented in Decimal Degrees (DD). For example: -71.057083.
 	//
 	// OCSF: long (type float_t, requirement optional)
-	Long float64 `json:"long,omitempty"`
+	Long *float64 `json:"long,omitempty"`
 
 	// PostalCode is the Postal Code. The postal code of the location.
 	//

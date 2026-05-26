@@ -37,7 +37,7 @@ type FindingInfo struct {
 	// created.
 	//
 	// OCSF: created_time (type timestamp_t, requirement optional)
-	CreatedTime int64 `json:"created_time,omitempty"`
+	CreatedTime *int64 `json:"created_time,omitempty"`
 
 	// DataSources is the Data Sources. A list of data sources utilized in
 	// generation of the finding.
@@ -56,7 +56,7 @@ type FindingInfo struct {
 	// this finding was created.
 	//
 	// OCSF: first_seen_time (type timestamp_t, requirement optional)
-	FirstSeenTime int64 `json:"first_seen_time,omitempty"`
+	FirstSeenTime *int64 `json:"first_seen_time,omitempty"`
 
 	// KillChain is the Kill Chain. The Cyber Kill Chain® provides a
 	// detailed description of each phase and its associated activities
@@ -71,13 +71,13 @@ type FindingInfo struct {
 	// which reflects the time this finding was last modified.
 	//
 	// OCSF: last_seen_time (type timestamp_t, requirement optional)
-	LastSeenTime int64 `json:"last_seen_time,omitempty"`
+	LastSeenTime *int64 `json:"last_seen_time,omitempty"`
 
 	// ModifiedTime is the Modified Time. The time when the finding was last
 	// modified.
 	//
 	// OCSF: modified_time (type timestamp_t, requirement optional)
-	ModifiedTime int64 `json:"modified_time,omitempty"`
+	ModifiedTime *int64 `json:"modified_time,omitempty"`
 
 	// Product is the Product. Details about the product that reported the
 	// finding.
@@ -108,7 +108,7 @@ type FindingInfo struct {
 	// related events or findings.
 	//
 	// OCSF: related_events_count (type integer_t, requirement optional)
-	RelatedEventsCount int `json:"related_events_count,omitempty"`
+	RelatedEventsCount *int `json:"related_events_count,omitempty"`
 
 	// SrcURL is the Source URL. The URL pointing to the source of the
 	// finding.

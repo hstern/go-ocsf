@@ -17,14 +17,14 @@ type Epss struct {
 	// EPSS score was calculated.
 	//
 	// OCSF: created_time (type timestamp_t, requirement recommended)
-	CreatedTime int64 `json:"created_time,omitempty"`
+	CreatedTime *int64 `json:"created_time,omitempty"`
 
 	// Percentile is the EPSS Percentile. The EPSS score's percentile
 	// representing relative importance and ranking of the score in the
 	// larger EPSS dataset.
 	//
 	// OCSF: percentile (type float_t, requirement optional)
-	Percentile float64 `json:"percentile,omitempty"`
+	Percentile *float64 `json:"percentile,omitempty"`
 
 	// Score is the EPPS Score. The EPSS score representing the probability
 	// [0-1] of exploitation in the wild in the next 30 days (following score

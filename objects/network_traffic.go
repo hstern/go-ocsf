@@ -16,74 +16,74 @@ type NetworkTraffic struct {
 	// both directions (sum of bytes_in and bytes_out).
 	//
 	// OCSF: bytes (type long_t, requirement recommended)
-	Bytes int64 `json:"bytes,omitempty"`
+	Bytes *int64 `json:"bytes,omitempty"`
 
 	// BytesIn is the Bytes In. The number of bytes sent from the destination
 	// to the source (inbound direction).
 	//
 	// OCSF: bytes_in (type long_t, requirement optional)
-	BytesIn int64 `json:"bytes_in,omitempty"`
+	BytesIn *int64 `json:"bytes_in,omitempty"`
 
 	// BytesMissed is the Bytes Missed. The number of bytes that were missed
 	// during observation, typically due to packet loss or sampling
 	// limitations.
 	//
 	// OCSF: bytes_missed (type long_t, requirement optional)
-	BytesMissed int64 `json:"bytes_missed,omitempty"`
+	BytesMissed *int64 `json:"bytes_missed,omitempty"`
 
 	// BytesOut is the Bytes Out. The number of bytes sent from the source to
 	// the destination (outbound direction).
 	//
 	// OCSF: bytes_out (type long_t, requirement optional)
-	BytesOut int64 `json:"bytes_out,omitempty"`
+	BytesOut *int64 `json:"bytes_out,omitempty"`
 
 	// Chunks is the Chunks. The total number of chunks transferred in both
 	// directions (sum of chunks_in and chunks_out).
 	//
 	// OCSF: chunks (type long_t, requirement optional)
-	Chunks int64 `json:"chunks,omitempty"`
+	Chunks *int64 `json:"chunks,omitempty"`
 
 	// ChunksIn is the Chunks In. The number of chunks sent from the
 	// destination to the source (inbound direction).
 	//
 	// OCSF: chunks_in (type long_t, requirement optional)
-	ChunksIn int64 `json:"chunks_in,omitempty"`
+	ChunksIn *int64 `json:"chunks_in,omitempty"`
 
 	// ChunksOut is the Chunks Out. The number of chunks sent from the source
 	// to the destination (outbound direction).
 	//
 	// OCSF: chunks_out (type long_t, requirement optional)
-	ChunksOut int64 `json:"chunks_out,omitempty"`
+	ChunksOut *int64 `json:"chunks_out,omitempty"`
 
 	// EndTime is the End Time. The end time of the observation or reporting
 	// period.
 	//
 	// OCSF: end_time (type timestamp_t, requirement optional)
-	EndTime int64 `json:"end_time,omitempty"`
+	EndTime *int64 `json:"end_time,omitempty"`
 
 	// Packets is the Total Packets. The total number of packets transferred
 	// in both directions (sum of packets_in and packets_out).
 	//
 	// OCSF: packets (type long_t, requirement recommended)
-	Packets int64 `json:"packets,omitempty"`
+	Packets *int64 `json:"packets,omitempty"`
 
 	// PacketsIn is the Packets In. The number of packets sent from the
 	// destination to the source (inbound direction).
 	//
 	// OCSF: packets_in (type long_t, requirement optional)
-	PacketsIn int64 `json:"packets_in,omitempty"`
+	PacketsIn *int64 `json:"packets_in,omitempty"`
 
 	// PacketsOut is the Packets Out. The number of packets sent from the
 	// source to the destination (outbound direction).
 	//
 	// OCSF: packets_out (type long_t, requirement optional)
-	PacketsOut int64 `json:"packets_out,omitempty"`
+	PacketsOut *int64 `json:"packets_out,omitempty"`
 
 	// StartTime is the Start Time. The start time of the observation or
 	// reporting period.
 	//
 	// OCSF: start_time (type timestamp_t, requirement optional)
-	StartTime int64 `json:"start_time,omitempty"`
+	StartTime *int64 `json:"start_time,omitempty"`
 
 	// Timespan is the Time Span. The time span object representing the
 	// duration of the observation or reporting period.

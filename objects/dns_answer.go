@@ -35,7 +35,7 @@ type DNSAnswer struct {
 	// response.
 	//
 	// OCSF: packet_uid (type integer_t, requirement recommended)
-	PacketUID int `json:"packet_uid,omitempty"`
+	PacketUID *int `json:"packet_uid,omitempty"`
 
 	// Rdata is the DNS RData. The data describing the DNS resource. The
 	// meaning of this data depends on the type and class of the resource
@@ -49,7 +49,7 @@ type DNSAnswer struct {
 	// the transaction in progress, and should not be cached.
 	//
 	// OCSF: ttl (type integer_t, requirement recommended)
-	TTL int `json:"ttl,omitempty"`
+	TTL *int `json:"ttl,omitempty"`
 
 	// Type is the Resource Record Type. The type of data contained in this
 	// resource record. See RFC1035. For example: CNAME.

@@ -21,7 +21,7 @@ type Enrichment struct {
 	// generated.
 	//
 	// OCSF: created_time (type timestamp_t, requirement recommended)
-	CreatedTime int64 `json:"created_time,omitempty"`
+	CreatedTime *int64 `json:"created_time,omitempty"`
 
 	// Data is the Data. The enrichment data associated with the attribute
 	// and value. The meaning of this data depends on the type the enrichment

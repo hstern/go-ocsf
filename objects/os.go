@@ -34,7 +34,7 @@ type OS struct {
 	// for addressing in memory. For example: 32 or 64.
 	//
 	// OCSF: cpu_bits (type integer_t, requirement optional)
-	CPUBits int `json:"cpu_bits,omitempty"`
+	CPUBits *int `json:"cpu_bits,omitempty"`
 
 	// Edition is the OS Edition. The operating system edition. For example:
 	// Professional.
@@ -70,7 +70,7 @@ type OS struct {
 	// Service Pack.
 	//
 	// OCSF: sp_ver (type integer_t, requirement optional)
-	SpVer int `json:"sp_ver,omitempty"`
+	SpVer *int `json:"sp_ver,omitempty"`
 
 	// Type is the Type. The type of the operating system.
 	//

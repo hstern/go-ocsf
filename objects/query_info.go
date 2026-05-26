@@ -20,7 +20,7 @@ type QueryInfo struct {
 	// query.
 	//
 	// OCSF: bytes (type long_t, requirement optional)
-	Bytes int64 `json:"bytes,omitempty"`
+	Bytes *int64 `json:"bytes,omitempty"`
 
 	// Data is the Data. The data returned from the query execution.
 	//
@@ -41,7 +41,7 @@ type QueryInfo struct {
 	// QueryTime is the Query Time. The time when the query was run.
 	//
 	// OCSF: query_time (type timestamp_t, requirement optional)
-	QueryTime int64 `json:"query_time,omitempty"`
+	QueryTime *int64 `json:"query_time,omitempty"`
 
 	// UID is the Unique ID. The unique identifier of the query.
 	//

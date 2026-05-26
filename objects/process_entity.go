@@ -29,7 +29,7 @@ type ProcessEntity struct {
 	// created/started.
 	//
 	// OCSF: created_time (type timestamp_t, requirement recommended)
-	CreatedTime int64 `json:"created_time,omitempty"`
+	CreatedTime *int64 `json:"created_time,omitempty"`
 
 	// Name is the Name. The friendly name of the process, for example:
 	// Notepad++.
@@ -47,7 +47,7 @@ type ProcessEntity struct {
 	// system to uniquely identify an active process.
 	//
 	// OCSF: pid (type integer_t, requirement recommended)
-	PID int `json:"pid,omitempty"`
+	PID *int `json:"pid,omitempty"`
 
 	// UID is the Unique ID. A unique identifier for this process assigned by
 	// the producer (tool). Facilitates correlation of a process event with

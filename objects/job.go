@@ -20,7 +20,7 @@ type Job struct {
 	// CreatedTime is the Created Time. The time when the job was created.
 	//
 	// OCSF: created_time (type timestamp_t, requirement recommended)
-	CreatedTime int64 `json:"created_time,omitempty"`
+	CreatedTime *int64 `json:"created_time,omitempty"`
 
 	// Desc is the Description. The description of the job.
 	//
@@ -35,7 +35,7 @@ type Job struct {
 	// LastRunTime is the Last Run. The time when the job was last run.
 	//
 	// OCSF: last_run_time (type timestamp_t, requirement recommended)
-	LastRunTime int64 `json:"last_run_time,omitempty"`
+	LastRunTime *int64 `json:"last_run_time,omitempty"`
 
 	// Name is the Name. The name of the job.
 	//
@@ -45,7 +45,7 @@ type Job struct {
 	// NextRunTime is the Next Run. The time when the job will next be run.
 	//
 	// OCSF: next_run_time (type timestamp_t, requirement optional)
-	NextRunTime int64 `json:"next_run_time,omitempty"`
+	NextRunTime *int64 `json:"next_run_time,omitempty"`
 
 	// RunState is the Run State. The run state of the job.
 	//
@@ -55,7 +55,7 @@ type Job struct {
 	// RunStateID is the Run State ID. The run state ID of the job.
 	//
 	// OCSF: run_state_id (type integer_t, requirement recommended)
-	RunStateID int `json:"run_state_id,omitempty"`
+	RunStateID *int `json:"run_state_id,omitempty"`
 
 	// User is the User. The user that created the job.
 	//

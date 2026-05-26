@@ -31,7 +31,7 @@ type TransformationInfo struct {
 	// Time is the Event Time. Time of the transformation.
 	//
 	// OCSF: time (type timestamp_t, requirement recommended)
-	Time int64 `json:"time,omitempty"`
+	Time *int64 `json:"time,omitempty"`
 
 	// UID is the Unique ID. The unique identifier of the mapping or
 	// transformation.

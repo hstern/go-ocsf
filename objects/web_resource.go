@@ -19,7 +19,7 @@ type WebResource struct {
 	// created.
 	//
 	// OCSF: created_time (type timestamp_t, requirement optional)
-	CreatedTime int64 `json:"created_time,omitempty"`
+	CreatedTime *int64 `json:"created_time,omitempty"`
 
 	// Data is the Data. Details of the web resource, e.g, file details,
 	// search results or application-defined resource.
@@ -58,7 +58,7 @@ type WebResource struct {
 	// modified.
 	//
 	// OCSF: modified_time (type timestamp_t, requirement optional)
-	ModifiedTime int64 `json:"modified_time,omitempty"`
+	ModifiedTime *int64 `json:"modified_time,omitempty"`
 
 	// Name is the Name. The name of the web resource.
 	//

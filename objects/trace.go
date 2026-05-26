@@ -27,7 +27,7 @@ type Trace struct {
 	// processing times of the trace as it spans multiple components.
 	//
 	// OCSF: duration (type long_t, requirement optional)
-	Duration int64 `json:"duration,omitempty"`
+	Duration *int64 `json:"duration,omitempty"`
 
 	// EndTime is the End Time. The end timestamp of the trace, essential for
 	// identifying latency and performance bottlenecks. Like the start time,
@@ -39,7 +39,7 @@ type Trace struct {
 	// settings.
 	//
 	// OCSF: end_time (type timestamp_t, requirement optional)
-	EndTime int64 `json:"end_time,omitempty"`
+	EndTime *int64 `json:"end_time,omitempty"`
 
 	// Flags is the Flags. The flags associated with the trace, used to
 	// indicate specific properties or behaviors, such as whether the trace
@@ -83,7 +83,7 @@ type Trace struct {
 	// settings.
 	//
 	// OCSF: start_time (type timestamp_t, requirement optional)
-	StartTime int64 `json:"start_time,omitempty"`
+	StartTime *int64 `json:"start_time,omitempty"`
 
 	// UID is the Unique ID. The unique identifier of the trace used in
 	// distributed systems and microservices architecture to track and

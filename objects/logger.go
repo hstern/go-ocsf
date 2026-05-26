@@ -29,7 +29,7 @@ type Logger struct {
 	// may have been omitted to fit within system constraints.
 	//
 	// OCSF: is_truncated (type boolean_t, requirement optional)
-	IsTruncated bool `json:"is_truncated,omitempty"`
+	IsTruncated *bool `json:"is_truncated,omitempty"`
 
 	// LogFormat is the Log Format. The format of data in the log. For
 	// example JSON, syslog or CSV.
@@ -72,7 +72,7 @@ type Logger struct {
 	// different.
 	//
 	// OCSF: logged_time (type timestamp_t, requirement recommended)
-	LoggedTime int64 `json:"logged_time,omitempty"`
+	LoggedTime *int64 `json:"logged_time,omitempty"`
 
 	// Name is the Name. The name of the logging product instance.
 	//
@@ -90,7 +90,7 @@ type Logger struct {
 	// transmitted from the logging device to it's next destination.
 	//
 	// OCSF: transmit_time (type timestamp_t, requirement recommended)
-	TransmitTime int64 `json:"transmit_time,omitempty"`
+	TransmitTime *int64 `json:"transmit_time,omitempty"`
 
 	// UID is the Unique ID. The unique identifier of the logging product
 	// instance.
@@ -104,7 +104,7 @@ type Logger struct {
 	// size of the original event.
 	//
 	// OCSF: untruncated_size (type integer_t, requirement optional)
-	UntruncatedSize int `json:"untruncated_size,omitempty"`
+	UntruncatedSize *int `json:"untruncated_size,omitempty"`
 
 	// Version is the Version. The version of the logging provider.
 	//

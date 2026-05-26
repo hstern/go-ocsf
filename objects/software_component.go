@@ -59,7 +59,7 @@ type SoftwareComponent struct {
 	// the relationship between two software components.
 	//
 	// OCSF: relationship_id (type integer_t, requirement recommended)
-	RelationshipID int `json:"relationship_id,omitempty"`
+	RelationshipID *int `json:"relationship_id,omitempty"`
 
 	// Type is the Type. The type of software component, normalized to the
 	// caption of the type_id value. In the case of 'Other', it is defined by
@@ -71,7 +71,7 @@ type SoftwareComponent struct {
 	// TypeID is the Type ID. The type of software component.
 	//
 	// OCSF: type_id (type integer_t, requirement recommended)
-	TypeID int `json:"type_id,omitempty"`
+	TypeID *int `json:"type_id,omitempty"`
 
 	// Version is the Version. The software component version.
 	//

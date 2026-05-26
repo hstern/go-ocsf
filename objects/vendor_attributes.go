@@ -27,5 +27,5 @@ type VendorAttributes struct {
 	// the Vendor (Finding Provider).
 	//
 	// OCSF: severity_id (type integer_t, requirement optional)
-	SeverityID int `json:"severity_id,omitempty"`
+	SeverityID *int `json:"severity_id,omitempty"`
 }

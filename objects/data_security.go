@@ -23,7 +23,7 @@ type DataSecurity struct {
 	// classification category.
 	//
 	// OCSF: category_id (type integer_t, requirement recommended)
-	CategoryID int `json:"category_id,omitempty"`
+	CategoryID *int `json:"category_id,omitempty"`
 
 	// ClassifierDetails is the Classifier Details. Describes details about
 	// the classifier used for data classification.
@@ -42,7 +42,7 @@ type DataSecurity struct {
 	// of the file content confidentiality indicator.
 	//
 	// OCSF: confidentiality_id (type integer_t, requirement recommended)
-	ConfidentialityID int `json:"confidentiality_id,omitempty"`
+	ConfidentialityID *int `json:"confidentiality_id,omitempty"`
 
 	// DataLifecycleState is the Data Lifecycle State. The name of the stage
 	// or state that the data was in. E.g., Data-at-Rest, Data-in-Transit,
@@ -56,7 +56,7 @@ type DataSecurity struct {
 	// security tool.
 	//
 	// OCSF: data_lifecycle_state_id (type integer_t, requirement recommended)
-	DataLifecycleStateID int `json:"data_lifecycle_state_id,omitempty"`
+	DataLifecycleStateID *int `json:"data_lifecycle_state_id,omitempty"`
 
 	// DetectionPattern is the Detection Pattern. Specific pattern,
 	// algorithm, fingerprint, or model used for detection.
@@ -76,7 +76,7 @@ type DataSecurity struct {
 	// originated from.
 	//
 	// OCSF: detection_system_id (type integer_t, requirement recommended)
-	DetectionSystemID int `json:"detection_system_id,omitempty"`
+	DetectionSystemID *int `json:"detection_system_id,omitempty"`
 
 	// DiscoveryDetails is the Discovery Details. Details about the data
 	// discovered by classification job.
@@ -99,7 +99,7 @@ type DataSecurity struct {
 	// Size is the Size. Size of the data classified.
 	//
 	// OCSF: size (type long_t, requirement optional)
-	Size int64 `json:"size,omitempty"`
+	Size *int64 `json:"size,omitempty"`
 
 	// SrcURL is the Source URL. The source URL pointing towards the full
 	// classification job details.
@@ -124,13 +124,13 @@ type DataSecurity struct {
 	// classification job.
 	//
 	// OCSF: status_id (type integer_t, requirement recommended)
-	StatusID int `json:"status_id,omitempty"`
+	StatusID *int `json:"status_id,omitempty"`
 
 	// Total is the Total. The total count of discovered entities, by the
 	// classification job.
 	//
 	// OCSF: total (type integer_t, requirement optional)
-	Total int `json:"total,omitempty"`
+	Total *int `json:"total,omitempty"`
 
 	// UID is the Unique ID. The unique identifier of the classification job.
 	//

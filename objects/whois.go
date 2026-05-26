@@ -22,7 +22,7 @@ type Whois struct {
 	// WHOIS entry was created.
 	//
 	// OCSF: created_time (type timestamp_t, requirement recommended)
-	CreatedTime int64 `json:"created_time,omitempty"`
+	CreatedTime *int64 `json:"created_time,omitempty"`
 
 	// DnssecStatus is the DNSSEC Status. The normalized value of
 	// dnssec_status_id.
@@ -34,7 +34,7 @@ type Whois struct {
 	// status of DNS Security Extensions (DNSSEC) for a domain.
 	//
 	// OCSF: dnssec_status_id (type integer_t, requirement recommended)
-	DnssecStatusID int `json:"dnssec_status_id,omitempty"`
+	DnssecStatusID *int `json:"dnssec_status_id,omitempty"`
 
 	// Domain is the Domain. The domain name corresponding to the WHOIS
 	// record.
@@ -73,7 +73,7 @@ type Whois struct {
 	// updated or seen at.
 	//
 	// OCSF: last_seen_time (type timestamp_t, requirement recommended)
-	LastSeenTime int64 `json:"last_seen_time,omitempty"`
+	LastSeenTime *int64 `json:"last_seen_time,omitempty"`
 
 	// NameServers is the Name Servers. A collection of name servers related
 	// to a domain registration or other record.

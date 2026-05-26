@@ -36,5 +36,5 @@ type AdditionalRestriction struct {
 	// the applicability of this policy restriction.
 	//
 	// OCSF: status_id (type integer_t, requirement recommended)
-	StatusID int `json:"status_id,omitempty"`
+	StatusID *int `json:"status_id,omitempty"`
 }

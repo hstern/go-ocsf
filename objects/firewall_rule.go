@@ -34,7 +34,7 @@ type FirewallRule struct {
 	// duration, usually used for challenge completion time.
 	//
 	// OCSF: duration (type long_t, requirement optional)
-	Duration int64 `json:"duration,omitempty"`
+	Duration *int64 `json:"duration,omitempty"`
 
 	// MatchDetails is the Match Details. The data in a request that rule
 	// matched. For example: '["10","and","1"]'.
@@ -57,7 +57,7 @@ type FirewallRule struct {
 	// RateLimit is the Rate Limit. The rate limit for a rate-based rule.
 	//
 	// OCSF: rate_limit (type integer_t, requirement optional)
-	RateLimit int `json:"rate_limit,omitempty"`
+	RateLimit *int `json:"rate_limit,omitempty"`
 
 	// Sensitivity is the Sensitivity. The sensitivity of the firewall rule
 	// in the matched event. For example: HIGH.

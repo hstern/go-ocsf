@@ -24,7 +24,7 @@ type Edge struct {
 	// undirected (false).
 	//
 	// OCSF: is_directed (type boolean_t, requirement optional)
-	IsDirected bool `json:"is_directed,omitempty"`
+	IsDirected *bool `json:"is_directed,omitempty"`
 
 	// Name is the Name. The human-readable name or label for the edge.
 	//

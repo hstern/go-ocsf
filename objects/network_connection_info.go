@@ -27,7 +27,7 @@ type NetworkConnectionInfo struct {
 	// networks, this is described as Local, Internal, or External.
 	//
 	// OCSF: boundary_id (type integer_t, requirement recommended)
-	BoundaryID int `json:"boundary_id,omitempty"`
+	BoundaryID *int `json:"boundary_id,omitempty"`
 
 	// CommunityUID is the Community ID. The Community ID of the network
 	// connection.
@@ -67,7 +67,7 @@ type NetworkConnectionInfo struct {
 	// TCP and 17 for UDP.
 	//
 	// OCSF: protocol_num (type integer_t, requirement recommended)
-	ProtocolNum int `json:"protocol_num,omitempty"`
+	ProtocolNum *int `json:"protocol_num,omitempty"`
 
 	// ProtocolVer is the IP Version. The Internet Protocol version.
 	//
@@ -78,7 +78,7 @@ type NetworkConnectionInfo struct {
 	// identifier.
 	//
 	// OCSF: protocol_ver_id (type integer_t, requirement recommended)
-	ProtocolVerID int `json:"protocol_ver_id,omitempty"`
+	ProtocolVerID *int `json:"protocol_ver_id,omitempty"`
 
 	// Session is the Session. The authenticated user or service session.
 	//
@@ -89,7 +89,7 @@ type NetworkConnectionInfo struct {
 	// (i.e., control bits).
 	//
 	// OCSF: tcp_flags (type integer_t, requirement optional)
-	TCPFlags int `json:"tcp_flags,omitempty"`
+	TCPFlags *int `json:"tcp_flags,omitempty"`
 
 	// UID is the Connection UID. The unique identifier of the connection.
 	//

@@ -36,7 +36,7 @@ type AuthenticationToken struct {
 	// tickets.
 	//
 	// OCSF: created_time (type timestamp_t, requirement recommended)
-	CreatedTime int64 `json:"created_time,omitempty"`
+	CreatedTime *int64 `json:"created_time,omitempty"`
 
 	// EncryptionDetails is the Encryption Details. The encryption details of
 	// the authentication token.
@@ -48,13 +48,13 @@ type AuthenticationToken struct {
 	// authentication token.
 	//
 	// OCSF: expiration_time (type timestamp_t, requirement optional)
-	ExpirationTime int64 `json:"expiration_time,omitempty"`
+	ExpirationTime *int64 `json:"expiration_time,omitempty"`
 
 	// IsRenewable is the Renewable. Indicates whether the authentication
 	// token is renewable.
 	//
 	// OCSF: is_renewable (type boolean_t, requirement optional)
-	IsRenewable bool `json:"is_renewable,omitempty"`
+	IsRenewable *bool `json:"is_renewable,omitempty"`
 
 	// KerberosFlags is the Kerberos Flags. A bitmask, either in hexadecimal
 	// or decimal form, which encodes various attributes or permissions
@@ -69,7 +69,7 @@ type AuthenticationToken struct {
 	// updated.
 	//
 	// OCSF: modified_time (type timestamp_t, requirement optional)
-	ModifiedTime int64 `json:"modified_time,omitempty"`
+	ModifiedTime *int64 `json:"modified_time,omitempty"`
 
 	// Name is the Name. The human-friendly name of a token or key, if
 	// available, such as the name from the Okta API Token API.
@@ -98,7 +98,7 @@ type AuthenticationToken struct {
 	// authentication_token - use the base token object for those types.
 	//
 	// OCSF: type_id (type integer_t, requirement recommended)
-	TypeID int `json:"type_id,omitempty"`
+	TypeID *int `json:"type_id,omitempty"`
 
 	// UID is the Unique ID. The unique ID of a token or key, if available,
 	// such as the Secret ID of Entra ID Application Registration Client

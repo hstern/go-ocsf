@@ -116,7 +116,7 @@ type QueryEvidence struct {
 	// network connection.
 	//
 	// OCSF: tcp_state_id (type integer_t, requirement optional)
-	TCPStateID int `json:"tcp_state_id,omitempty"`
+	TCPStateID *int `json:"tcp_state_id,omitempty"`
 
 	// User is the User. The user that pertains to the event when
 	// query_type_id indicates a User query.

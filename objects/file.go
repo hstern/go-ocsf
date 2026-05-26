@@ -20,7 +20,7 @@ type File struct {
 	// accessed.
 	//
 	// OCSF: accessed_time (type timestamp_t, requirement optional)
-	AccessedTime int64 `json:"accessed_time,omitempty"`
+	AccessedTime *int64 `json:"accessed_time,omitempty"`
 
 	// Accessor is the Accessor. The name of the user who last accessed the
 	// object.
@@ -32,7 +32,7 @@ type File struct {
 	// file attributes.
 	//
 	// OCSF: attributes (type integer_t, requirement optional)
-	Attributes int `json:"attributes,omitempty"`
+	Attributes *int `json:"attributes,omitempty"`
 
 	// CompanyName is the Company Name. The name of the company that
 	// published the file. For example: Microsoft Corporation.
@@ -51,12 +51,12 @@ type File struct {
 	// of the file content confidentiality indicator.
 	//
 	// OCSF: confidentiality_id (type integer_t, requirement optional)
-	ConfidentialityID int `json:"confidentiality_id,omitempty"`
+	ConfidentialityID *int `json:"confidentiality_id,omitempty"`
 
 	// CreatedTime is the Created Time. The time when the file was created.
 	//
 	// OCSF: created_time (type timestamp_t, requirement optional)
-	CreatedTime int64 `json:"created_time,omitempty"`
+	CreatedTime *int64 `json:"created_time,omitempty"`
 
 	// Creator is the Creator. The user that created the file.
 	//
@@ -98,7 +98,7 @@ type File struct {
 	// i.e. fixed, removable, etc.
 	//
 	// OCSF: drive_type_id (type integer_t, requirement optional)
-	DriveTypeID int `json:"drive_type_id,omitempty"`
+	DriveTypeID *int `json:"drive_type_id,omitempty"`
 
 	// EncryptionDetails is the Encryption Details. The encryption details of
 	// the file. Should be populated if the file is encrypted.
@@ -140,30 +140,30 @@ type File struct {
 	// filesystem.
 	//
 	// OCSF: is_deleted (type boolean_t, requirement optional)
-	IsDeleted bool `json:"is_deleted,omitempty"`
+	IsDeleted *bool `json:"is_deleted,omitempty"`
 
 	// IsEncrypted is the Encrypted. Indicates if the file is encrypted.
 	//
 	// OCSF: is_encrypted (type boolean_t, requirement optional)
-	IsEncrypted bool `json:"is_encrypted,omitempty"`
+	IsEncrypted *bool `json:"is_encrypted,omitempty"`
 
 	// IsPublic is the Public. Indicates if the file is publicly accessible.
 	// For example in an object's public access in AWS S3
 	//
 	// OCSF: is_public (type boolean_t, requirement optional)
-	IsPublic bool `json:"is_public,omitempty"`
+	IsPublic *bool `json:"is_public,omitempty"`
 
 	// IsReadonly is the Read-Only. Indicates that the file cannot be
 	// modified.
 	//
 	// OCSF: is_readonly (type boolean_t, requirement optional)
-	IsReadonly bool `json:"is_readonly,omitempty"`
+	IsReadonly *bool `json:"is_readonly,omitempty"`
 
 	// IsSystem is the System. The indication of whether the object is part
 	// of the operating system.
 	//
 	// OCSF: is_system (type boolean_t, requirement optional)
-	IsSystem bool `json:"is_system,omitempty"`
+	IsSystem *bool `json:"is_system,omitempty"`
 
 	// MIMEType is the MIME type. The Multipurpose Internet Mail Extensions
 	// (MIME) type of the file, if applicable.
@@ -175,7 +175,7 @@ type File struct {
 	// modified.
 	//
 	// OCSF: modified_time (type timestamp_t, requirement optional)
-	ModifiedTime int64 `json:"modified_time,omitempty"`
+	ModifiedTime *int64 `json:"modified_time,omitempty"`
 
 	// Modifier is the Modifier. The user that last modified the file.
 	//
@@ -232,7 +232,7 @@ type File struct {
 	// Size is the Size. The size of data, in bytes.
 	//
 	// OCSF: size (type long_t, requirement optional)
-	Size int64 `json:"size,omitempty"`
+	Size *int64 `json:"size,omitempty"`
 
 	// StorageClass is the Storage Class. The storage class of the file. For
 	// example in AWS S3: STANDARD, STANDARD_IA, GLACIER.

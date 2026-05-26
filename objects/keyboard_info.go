@@ -17,7 +17,7 @@ type KeyboardInfo struct {
 	// client keyboard.
 	//
 	// OCSF: function_keys (type integer_t, requirement optional)
-	FunctionKeys int `json:"function_keys,omitempty"`
+	FunctionKeys *int `json:"function_keys,omitempty"`
 
 	// Ime is the IME. The Input Method Editor (IME) file name.
 	//
@@ -33,7 +33,7 @@ type KeyboardInfo struct {
 	// KeyboardSubtype is the Keyboard Subtype. The keyboard numeric code.
 	//
 	// OCSF: keyboard_subtype (type integer_t, requirement optional)
-	KeyboardSubtype int `json:"keyboard_subtype,omitempty"`
+	KeyboardSubtype *int `json:"keyboard_subtype,omitempty"`
 
 	// KeyboardType is the Keyboard Type. The keyboard type (e.g., xt, ico).
 	//

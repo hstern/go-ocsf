@@ -21,7 +21,7 @@ type PermissionAnalysisResult struct {
 	// count of privileges that were analyzed across all services.
 	//
 	// OCSF: analyzed_privileges_count (type integer_t, requirement optional)
-	AnalyzedPrivilegesCount int `json:"analyzed_privileges_count,omitempty"`
+	AnalyzedPrivilegesCount *int `json:"analyzed_privileges_count,omitempty"`
 
 	// ConditionKeys is the Condition Keys. The condition keys and their
 	// values that were evaluated during policy analysis, including
@@ -63,7 +63,7 @@ type PermissionAnalysisResult struct {
 	// across all analyzed privileges.
 	//
 	// OCSF: total_potential_attacks_count (type integer_t, requirement optional)
-	TotalPotentialAttacksCount int `json:"total_potential_attacks_count,omitempty"`
+	TotalPotentialAttacksCount *int `json:"total_potential_attacks_count,omitempty"`
 
 	// UnusedPrivilegesCount is the Unused Privileges Count. The total count
 	// of privileges or actions defined in the policy that have not been
@@ -73,7 +73,7 @@ type PermissionAnalysisResult struct {
 	// policy bloat or excessive permissions.
 	//
 	// OCSF: unused_privileges_count (type integer_t, requirement optional)
-	UnusedPrivilegesCount int `json:"unused_privileges_count,omitempty"`
+	UnusedPrivilegesCount *int `json:"unused_privileges_count,omitempty"`
 
 	// UnusedServicesCount is the Unused Services Count. The total count of
 	// cloud services or resource types referenced in the policy that have
@@ -84,5 +84,5 @@ type PermissionAnalysisResult struct {
 	// services like Cloud Storage, Compute Engine, BigQuery.
 	//
 	// OCSF: unused_services_count (type integer_t, requirement optional)
-	UnusedServicesCount int `json:"unused_services_count,omitempty"`
+	UnusedServicesCount *int `json:"unused_services_count,omitempty"`
 }

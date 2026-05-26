@@ -43,7 +43,7 @@ type PeripheralDevice struct {
 	// device type ID.
 	//
 	// OCSF: type_id (type integer_t, requirement recommended)
-	TypeID int `json:"type_id,omitempty"`
+	TypeID *int `json:"type_id,omitempty"`
 
 	// UID is the Unique ID. The unique identifier of the peripheral device.
 	//

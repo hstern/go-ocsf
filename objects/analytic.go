@@ -50,7 +50,7 @@ type Analytic struct {
 	// StateID is the State ID. The Analytic state identifier.
 	//
 	// OCSF: state_id (type integer_t, requirement optional)
-	StateID int `json:"state_id,omitempty"`
+	StateID *int `json:"state_id,omitempty"`
 
 	// Type is the Type. The analytic type.
 	//

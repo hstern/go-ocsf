@@ -30,13 +30,13 @@ type Scim struct {
 	// the authorization protocol used by the SCIM resource.
 	//
 	// OCSF: auth_protocol_id (type integer_t, requirement optional)
-	AuthProtocolID int `json:"auth_protocol_id,omitempty"`
+	AuthProtocolID *int `json:"auth_protocol_id,omitempty"`
 
 	// CreatedTime is the Created Time. When the SCIM resource was added to
 	// the service provider.
 	//
 	// OCSF: created_time (type timestamp_t, requirement optional)
-	CreatedTime int64 `json:"created_time,omitempty"`
+	CreatedTime *int64 `json:"created_time,omitempty"`
 
 	// ErrorMessage is the Last Error Message. Message or code associated
 	// with the last encountered error.
@@ -49,26 +49,26 @@ type Scim struct {
 	// automatically or otherwise.
 	//
 	// OCSF: is_group_provisioning_enabled (type boolean_t, requirement optional)
-	IsGroupProvisioningEnabled bool `json:"is_group_provisioning_enabled,omitempty"`
+	IsGroupProvisioningEnabled *bool `json:"is_group_provisioning_enabled,omitempty"`
 
 	// IsUserProvisioningEnabled is the SCIM User Provisioning Enabled.
 	// Indicates whether the SCIM resource is configured to provision users,
 	// automatically or otherwise.
 	//
 	// OCSF: is_user_provisioning_enabled (type boolean_t, requirement optional)
-	IsUserProvisioningEnabled bool `json:"is_user_provisioning_enabled,omitempty"`
+	IsUserProvisioningEnabled *bool `json:"is_user_provisioning_enabled,omitempty"`
 
 	// LastRunTime is the Last Sync Time. Timestamp of the most recent
 	// successful synchronization.
 	//
 	// OCSF: last_run_time (type timestamp_t, requirement optional)
-	LastRunTime int64 `json:"last_run_time,omitempty"`
+	LastRunTime *int64 `json:"last_run_time,omitempty"`
 
 	// ModifiedTime is the Modified Time. The most recent time when the SCIM
 	// resource was updated at the service provider.
 	//
 	// OCSF: modified_time (type timestamp_t, requirement optional)
-	ModifiedTime int64 `json:"modified_time,omitempty"`
+	ModifiedTime *int64 `json:"modified_time,omitempty"`
 
 	// Name is the Name. The name of the SCIM resource.
 	//
@@ -85,7 +85,7 @@ type Scim struct {
 	// SCIM resource within a specified time frame to avoid throttling.
 	//
 	// OCSF: rate_limit (type integer_t, requirement optional)
-	RateLimit int `json:"rate_limit,omitempty"`
+	RateLimit *int `json:"rate_limit,omitempty"`
 
 	// ScimGroupSchema is the SCIM Group Schema. SCIM provides a schema for
 	// representing groups, identified using the following schema URI:
@@ -117,7 +117,7 @@ type Scim struct {
 	// to reflect its activation status.
 	//
 	// OCSF: state_id (type integer_t, requirement optional)
-	StateID int `json:"state_id,omitempty"`
+	StateID *int `json:"state_id,omitempty"`
 
 	// UID is the Unique ID. A unique identifier for a SCIM resource as
 	// defined by the service provider.

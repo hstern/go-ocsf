@@ -63,7 +63,7 @@ type User struct {
 	// secondary-factor device assigned.
 	//
 	// OCSF: has_mfa (type boolean_t, requirement recommended)
-	HasMFA bool `json:"has_mfa,omitempty"`
+	HasMFA *bool `json:"has_mfa,omitempty"`
 
 	// LDAPPerson is the LDAP Person. The additional LDAP attributes that
 	// describe a person.
@@ -103,13 +103,13 @@ type User struct {
 	// RiskLevelID is the Risk Level ID. The normalized risk level id.
 	//
 	// OCSF: risk_level_id (type integer_t, requirement optional)
-	RiskLevelID int `json:"risk_level_id,omitempty"`
+	RiskLevelID *int `json:"risk_level_id,omitempty"`
 
 	// RiskScore is the Risk Score. The risk score as reported by the event
 	// source.
 	//
 	// OCSF: risk_score (type integer_t, requirement optional)
-	RiskScore int `json:"risk_score,omitempty"`
+	RiskScore *int `json:"risk_score,omitempty"`
 
 	// Type is the Type. The type of the user. For example, System, AWS IAM
 	// User, etc.
@@ -120,7 +120,7 @@ type User struct {
 	// TypeID is the Type ID. The account type identifier.
 	//
 	// OCSF: type_id (type integer_t, requirement recommended)
-	TypeID int `json:"type_id,omitempty"`
+	TypeID *int `json:"type_id,omitempty"`
 
 	// UID is the Unique ID. The unique user identifier. For example, the
 	// Windows user SID, ActiveDirectory DN or AWS user ARN.

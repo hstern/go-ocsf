@@ -17,7 +17,7 @@ type Response struct {
 	// Code is the Response Code. The numeric response sent to a request.
 	//
 	// OCSF: code (type integer_t, requirement recommended)
-	Code int `json:"code,omitempty"`
+	Code *int `json:"code,omitempty"`
 
 	// Containers is the Containers. When working with containerized
 	// applications, the set of containers which write to the standard the

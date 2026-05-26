@@ -35,7 +35,7 @@ type ResourceDetails struct {
 	// created.
 	//
 	// OCSF: created_time (type timestamp_t, requirement optional)
-	CreatedTime int64 `json:"created_time,omitempty"`
+	CreatedTime *int64 `json:"created_time,omitempty"`
 
 	// Criticality is the Criticality. The criticality of the resource as
 	// defined by the event source.
@@ -88,7 +88,7 @@ type ResourceDetails struct {
 	// with the AWS Backup service.
 	//
 	// OCSF: is_backed_up (type boolean_t, requirement optional)
-	IsBackedUp bool `json:"is_backed_up,omitempty"`
+	IsBackedUp *bool `json:"is_backed_up,omitempty"`
 
 	// Labels is the Labels. The list of labels associated to the resource.
 	//
@@ -99,7 +99,7 @@ type ResourceDetails struct {
 	// modified.
 	//
 	// OCSF: modified_time (type timestamp_t, requirement optional)
-	ModifiedTime int64 `json:"modified_time,omitempty"`
+	ModifiedTime *int64 `json:"modified_time,omitempty"`
 
 	// Name is the Name. The name of the resource.
 	//
@@ -159,7 +159,7 @@ type ResourceDetails struct {
 	// role in the context of the event or finding.
 	//
 	// OCSF: role_id (type integer_t, requirement recommended)
-	RoleID int `json:"role_id,omitempty"`
+	RoleID *int `json:"role_id,omitempty"`
 
 	// Tags is the Tags. The list of tags; {key:value} pairs associated to
 	// the resource.

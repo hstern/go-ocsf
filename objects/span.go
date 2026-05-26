@@ -24,7 +24,7 @@ type Span struct {
 	// across distributed systems.
 	//
 	// OCSF: duration (type long_t, requirement optional)
-	Duration int64 `json:"duration,omitempty"`
+	Duration *int64 `json:"duration,omitempty"`
 
 	// EndTime is the End Time. The end timestamp of the span, essential for
 	// identifying latency and performance bottlenecks. Like the start time,

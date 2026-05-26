@@ -22,7 +22,7 @@ type MessageContext struct {
 	// assisting reasoning, executing a tool, or generating content.
 	//
 	// OCSF: ai_role_id (type integer_t, requirement recommended)
-	AiRoleID int `json:"ai_role_id,omitempty"`
+	AiRoleID *int `json:"ai_role_id,omitempty"`
 
 	// Application is the Application. The initiating client application. In
 	// AI systems, this represents the client-side application or framework
@@ -36,7 +36,7 @@ type MessageContext struct {
 	// model's response/completion for this message.
 	//
 	// OCSF: completion_tokens (type integer_t, requirement optional)
-	CompletionTokens int `json:"completion_tokens,omitempty"`
+	CompletionTokens *int `json:"completion_tokens,omitempty"`
 
 	// Name is the Name. The name or identifier of the message context. In AI
 	// systems, this could be the conversation ID, session name, thread
@@ -50,7 +50,7 @@ type MessageContext struct {
 	// prompt for this message.
 	//
 	// OCSF: prompt_tokens (type integer_t, requirement optional)
-	PromptTokens int `json:"prompt_tokens,omitempty"`
+	PromptTokens *int `json:"prompt_tokens,omitempty"`
 
 	// Service is the Service. The server or service handling the request. In
 	// AI systems, this represents the AI service, API endpoint, or agent
@@ -64,7 +64,7 @@ type MessageContext struct {
 	// message (prompt + completion).
 	//
 	// OCSF: total_tokens (type integer_t, requirement optional)
-	TotalTokens int `json:"total_tokens,omitempty"`
+	TotalTokens *int `json:"total_tokens,omitempty"`
 
 	// UID is the Unique ID. The unique identifier of the message context.
 	// This could be a session ID, conversation ID, or other unique

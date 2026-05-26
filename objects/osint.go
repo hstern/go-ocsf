@@ -68,13 +68,13 @@ type Osint struct {
 	// indicator as fully malicious.
 	//
 	// OCSF: confidence_id (type integer_t, requirement recommended)
-	ConfidenceID int `json:"confidence_id,omitempty"`
+	ConfidenceID *int `json:"confidence_id,omitempty"`
 
 	// CreatedTime is the Created Time. The timestamp when the indicator was
 	// initially created or identified.
 	//
 	// OCSF: created_time (type timestamp_t, requirement optional)
-	CreatedTime int64 `json:"created_time,omitempty"`
+	CreatedTime *int64 `json:"created_time,omitempty"`
 
 	// Creator is the Creator. The identifier of the user, system, or
 	// organization that contributed the indicator.
@@ -106,7 +106,7 @@ type Osint struct {
 	// indicator.
 	//
 	// OCSF: detection_pattern_type_id (type integer_t, requirement optional)
-	DetectionPatternTypeID int `json:"detection_pattern_type_id,omitempty"`
+	DetectionPatternTypeID *int `json:"detection_pattern_type_id,omitempty"`
 
 	// Email is the Related Email. Any email information pertinent to an
 	// indicator or OSINT analysis.
@@ -125,7 +125,7 @@ type Osint struct {
 	// indicator, after which it is no longer considered reliable.
 	//
 	// OCSF: expiration_time (type timestamp_t, requirement optional)
-	ExpirationTime int64 `json:"expiration_time,omitempty"`
+	ExpirationTime *int64 `json:"expiration_time,omitempty"`
 
 	// ExternalUID is the External ID. A unique identifier assigned by an
 	// external system for cross-referencing.
@@ -175,7 +175,7 @@ type Osint struct {
 	// modification or update to the indicator.
 	//
 	// OCSF: modified_time (type timestamp_t, requirement optional)
-	ModifiedTime int64 `json:"modified_time,omitempty"`
+	ModifiedTime *int64 `json:"modified_time,omitempty"`
 
 	// Name is the Name. The name is a pointer/reference to an attribute
 	// within the OCSF event data. For example: file.name.
@@ -208,7 +208,7 @@ type Osint struct {
 	// indicator’s risk level.
 	//
 	// OCSF: risk_score (type integer_t, requirement optional)
-	RiskScore int `json:"risk_score,omitempty"`
+	RiskScore *int `json:"risk_score,omitempty"`
 
 	// Script is the Related Script Data. Any pertinent script information
 	// related to an indicator or OSINT analysis.
@@ -226,7 +226,7 @@ type Osint struct {
 	// threat indicator, typically reflecting its potential impact or damage.
 	//
 	// OCSF: severity_id (type integer_t, requirement optional)
-	SeverityID int `json:"severity_id,omitempty"`
+	SeverityID *int `json:"severity_id,omitempty"`
 
 	// Signatures is the Related Digital Signatures. Any digital signatures
 	// or hashes related to an indicator or OSINT analysis.
@@ -289,7 +289,7 @@ type Osint struct {
 	// repository.
 	//
 	// OCSF: uploaded_time (type timestamp_t, requirement optional)
-	UploadedTime int64 `json:"uploaded_time,omitempty"`
+	UploadedTime *int64 `json:"uploaded_time,omitempty"`
 
 	// Value is the Indicator. The actual indicator value in scope, e.g., a
 	// SHA-256 hash hexdigest or a domain name.

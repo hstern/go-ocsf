@@ -20,13 +20,13 @@ type EncryptionDetails struct {
 	// used.
 	//
 	// OCSF: algorithm_id (type integer_t, requirement recommended)
-	AlgorithmID int `json:"algorithm_id,omitempty"`
+	AlgorithmID *int `json:"algorithm_id,omitempty"`
 
 	// KeyLength is the Encryption Key Length. The length of the encryption
 	// key used.
 	//
 	// OCSF: key_length (type integer_t, requirement optional)
-	KeyLength int `json:"key_length,omitempty"`
+	KeyLength *int `json:"key_length,omitempty"`
 
 	// KeyUID is the Key UID. The unique identifier of the key used for
 	// encryption. For example, AWS KMS Key ARN.

@@ -17,7 +17,7 @@ type Kernel struct {
 	// of the operating system.
 	//
 	// OCSF: is_system (type boolean_t, requirement optional)
-	IsSystem bool `json:"is_system,omitempty"`
+	IsSystem *bool `json:"is_system,omitempty"`
 
 	// Name is the Name. The name of the kernel resource.
 	//

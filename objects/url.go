@@ -43,7 +43,7 @@ type URL struct {
 	// Port is the Port. The URL port. For example: 80.
 	//
 	// OCSF: port (type port_t, requirement recommended)
-	Port int `json:"port,omitempty"`
+	Port *int `json:"port,omitempty"`
 
 	// QueryString is the HTTP Query String. The query portion of the URL.
 	// For example: the query portion of the URL

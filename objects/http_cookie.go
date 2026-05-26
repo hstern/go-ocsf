@@ -25,26 +25,26 @@ type HTTPCookie struct {
 	// cookie.
 	//
 	// OCSF: expiration_time (type timestamp_t, requirement optional)
-	ExpirationTime int64 `json:"expiration_time,omitempty"`
+	ExpirationTime *int64 `json:"expiration_time,omitempty"`
 
 	// HTTPOnly is the HTTP Only. A cookie attribute to make it inaccessible
 	// via JavaScript
 	//
 	// OCSF: http_only (type boolean_t, requirement optional)
-	HTTPOnly bool `json:"http_only,omitempty"`
+	HTTPOnly *bool `json:"http_only,omitempty"`
 
 	// IsHTTPOnly is the HTTP Only. This attribute prevents the cookie from
 	// being accessed via JavaScript.
 	//
 	// OCSF: is_http_only (type boolean_t, requirement optional)
-	IsHTTPOnly bool `json:"is_http_only,omitempty"`
+	IsHTTPOnly *bool `json:"is_http_only,omitempty"`
 
 	// IsSecure is the Secure. The cookie attribute indicates that cookies
 	// are sent to the server only when the request is encrypted using the
 	// HTTPS protocol.
 	//
 	// OCSF: is_secure (type boolean_t, requirement optional)
-	IsSecure bool `json:"is_secure,omitempty"`
+	IsSecure *bool `json:"is_secure,omitempty"`
 
 	// Name is the Name. The HTTP cookie name.
 	//
@@ -67,7 +67,7 @@ type HTTPCookie struct {
 	// server with an encrypted request over the HTTPS protocol.
 	//
 	// OCSF: secure (type boolean_t, requirement optional)
-	Secure bool `json:"secure,omitempty"`
+	Secure *bool `json:"secure,omitempty"`
 
 	// Value is the Value. The HTTP cookie value.
 	//

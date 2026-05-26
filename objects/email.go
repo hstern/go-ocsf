@@ -98,7 +98,7 @@ type Email struct {
 	// IsRead is the Read. The indication of whether the email has been read.
 	//
 	// OCSF: is_read (type boolean_t, requirement optional)
-	IsRead bool `json:"is_read,omitempty"`
+	IsRead *bool `json:"is_read,omitempty"`
 
 	// MessageUID is the Message UID. The email header Message-ID value, as
 	// defined by RFC 5322.
@@ -170,7 +170,7 @@ type Email struct {
 	// attachments.
 	//
 	// OCSF: size (type long_t, requirement recommended)
-	Size int64 `json:"size,omitempty"`
+	Size *int64 `json:"size,omitempty"`
 
 	// SMTPFrom is the SMTP From. The value of the SMTP MAIL FROM command.
 	//

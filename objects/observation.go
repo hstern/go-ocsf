@@ -17,7 +17,7 @@ type Observation struct {
 	// establish prevalence and patterns.
 	//
 	// OCSF: count (type integer_t, requirement recommended)
-	Count int `json:"count,omitempty"`
+	Count *int `json:"count,omitempty"`
 
 	// Timespan is the Time Span. The time window when the value or event was
 	// first observed. It is used to analyze activity patterns, detect

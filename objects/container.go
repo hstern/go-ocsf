@@ -62,7 +62,7 @@ type Container struct {
 	// Size is the Size. The size of the container image.
 	//
 	// OCSF: size (type long_t, requirement recommended)
-	Size int64 `json:"size,omitempty"`
+	Size *int64 `json:"size,omitempty"`
 
 	// Tag is the Image Tag. The tag used by the container. It can indicate
 	// version, format, OS.

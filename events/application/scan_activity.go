@@ -29,7 +29,7 @@ type ScanActivity struct {
 	// disposition_id for the outcome of the action.
 	//
 	// OCSF: action_id (type integer_t, requirement recommended)
-	ActionID int `json:"action_id,omitempty"`
+	ActionID *int `json:"action_id,omitempty"`
 
 	// ActivityID is the Activity ID. The normalized identifier of the
 	// activity that triggered the event.
@@ -121,19 +121,19 @@ type ScanActivity struct {
 	// reports that may not be malicious in nature.
 	//
 	// OCSF: confidence_id (type integer_t, requirement recommended)
-	ConfidenceID int `json:"confidence_id,omitempty"`
+	ConfidenceID *int `json:"confidence_id,omitempty"`
 
 	// ConfidenceScore is the Confidence Score. The confidence score as
 	// reported by the event source.
 	//
 	// OCSF: confidence_score (type integer_t, requirement optional)
-	ConfidenceScore int `json:"confidence_score,omitempty"`
+	ConfidenceScore *int `json:"confidence_score,omitempty"`
 
 	// Count is the Count. The number of times that events in the same
 	// logical group occurred during the event Start Time to End Time period.
 	//
 	// OCSF: count (type integer_t, requirement optional)
-	Count int `json:"count,omitempty"`
+	Count *int `json:"count,omitempty"`
 
 	// Device is the Device. An addressable device, computer system or host.
 	//
@@ -152,17 +152,17 @@ type ScanActivity struct {
 	// detections or various types of policy violations.
 	//
 	// OCSF: disposition_id (type integer_t, requirement recommended)
-	DispositionID int `json:"disposition_id,omitempty"`
+	DispositionID *int `json:"disposition_id,omitempty"`
 
 	// Duration is the Duration Milliseconds. The duration of the scan
 	//
 	// OCSF: duration (type long_t, requirement recommended)
-	Duration int64 `json:"duration,omitempty"`
+	Duration *int64 `json:"duration,omitempty"`
 
 	// EndTime is the End Time. The end time of the scan job.
 	//
 	// OCSF: end_time (type timestamp_t, requirement recommended)
-	EndTime int64 `json:"end_time,omitempty"`
+	EndTime *int64 `json:"end_time,omitempty"`
 
 	// Enrichments is the Enrichments. The additional information from an
 	// external data source, which is associated with the event or a finding.
@@ -188,7 +188,7 @@ type ScanActivity struct {
 	// example if disposition_id = Exonerated or disposition_id = Allowed.
 	//
 	// OCSF: is_alert (type boolean_t, requirement recommended)
-	IsAlert bool `json:"is_alert,omitempty"`
+	IsAlert *bool `json:"is_alert,omitempty"`
 
 	// Malware is the Malware. A list of Malware objects, describing details
 	// about the identified malware.
@@ -217,51 +217,51 @@ type ScanActivity struct {
 	// NumDetections is the Detections. The number of detections.
 	//
 	// OCSF: num_detections (type integer_t, requirement recommended)
-	NumDetections int `json:"num_detections,omitempty"`
+	NumDetections *int `json:"num_detections,omitempty"`
 
 	// NumFiles is the Scanned Files. The number of files scanned.
 	//
 	// OCSF: num_files (type integer_t, requirement recommended)
-	NumFiles int `json:"num_files,omitempty"`
+	NumFiles *int `json:"num_files,omitempty"`
 
 	// NumFolders is the Scanned Folders. The number of folders scanned.
 	//
 	// OCSF: num_folders (type integer_t, requirement recommended)
-	NumFolders int `json:"num_folders,omitempty"`
+	NumFolders *int `json:"num_folders,omitempty"`
 
 	// NumNetworkItems is the Scanned Network Items. The number of network
 	// items scanned.
 	//
 	// OCSF: num_network_items (type integer_t, requirement recommended)
-	NumNetworkItems int `json:"num_network_items,omitempty"`
+	NumNetworkItems *int `json:"num_network_items,omitempty"`
 
 	// NumProcesses is the Scanned Processes. The number of processes
 	// scanned.
 	//
 	// OCSF: num_processes (type integer_t, requirement recommended)
-	NumProcesses int `json:"num_processes,omitempty"`
+	NumProcesses *int `json:"num_processes,omitempty"`
 
 	// NumRegistryItems is the Scanned Registry Items. The number of registry
 	// items scanned.
 	//
 	// OCSF: num_registry_items (type integer_t, requirement recommended)
-	NumRegistryItems int `json:"num_registry_items,omitempty"`
+	NumRegistryItems *int `json:"num_registry_items,omitempty"`
 
 	// NumResolutions is the Resolutions. The number of items that were
 	// resolved.
 	//
 	// OCSF: num_resolutions (type integer_t, requirement recommended)
-	NumResolutions int `json:"num_resolutions,omitempty"`
+	NumResolutions *int `json:"num_resolutions,omitempty"`
 
 	// NumSkippedItems is the Skipped. The number of skipped items.
 	//
 	// OCSF: num_skipped_items (type integer_t, requirement recommended)
-	NumSkippedItems int `json:"num_skipped_items,omitempty"`
+	NumSkippedItems *int `json:"num_skipped_items,omitempty"`
 
 	// NumTrustedItems is the Trusted. The number of trusted items.
 	//
 	// OCSF: num_trusted_items (type integer_t, requirement recommended)
-	NumTrustedItems int `json:"num_trusted_items,omitempty"`
+	NumTrustedItems *int `json:"num_trusted_items,omitempty"`
 
 	// Observables is the Observables. The observables associated with the
 	// event or a finding.
@@ -301,7 +301,7 @@ type ScanActivity struct {
 	// transformed into an OCSF event, in bytes.
 	//
 	// OCSF: raw_data_size (type long_t, requirement optional)
-	RawDataSize int64 `json:"raw_data_size,omitempty"`
+	RawDataSize *int64 `json:"raw_data_size,omitempty"`
 
 	// RiskDetails is the Risk Details. Describes the risk associated with
 	// the finding.
@@ -318,13 +318,13 @@ type ScanActivity struct {
 	// RiskLevelID is the Risk Level ID. The normalized risk level id.
 	//
 	// OCSF: risk_level_id (type integer_t, requirement optional)
-	RiskLevelID int `json:"risk_level_id,omitempty"`
+	RiskLevelID *int `json:"risk_level_id,omitempty"`
 
 	// RiskScore is the Risk Score. The risk score as reported by the event
 	// source.
 	//
 	// OCSF: risk_score (type integer_t, requirement optional)
-	RiskScore int `json:"risk_score,omitempty"`
+	RiskScore *int `json:"risk_score,omitempty"`
 
 	// Scan is the Scan. The Scan object describes characteristics of the
 	// scan job.
@@ -357,7 +357,7 @@ type ScanActivity struct {
 	// StartTime is the Start Time. The start time of the scan job.
 	//
 	// OCSF: start_time (type timestamp_t, requirement recommended)
-	StartTime int64 `json:"start_time,omitempty"`
+	StartTime *int64 `json:"start_time,omitempty"`
 
 	// Status is the Status. The event status, normalized to the caption of
 	// the status_id value. In the case of 'Other', it is defined by the
@@ -383,7 +383,7 @@ type ScanActivity struct {
 	// status.
 	//
 	// OCSF: status_id (type integer_t, requirement recommended)
-	StatusID int `json:"status_id,omitempty"`
+	StatusID *int `json:"status_id,omitempty"`
 
 	// Time is the Event Time. The normalized event occurrence time or the
 	// finding creation time.
@@ -396,13 +396,13 @@ type ScanActivity struct {
 	// +1,080.
 	//
 	// OCSF: timezone_offset (type integer_t, requirement recommended)
-	TimezoneOffset int `json:"timezone_offset,omitempty"`
+	TimezoneOffset *int `json:"timezone_offset,omitempty"`
 
 	// Total is the Total. The total number of items that were scanned; zero
 	// if no items were scanned.
 	//
 	// OCSF: total (type integer_t, requirement recommended)
-	Total int `json:"total,omitempty"`
+	Total *int `json:"total,omitempty"`
 
 	// TypeName is the Type Name. The event/finding type name, as defined by
 	// the type_uid.
@@ -453,13 +453,15 @@ func (e ScanActivity) Validate() error {
 	if e.Scan == nil {
 		return &ocsf.ValidationError{ClassUID: 6007, Field: "scan", Rule: "required", Reason: "required field is missing"}
 	}
-	switch e.ActionID {
-	case 0, 1, 2, 3, 4, 99:
-	default:
-		return &ocsf.ValidationError{ClassUID: 6007, Field: "action_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	if e.ActionID != nil {
+		switch *e.ActionID {
+		case 0, 1, 2, 3, 4, 99:
+		default:
+			return &ocsf.ValidationError{ClassUID: 6007, Field: "action_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+		}
 	}
-	if e.Action != "" {
-		switch e.ActionID {
+	if e.Action != "" && e.ActionID != nil {
+		switch *e.ActionID {
 		case 0:
 			if e.Action != "Unknown" {
 				return &ocsf.ValidationError{ClassUID: 6007, Field: "action", Rule: "enum", Reason: "sibling does not match enum caption"}
@@ -563,13 +565,15 @@ func (e ScanActivity) Validate() error {
 			}
 		}
 	}
-	switch e.ConfidenceID {
-	case 0, 1, 2, 3, 99:
-	default:
-		return &ocsf.ValidationError{ClassUID: 6007, Field: "confidence_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	if e.ConfidenceID != nil {
+		switch *e.ConfidenceID {
+		case 0, 1, 2, 3, 99:
+		default:
+			return &ocsf.ValidationError{ClassUID: 6007, Field: "confidence_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+		}
 	}
-	if e.Confidence != "" {
-		switch e.ConfidenceID {
+	if e.Confidence != "" && e.ConfidenceID != nil {
+		switch *e.ConfidenceID {
 		case 0:
 			if e.Confidence != "Unknown" {
 				return &ocsf.ValidationError{ClassUID: 6007, Field: "confidence", Rule: "enum", Reason: "sibling does not match enum caption"}
@@ -588,13 +592,15 @@ func (e ScanActivity) Validate() error {
 			}
 		}
 	}
-	switch e.DispositionID {
-	case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 99:
-	default:
-		return &ocsf.ValidationError{ClassUID: 6007, Field: "disposition_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	if e.DispositionID != nil {
+		switch *e.DispositionID {
+		case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 99:
+		default:
+			return &ocsf.ValidationError{ClassUID: 6007, Field: "disposition_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+		}
 	}
-	if e.Disposition != "" {
-		switch e.DispositionID {
+	if e.Disposition != "" && e.DispositionID != nil {
+		switch *e.DispositionID {
 		case 0:
 			if e.Disposition != "Unknown" {
 				return &ocsf.ValidationError{ClassUID: 6007, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
@@ -709,13 +715,15 @@ func (e ScanActivity) Validate() error {
 			}
 		}
 	}
-	switch e.RiskLevelID {
-	case 0, 1, 2, 3, 4, 99:
-	default:
-		return &ocsf.ValidationError{ClassUID: 6007, Field: "risk_level_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	if e.RiskLevelID != nil {
+		switch *e.RiskLevelID {
+		case 0, 1, 2, 3, 4, 99:
+		default:
+			return &ocsf.ValidationError{ClassUID: 6007, Field: "risk_level_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+		}
 	}
-	if e.RiskLevel != "" {
-		switch e.RiskLevelID {
+	if e.RiskLevel != "" && e.RiskLevelID != nil {
+		switch *e.RiskLevelID {
 		case 0:
 			if e.RiskLevel != "Info" {
 				return &ocsf.ValidationError{ClassUID: 6007, Field: "risk_level", Rule: "enum", Reason: "sibling does not match enum caption"}
@@ -775,13 +783,15 @@ func (e ScanActivity) Validate() error {
 			}
 		}
 	}
-	switch e.StatusID {
-	case 0, 1, 2, 99:
-	default:
-		return &ocsf.ValidationError{ClassUID: 6007, Field: "status_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	if e.StatusID != nil {
+		switch *e.StatusID {
+		case 0, 1, 2, 99:
+		default:
+			return &ocsf.ValidationError{ClassUID: 6007, Field: "status_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+		}
 	}
-	if e.Status != "" {
-		switch e.StatusID {
+	if e.Status != "" && e.StatusID != nil {
+		switch *e.StatusID {
 		case 0:
 			if e.Status != "Unknown" {
 				return &ocsf.ValidationError{ClassUID: 6007, Field: "status", Rule: "enum", Reason: "sibling does not match enum caption"}

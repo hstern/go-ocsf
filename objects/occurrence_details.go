@@ -28,13 +28,13 @@ type OccurrenceDetails struct {
 	// or a plain text document, where the information was discovered.
 	//
 	// OCSF: column_number (type integer_t, requirement optional)
-	ColumnNumber int `json:"column_number,omitempty"`
+	ColumnNumber *int `json:"column_number,omitempty"`
 
 	// EndLine is the End Line. The line number of the last line of the file,
 	// where the information was discovered.
 	//
 	// OCSF: end_line (type integer_t, requirement optional)
-	EndLine int `json:"end_line,omitempty"`
+	EndLine *int `json:"end_line,omitempty"`
 
 	// JSONPath is the JSON Path. The JSON path of the attribute in a json
 	// record, where the information was discovered
@@ -46,24 +46,24 @@ type OccurrenceDetails struct {
 	// the information was discovered.
 	//
 	// OCSF: page_number (type integer_t, requirement optional)
-	PageNumber int `json:"page_number,omitempty"`
+	PageNumber *int `json:"page_number,omitempty"`
 
 	// RecordIndexInArray is the Record Index in Array. The index of the
 	// record in the array of records, where the information was discovered.
 	// e.g. the index of a record in an array of JSON records in a file.
 	//
 	// OCSF: record_index_in_array (type integer_t, requirement optional)
-	RecordIndexInArray int `json:"record_index_in_array,omitempty"`
+	RecordIndexInArray *int `json:"record_index_in_array,omitempty"`
 
 	// RowNumber is the Row Number. The row number in a spreadsheet, where
 	// the information was discovered.
 	//
 	// OCSF: row_number (type integer_t, requirement optional)
-	RowNumber int `json:"row_number,omitempty"`
+	RowNumber *int `json:"row_number,omitempty"`
 
 	// StartLine is the Start Line. The line number of the first line of the
 	// file, where the information was discovered.
 	//
 	// OCSF: start_line (type integer_t, requirement optional)
-	StartLine int `json:"start_line,omitempty"`
+	StartLine *int `json:"start_line,omitempty"`
 }

@@ -22,7 +22,7 @@ type LoadBalancer struct {
 	// the connection from the load balancer to the destination target.
 	//
 	// OCSF: code (type integer_t, requirement recommended)
-	Code int `json:"code,omitempty"`
+	Code *int `json:"code,omitempty"`
 
 	// DstEndpoint is the Destination Endpoint. The destination to which the
 	// load balancer is distributing traffic.
