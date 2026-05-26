@@ -7,11 +7,10 @@ package objects
 
 // Image describes the OCSF Image object: The Image object provides a
 // description of a specific Virtual Machine (VM) or Container image.
-// Defined by D3FEND d3f:ContainerImage.
 //
 // OCSF name: image.
 type Image struct {
-	// Labels is the Labels. The image labels.
+	// Labels is the Labels. The list of labels associated to the image.
 	//
 	// OCSF: labels (type []string_t, requirement optional)
 	Labels []string `json:"labels,omitempty"`
@@ -23,13 +22,19 @@ type Image struct {
 
 	// Path is the Path. The full path to the image file.
 	//
-	// OCSF: path (type string_t, requirement optional)
+	// OCSF: path (type file_path_t, requirement optional)
 	Path string `json:"path,omitempty"`
 
 	// Tag is the Image Tag. The image tag. For example: 1.11-alpine.
 	//
 	// OCSF: tag (type string_t, requirement optional)
 	Tag string `json:"tag,omitempty"`
+
+	// Tags is the Tags. The list of tags; {key:value} pairs associated to
+	// the image.
+	//
+	// OCSF: tags (type []key_value_object, requirement optional)
+	Tags []KeyValueObject `json:"tags,omitempty"`
 
 	// UID is the Unique ID. The unique image ID. For example: 77af4d6b9913.
 	//

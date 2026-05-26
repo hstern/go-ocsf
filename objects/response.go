@@ -44,9 +44,8 @@ type Response struct {
 	// OCSF: error_message (type string_t, requirement recommended)
 	ErrorMessage string `json:"error_message,omitempty"`
 
-	// Flags is the Flags. The list of communication flags, normalized to the
-	// captions of the flag_ids values. In the case of 'Other', they are
-	// defined by the event source.
+	// Flags is the Flags. The communication flags that are associated with
+	// the api response.
 	//
 	// OCSF: flags (type []string_t, requirement optional)
 	Flags []string `json:"flags,omitempty"`

@@ -6,15 +6,15 @@
 package objects
 
 // PeripheralDevice describes the OCSF Peripheral Device object: The
-// peripheral device object describes the identity, vendor and model of a
-// peripheral device.
+// peripheral device object describes the properties of external,
+// connectable, and detachable hardware.
 //
 // OCSF name: peripheral_device.
 type PeripheralDevice struct {
 	// Class is the Class. The class of the peripheral device.
 	//
-	// OCSF: class (type string_t, requirement required)
-	Class string `json:"class"`
+	// OCSF: class (type string_t, requirement optional)
+	Class string `json:"class,omitempty"`
 
 	// Model is the Model. The peripheral device model.
 	//
@@ -32,12 +32,32 @@ type PeripheralDevice struct {
 	// OCSF: serial_number (type string_t, requirement recommended)
 	SerialNumber string `json:"serial_number,omitempty"`
 
+	// Type is the Peripheral Device Type. The Peripheral Device type,
+	// normalized to the caption of the type_id value. In the case of
+	// 'Other', it is defined by the source.
+	//
+	// OCSF: type (type string_t, requirement optional)
+	Type string `json:"type,omitempty"`
+
+	// TypeID is the Peripheral Device Type ID. The normalized peripheral
+	// device type ID.
+	//
+	// OCSF: type_id (type integer_t, requirement recommended)
+	TypeID int `json:"type_id,omitempty"`
+
 	// UID is the Unique ID. The unique identifier of the peripheral device.
 	//
 	// OCSF: uid (type string_t, requirement recommended)
 	UID string `json:"uid,omitempty"`
 
-	// VendorName is the Vendor Name. The peripheral device vendor.
+	// VendorIDList is the Vendor ID List. The list of vendor IDs for the
+	// peripheral device.
+	//
+	// OCSF: vendor_id_list (type []string_t, requirement recommended)
+	VendorIDList []string `json:"vendor_id_list,omitempty"`
+
+	// VendorName is the Vendor Name. The primary vendor name for the
+	// peripheral device.
 	//
 	// OCSF: vendor_name (type string_t, requirement recommended)
 	VendorName string `json:"vendor_name,omitempty"`

@@ -5,23 +5,31 @@
 
 package objects
 
-// Attack describes the OCSF MITRE ATT&CK® object: The MITRE ATT&CK®
-// object describes the tactic, technique & sub-technique associated to
-// an attack as defined in ATT&CK® Matrix.
+// Attack describes the OCSF MITRE ATT&CK® & ATLAS™ object: The MITRE
+// ATT&CK® & ATLAS™ object describes the tactic, technique,
+// sub-technique & mitigation associated to an attack.
 //
 // OCSF name: attack.
 type Attack struct {
-	// SubTechnique is the Sub Technique. The Sub Technique object describes
-	// the sub technique ID and/or name associated to an attack, as defined
-	// by ATT&CK® Matrix.
+	// Mitigation is the MITRE Mitigation. The Mitigation object describes
+	// the MITRE ATT&CK® or ATLAS™ Mitigation ID and/or name that is
+	// associated to an attack.
 	//
-	// OCSF: sub_technique (type sub_technique, requirement optional)
+	// OCSF: mitigation (type mitigation, requirement optional)
+	Mitigation *Mitigation `json:"mitigation,omitempty"`
+
+	// SubTechnique is the MITRE Sub-technique. The Sub-technique object
+	// describes the MITRE ATT&CK® or ATLAS™ Sub-technique ID and/or name
+	// associated to an attack.
+	//
+	// OCSF: sub_technique (type sub_technique, requirement recommended)
 	SubTechnique *SubTechnique `json:"sub_technique,omitempty"`
 
-	// Tactic is the Tactic. The Tactic object describes the tactic ID and/or
-	// name that is associated to an attack, as defined by ATT&CK® Matrix.
+	// Tactic is the MITRE Tactic. The Tactic object describes the MITRE
+	// ATT&CK® or ATLAS™ Tactic ID and/or name that is associated to an
+	// attack.
 	//
-	// OCSF: tactic (type tactic, requirement optional)
+	// OCSF: tactic (type tactic, requirement recommended)
 	Tactic *Tactic `json:"tactic,omitempty"`
 
 	// Tactics is the Tactics. The Tactic object describes the tactic ID
@@ -31,14 +39,14 @@ type Attack struct {
 	// OCSF: tactics (type []tactic, requirement optional)
 	Tactics []Tactic `json:"tactics,omitempty"`
 
-	// Technique is the Technique. The Technique object describes the
-	// technique ID and/or name associated to an attack, as defined by
-	// ATT&CK® Matrix.
+	// Technique is the MITRE Technique. The Technique object describes the
+	// MITRE ATT&CK® or ATLAS™ Technique ID and/or name associated to an
+	// attack.
 	//
-	// OCSF: technique (type technique, requirement optional)
+	// OCSF: technique (type technique, requirement recommended)
 	Technique *Technique `json:"technique,omitempty"`
 
-	// Version is the Version. The ATT&CK® Matrix version.
+	// Version is the Version. The ATT&CK® or ATLAS™ Matrix version.
 	//
 	// OCSF: version (type string_t, requirement recommended)
 	Version string `json:"version,omitempty"`

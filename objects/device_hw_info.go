@@ -37,6 +37,19 @@ type DeviceHwInfo struct {
 	// OCSF: chassis (type string_t, requirement optional)
 	Chassis string `json:"chassis,omitempty"`
 
+	// CPUArchitecture is the CPU Architecture. The CPU architecture,
+	// normalized to the caption of the cpu_architecture_id value. In the
+	// case of Other, it is defined by the source.
+	//
+	// OCSF: cpu_architecture (type string_t, requirement optional)
+	CPUArchitecture string `json:"cpu_architecture,omitempty"`
+
+	// CPUArchitectureID is the CPU Architecture ID. The normalized
+	// identifier of the CPU architecture.
+	//
+	// OCSF: cpu_architecture_id (type integer_t, requirement optional)
+	CPUArchitectureID int `json:"cpu_architecture_id,omitempty"`
+
 	// CPUBits is the CPU Bits. The cpu architecture, the number of bits used
 	// for addressing in memory. For example: 32 or 64.
 	//
@@ -73,6 +86,19 @@ type DeviceHwInfo struct {
 	// OCSF: desktop_display (type display, requirement optional)
 	DesktopDisplay *Display `json:"desktop_display,omitempty"`
 
+	// GPUCount is the GPU Count. The number of GPU's on a system. For
+	// example: 1.
+	//
+	// OCSF: gpu_count (type integer_t, requirement optional)
+	GPUCount int `json:"gpu_count,omitempty"`
+
+	// GPUInfoList is the GPU information. A list of GPU objects describing
+	// the hardware properties of each graphics processor installed on the
+	// device.
+	//
+	// OCSF: gpu_info_list (type []gpu_info, requirement optional)
+	GPUInfoList []GPUInfo `json:"gpu_info_list,omitempty"`
+
 	// KeyboardInfo is the Keyboard Information. The keyboard detailed
 	// information.
 	//
@@ -90,4 +116,19 @@ type DeviceHwInfo struct {
 	//
 	// OCSF: serial_number (type string_t, requirement optional)
 	SerialNumber string `json:"serial_number,omitempty"`
+
+	// UUID is the UUID. The device manufacturer assigned universally unique
+	// hardware identifier. For SMBIOS compatible devices such as those
+	// running Linux and Windows, it is the UUID member of the System
+	// Information structure in the SMBIOS information. For macOS devices, it
+	// is the Hardware UUID (also known as IOPlatformUUID in the I/O
+	// Registry).
+	//
+	// OCSF: uuid (type uuid_t, requirement optional)
+	UUID string `json:"uuid,omitempty"`
+
+	// VendorName is the Vendor Name. The device manufacturer.
+	//
+	// OCSF: vendor_name (type string_t, requirement optional)
+	VendorName string `json:"vendor_name,omitempty"`
 }

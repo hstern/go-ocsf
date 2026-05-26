@@ -29,9 +29,8 @@ type Request struct {
 	// OCSF: data (type json_t, requirement optional)
 	Data json.RawMessage `json:"data,omitempty"`
 
-	// Flags is the Flags. The list of communication flags, normalized to the
-	// captions of the flag_ids values. In the case of 'Other', they are
-	// defined by the event source.
+	// Flags is the Flags. The communication flags that are associated with
+	// the api request.
 	//
 	// OCSF: flags (type []string_t, requirement optional)
 	Flags []string `json:"flags,omitempty"`

@@ -7,7 +7,7 @@ package enums
 
 import "strconv"
 
-// ShareType is the OCSF Share Type Id enum. The normalized identifier of
+// ShareType is the OCSF Share Type ID enum. The normalized identifier of
 // the share type.
 //
 // OCSF attribute: share_type_id.

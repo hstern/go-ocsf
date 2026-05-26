@@ -10,7 +10,6 @@ package objects
 // retrieve information about a domain or perform a DNS operation. This
 // object encapsulates the necessary attributes and methods to construct
 // and send DNS queries, specify the query type (e.g., A, AAAA, MX).
-// Defined by D3FEND d3f:DNSLookup.
 //
 // OCSF name: dns_query.
 type DNSQuery struct {

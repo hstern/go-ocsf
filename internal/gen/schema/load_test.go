@@ -11,7 +11,7 @@ import (
 // synthetic builds a minimal in-memory OCSF schema covering every
 // resolution rule the reader is responsible for: dictionary types,
 // dictionary attributes, includes, profiles, extends (single + chain),
-// $include, profile-null erasure, enum union, and category lookup.
+// $include, null-body erasure, enum union, and category lookup.
 // One fixture is reused by multiple tests so the shape stays in
 // one place; if a test wants to vary a single field it shadows the
 // relevant entry in the returned MapFS.
@@ -120,7 +120,7 @@ func synthetic() fstest.MapFS {
 		"events/sample/example_erased.json": &fstest.MapFile{
 			Data: []byte(`{
 				"caption": "Example Erased",
-				"description": "Erases an inherited attribute via profile:null",
+				"description": "Erases an inherited attribute via a literal-null attribute body",
 				"name": "example_erased",
 				"category": "sample",
 				"uid": 2,
@@ -277,7 +277,7 @@ func TestResolve_ProfileIncludeAndCategory(t *testing.T) {
 	}
 }
 
-func TestResolve_ProfileNullErasesAttribute(t *testing.T) {
+func TestResolve_NullBodyErasesAttribute(t *testing.T) {
 	s, err := LoadFS(synthetic())
 	if err != nil {
 		t.Fatalf("LoadFS: %v", err)
@@ -287,10 +287,18 @@ func TestResolve_ProfileNullErasesAttribute(t *testing.T) {
 		t.Fatalf("Events[example_erased] missing")
 	}
 	// example_erased extends example (which has emails after profile
-	// include) and erases emails via `null`. Expect emails absent.
+	// include) and erases emails via a literal-null attribute body
+	// (`"emails": null`). Expect emails absent.
+	//
+	// NOTE: this is distinct from `"emails": {"profile": null}`,
+	// which in OCSF means "this attribute is not gated by a
+	// profile" (unconditional) rather than "remove this
+	// attribute". Earlier versions of the resolver conflated the
+	// two and dropped fields like file_activity.actor that
+	// upstream declares with profile:null.
 	for _, a := range ex.Attributes {
 		if a.Name == "emails" {
-			t.Errorf("example_erased.Attributes still includes emails after null erasure: %+v", a)
+			t.Errorf("example_erased.Attributes still includes emails after null-body erasure: %+v", a)
 		}
 	}
 }

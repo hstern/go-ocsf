@@ -7,7 +7,7 @@ package objects
 
 // NetworkInterface describes the OCSF Network Interface object: The
 // Network Interface object describes the type and associated attributes
-// of a network interface.
+// of a physical or virtual network interface.
 //
 // OCSF name: network_interface.
 type NetworkInterface struct {
@@ -40,6 +40,12 @@ type NetworkInterface struct {
 	// OCSF: namespace (type string_t, requirement optional)
 	Namespace string `json:"namespace,omitempty"`
 
+	// OpenPorts is the Open Ports. The list of open ports on a network
+	// interface, including port numbers and associated protocol information.
+	//
+	// OCSF: open_ports (type []port_info, requirement optional)
+	OpenPorts []PortInfo `json:"open_ports,omitempty"`
+
 	// SubnetPrefix is the Subnet Prefix Length. The subnet prefix length
 	// determines the number of bits used to represent the network part of
 	// the IP address. The remaining bits are reserved for identifying
@@ -55,8 +61,8 @@ type NetworkInterface struct {
 
 	// TypeID is the Type ID. The network interface type identifier.
 	//
-	// OCSF: type_id (type integer_t, requirement required)
-	TypeID int `json:"type_id"`
+	// OCSF: type_id (type integer_t, requirement recommended)
+	TypeID int `json:"type_id,omitempty"`
 
 	// UID is the Unique ID. The unique identifier for the network interface.
 	//

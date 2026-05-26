@@ -5,27 +5,26 @@
 
 package objects
 
-// Tactic describes the OCSF MITRE ATT&CK® Tactic object: The MITRE
-// ATT&CK® Tactic object describes the tactic ID and/or name that is
-// associated to an attack, as defined by ATT&CK® Matrix.
+// Tactic describes the OCSF MITRE Tactic object: The MITRE Tactic object
+// describes the ATT&CK® or ATLAS™ Tactic ID and/or name that is
+// associated to an attack.
 //
 // OCSF name: tactic.
 type Tactic struct {
-	// Name is the Name. The tactic name that is associated with the attack
-	// technique, as defined by ATT&CK® Matrix. For example: Reconnaissance.
+	// Name is the Name. The Tactic name that is associated with the attack
+	// technique. For example: Reconnaissance or ML Model Access.
 	//
-	// OCSF: name (type string_t, requirement optional)
+	// OCSF: name (type string_t, requirement recommended)
 	Name string `json:"name,omitempty"`
 
-	// SrcURL is the Source URL. The versioned permalink of the attack
-	// tactic, as defined by ATT&CK® Matrix. For example:
-	// https://attack.mitre.org/versions/v14/tactics/TA0043/.
+	// SrcURL is the Source URL. The versioned permalink of the Tactic. For
+	// example: https://attack.mitre.org/versions/v14/tactics/TA0043/.
 	//
 	// OCSF: src_url (type url_t, requirement optional)
 	SrcURL string `json:"src_url,omitempty"`
 
-	// UID is the Unique ID. The tactic ID that is associated with the attack
-	// technique, as defined by ATT&CK® Matrix. For example: TA0043.
+	// UID is the Unique ID. The Tactic ID that is associated with the attack
+	// technique. For example: TA0043, or AML.TA0000.
 	//
 	// OCSF: uid (type string_t, requirement recommended)
 	UID string `json:"uid,omitempty"`

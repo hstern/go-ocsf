@@ -12,8 +12,7 @@ import (
 // File describes the OCSF File object: The File object represents the
 // metadata associated with a file stored in a computer system. It
 // encompasses information about the file itself, including its
-// attributes, properties, and organizational details. Defined by D3FEND
-// d3f:File.
+// attributes, properties, and organizational details.
 //
 // OCSF name: file.
 type File struct {
@@ -69,7 +68,17 @@ type File struct {
 	// category types.
 	//
 	// OCSF: data_classification (type data_classification, requirement recommended)
+	//
+	// Deprecated: Use the attribute <code>data_classifications</code> instead
 	DataClassification *DataClassification `json:"data_classification,omitempty"`
+
+	// DataClassifications is the Data Classification. A list of Data
+	// Classification objects, that include information about data
+	// classification levels and data category types, identified by a
+	// classifier.
+	//
+	// OCSF: data_classifications (type []data_classification, requirement recommended)
+	DataClassifications []DataClassification `json:"data_classifications,omitempty"`
 
 	// Desc is the Description. The description of the file, as returned by
 	// file system. For example: the description as returned by the Unix file
@@ -77,6 +86,25 @@ type File struct {
 	//
 	// OCSF: desc (type string_t, requirement optional)
 	Desc string `json:"desc,omitempty"`
+
+	// DriveType is the Drive Type. The drive type, normalized to the caption
+	// of the drive_type_id value. In the case of Other, it is defined by the
+	// source.
+	//
+	// OCSF: drive_type (type string_t, requirement optional)
+	DriveType string `json:"drive_type,omitempty"`
+
+	// DriveTypeID is the Drive Type ID. Identifies the type of a disk drive,
+	// i.e. fixed, removable, etc.
+	//
+	// OCSF: drive_type_id (type integer_t, requirement optional)
+	DriveTypeID int `json:"drive_type_id,omitempty"`
+
+	// EncryptionDetails is the Encryption Details. The encryption details of
+	// the file. Should be populated if the file is encrypted.
+	//
+	// OCSF: encryption_details (type encryption_details, requirement optional)
+	EncryptionDetails *EncryptionDetails `json:"encryption_details,omitempty"`
 
 	// Ext is the File Extension. The extension of the file, excluding the
 	// leading dot. For example: exe from svchost.exe, or gz from
@@ -89,6 +117,47 @@ type File struct {
 	//
 	// OCSF: hashes (type []fingerprint, requirement recommended)
 	Hashes []Fingerprint `json:"hashes,omitempty"`
+
+	// ImportedSymbols is the Imported Symbols. A list of symbols imported by
+	// the executable file.
+	//
+	// OCSF: imported_symbols (type []string_t, requirement optional)
+	ImportedSymbols []string `json:"imported_symbols,omitempty"`
+
+	// InternalName is the Internal Name. The name of the file as identified
+	// within the file itself. This contrasts with the name by which the file
+	// is known on disk. Where available, the internal name is widely used by
+	// security practitioners and detection content because the on-disk file
+	// name is not reliable. On the Windows OS, most PE files contain a
+	// VERSIONINFO resource from which the internal name can be obtained. On
+	// macOS, binaries can optionally embed a copy of the application's
+	// Info.plist file which in turn contains the name of the executable.
+	//
+	// OCSF: internal_name (type string_t, requirement optional)
+	InternalName string `json:"internal_name,omitempty"`
+
+	// IsDeleted is the Deleted. Indicates if the file was deleted from the
+	// filesystem.
+	//
+	// OCSF: is_deleted (type boolean_t, requirement optional)
+	IsDeleted bool `json:"is_deleted,omitempty"`
+
+	// IsEncrypted is the Encrypted. Indicates if the file is encrypted.
+	//
+	// OCSF: is_encrypted (type boolean_t, requirement optional)
+	IsEncrypted bool `json:"is_encrypted,omitempty"`
+
+	// IsPublic is the Public. Indicates if the file is publicly accessible.
+	// For example in an object's public access in AWS S3
+	//
+	// OCSF: is_public (type boolean_t, requirement optional)
+	IsPublic bool `json:"is_public,omitempty"`
+
+	// IsReadonly is the Read-Only. Indicates that the file cannot be
+	// modified.
+	//
+	// OCSF: is_readonly (type boolean_t, requirement optional)
+	IsReadonly bool `json:"is_readonly,omitempty"`
 
 	// IsSystem is the System. The indication of whether the object is part
 	// of the operating system.
@@ -132,7 +201,7 @@ type File struct {
 	// Path is the Path. The full path to the file. For example:
 	// c:\windows\system32\svchost.exe.
 	//
-	// OCSF: path (type string_t, requirement recommended)
+	// OCSF: path (type file_path_t, requirement recommended)
 	Path string `json:"path,omitempty"`
 
 	// Product is the Product. The product that created or installed the
@@ -150,19 +219,42 @@ type File struct {
 	// Signature is the Digital Signature. The digital signature of the file.
 	//
 	// OCSF: signature (type digital_signature, requirement optional)
+	//
+	// Deprecated: Use the <code>signatures</code> attribute.
 	Signature *DigitalSignature `json:"signature,omitempty"`
+
+	// Signatures is the Digital Signatures. A collection of Digital
+	// Signature objects.
+	//
+	// OCSF: signatures (type []digital_signature, requirement optional)
+	Signatures []DigitalSignature `json:"signatures,omitempty"`
 
 	// Size is the Size. The size of data, in bytes.
 	//
 	// OCSF: size (type long_t, requirement optional)
 	Size int64 `json:"size,omitempty"`
 
+	// StorageClass is the Storage Class. The storage class of the file. For
+	// example in AWS S3: STANDARD, STANDARD_IA, GLACIER.
+	//
+	// OCSF: storage_class (type string_t, requirement optional)
+	StorageClass string `json:"storage_class,omitempty"`
+
+	// Tags is the Tags. The list of tags; {key:value} pairs associated to
+	// the file.
+	//
+	// OCSF: tags (type []key_value_object, requirement optional)
+	Tags []KeyValueObject `json:"tags,omitempty"`
+
 	// Type is the Type. The file type.
 	//
 	// OCSF: type (type string_t, requirement optional)
 	Type string `json:"type,omitempty"`
 
-	// TypeID is the Type ID. The file type ID.
+	// TypeID is the Type ID. The file type ID. Note the distinction between
+	// a Regular File and an Executable File. If the distinction is not
+	// known, or not indicated by the log, use Regular File. In this case, it
+	// should not be assumed that a Regular File is not executable.
 	//
 	// OCSF: type_id (type integer_t, requirement required)
 	TypeID int `json:"type_id"`
@@ -173,10 +265,28 @@ type File struct {
 	// OCSF: uid (type string_t, requirement optional)
 	UID string `json:"uid,omitempty"`
 
+	// URI is the File URI. The file URI, such as those reporting by static
+	// analysis tools. E.g.,
+	// file:///C:/dev/sarif/sarif-tutorials/samples/Introduction/simple-example.js
+	//
+	// OCSF: uri (type url_t, requirement optional)
+	URI string `json:"uri,omitempty"`
+
+	// URL is the URL. The URL of the file, when applicable.
+	//
+	// OCSF: url (type url, requirement optional)
+	URL *URL `json:"url,omitempty"`
+
 	// Version is the Version. The file version. For example: 8.0.7601.17514.
 	//
 	// OCSF: version (type string_t, requirement optional)
 	Version string `json:"version,omitempty"`
+
+	// Volume is the Volume. The volume on the storage device where the file
+	// is located.
+	//
+	// OCSF: volume (type string_t, requirement optional)
+	Volume string `json:"volume,omitempty"`
 
 	// Xattributes is the Extended Attributes. An unordered collection of
 	// zero or more name/value pairs where each pair represents a file or

@@ -8,8 +8,7 @@ package objects
 // Device describes the OCSF Device object: The Device object represents
 // an addressable computer system or host, which is typically connected
 // to a computer network and participates in the transmission or
-// processing of data within the computer network. Defined by D3FEND
-// d3f:Host.
+// processing of data within the computer network.
 //
 // OCSF name: device.
 type Device struct {
@@ -29,6 +28,13 @@ type Device struct {
 	//
 	// OCSF: boot_time (type timestamp_t, requirement optional)
 	BootTime int64 `json:"boot_time,omitempty"`
+
+	// BootUID is the Boot UID. A unique identifier of the device that
+	// changes after every reboot. For example, the value of
+	// /proc/sys/kernel/random/boot_id from Linux's procfs.
+	//
+	// OCSF: boot_uid (type string_t, requirement optional)
+	BootUID string `json:"boot_uid,omitempty"`
 
 	// Container is the Container. The information describing an instance of
 	// a container. A container is a prepackaged, portable system image that
@@ -55,6 +61,12 @@ type Device struct {
 	//
 	// OCSF: domain (type string_t, requirement optional)
 	Domain string `json:"domain,omitempty"`
+
+	// Eid is the EID. An Embedded Identity Document, is a unique serial
+	// number that identifies an eSIM-enabled device.
+	//
+	// OCSF: eid (type string_t, requirement optional)
+	Eid string `json:"eid,omitempty"`
 
 	// FirstSeenTime is the First Seen. The initial discovery time of the
 	// device.
@@ -84,17 +96,30 @@ type Device struct {
 	// OCSF: hypervisor (type string_t, requirement optional)
 	Hypervisor string `json:"hypervisor,omitempty"`
 
+	// Iccid is the ICCID. The Integrated Circuit Card Identification of a
+	// mobile device. Typically it is a unique 18 to 22 digit number that
+	// identifies a SIM card.
+	//
+	// OCSF: iccid (type string_t, requirement optional)
+	Iccid string `json:"iccid,omitempty"`
+
 	// Image is the Image. The image used as a template to run the virtual
 	// machine.
 	//
 	// OCSF: image (type image, requirement optional)
 	Image *Image `json:"image,omitempty"`
 
-	// Imei is the IMEI. The International Mobile Station Equipment
-	// Identifier that is associated with the device.
+	// Imei is the IMEI. The International Mobile Equipment Identity that is
+	// associated with the device.
 	//
 	// OCSF: imei (type string_t, requirement optional)
 	Imei string `json:"imei,omitempty"`
+
+	// ImeiList is the IMEI List. The International Mobile Equipment Identity
+	// values that are associated with the device.
+	//
+	// OCSF: imei_list (type []string_t, requirement optional)
+	ImeiList []string `json:"imei_list,omitempty"`
 
 	// InstanceUID is the Instance ID. The unique identifier of a VM
 	// instance.
@@ -120,6 +145,15 @@ type Device struct {
 	// OCSF: ip (type ip_t, requirement optional)
 	IP string `json:"ip,omitempty"`
 
+	// IsBackedUp is the Back Ups Configured. Indicates whether the device or
+	// resource has a backup enabled, such as an automated snapshot or a
+	// cloud backup. For example, this is indicated by the cloudBackupEnabled
+	// value within JAMF Pro mobile devices or the registration of an AWS ARN
+	// with the AWS Backup service.
+	//
+	// OCSF: is_backed_up (type boolean_t, requirement optional)
+	IsBackedUp bool `json:"is_backed_up,omitempty"`
+
 	// IsCompliant is the Compliant Device. The event occurred on a compliant
 	// device.
 	//
@@ -132,11 +166,32 @@ type Device struct {
 	// OCSF: is_managed (type boolean_t, requirement optional)
 	IsManaged bool `json:"is_managed,omitempty"`
 
+	// IsMobileAccountActive is the Mobile Account Active. Indicates whether
+	// the device has an active mobile account. For example, this is
+	// indicated by the itunesStoreAccountActive value within JAMF Pro mobile
+	// devices.
+	//
+	// OCSF: is_mobile_account_active (type boolean_t, requirement optional)
+	IsMobileAccountActive bool `json:"is_mobile_account_active,omitempty"`
+
 	// IsPersonal is the Personal Device. The event occurred on a personal
 	// device.
 	//
 	// OCSF: is_personal (type boolean_t, requirement optional)
 	IsPersonal bool `json:"is_personal,omitempty"`
+
+	// IsShared is the Shared Device. The event occurred on a shared device.
+	//
+	// OCSF: is_shared (type boolean_t, requirement optional)
+	IsShared bool `json:"is_shared,omitempty"`
+
+	// IsSupervised is the Supervised Device. The event occurred on a
+	// supervised device. Devices that are supervised are typically mobile
+	// devices managed by a Mobile Device Management solution and are
+	// restricted from specific behaviors such as Apple AirDrop.
+	//
+	// OCSF: is_supervised (type boolean_t, requirement optional)
+	IsSupervised bool `json:"is_supervised,omitempty"`
 
 	// IsTrusted is the Trusted Device. The event occurred on a trusted
 	// device.
@@ -161,6 +216,26 @@ type Device struct {
 	// OCSF: mac (type mac_t, requirement optional)
 	MAC string `json:"mac,omitempty"`
 
+	// MACVendor is the MAC Vendor. The vendor or manufacturer of the
+	// endpoint's network interface controller (NIC), as identified from the
+	// MAC address.
+	//
+	// OCSF: mac_vendor (type string_t, requirement optional)
+	MACVendor string `json:"mac_vendor,omitempty"`
+
+	// Meid is the MEID. The Mobile Equipment Identifier. It's a unique
+	// number that identifies a Code Division Multiple Access (CDMA) mobile
+	// device.
+	//
+	// OCSF: meid (type string_t, requirement optional)
+	Meid string `json:"meid,omitempty"`
+
+	// Model is the Model. The model of the device. For example ThinkPad X1
+	// Carbon.
+	//
+	// OCSF: model (type string_t, requirement optional)
+	Model string `json:"model,omitempty"`
+
 	// ModifiedTime is the Modified Time. The time when the device was last
 	// known to have been modified.
 	//
@@ -182,10 +257,11 @@ type Device struct {
 	// OCSF: namespace_pid (type integer_t, requirement recommended)
 	NamespacePID int `json:"namespace_pid,omitempty"`
 
-	// NetworkInterfaces is the Network Interfaces. The network interfaces
-	// that are associated with the device, one for each unique MAC
-	// address/IP address/hostname/name combination.Note: The first element
-	// of the array is the network information that pertains to the event.
+	// NetworkInterfaces is the Network Interfaces. The physical or virtual
+	// network interfaces that are associated with the device, one for each
+	// unique MAC address/IP address/hostname/name combination.Note: The
+	// first element of the array is the network information that pertains to
+	// the event.
 	//
 	// OCSF: network_interfaces (type []network_interface, requirement optional)
 	NetworkInterfaces []NetworkInterface `json:"network_interfaces,omitempty"`
@@ -201,11 +277,25 @@ type Device struct {
 	// OCSF: os (type os, requirement optional)
 	OS *OS `json:"os,omitempty"`
 
+	// OSMachineUUID is the OS Machine UUID. The operating system assigned
+	// Machine ID. In Windows, this is the value stored at the registry path:
+	// HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Cryptography\MachineGuid. In
+	// Linux, this is stored in the file: /etc/machine-id.
+	//
+	// OCSF: os_machine_uuid (type uuid_t, requirement optional)
+	OSMachineUUID string `json:"os_machine_uuid,omitempty"`
+
 	// Owner is the Owner. The identity of the service or user account that
 	// owns the endpoint or was last logged into it.
 	//
 	// OCSF: owner (type user, requirement recommended)
 	Owner *User `json:"owner,omitempty"`
+
+	// Pool is the Pool. The pool of desktops or virtual machines to which
+	// the endpoint belongs.
+	//
+	// OCSF: pool (type group, requirement optional)
+	Pool *Group `json:"pool,omitempty"`
 
 	// Region is the Region. The region where the virtual machine is located.
 	// For example, an AWS Region.
@@ -252,6 +342,14 @@ type Device struct {
 	// OCSF: type_id (type integer_t, requirement required)
 	TypeID int `json:"type_id"`
 
+	// Udid is the Unique Device Identifier. The Apple assigned Unique Device
+	// Identifier (UDID). For iOS, iPadOS, tvOS, watchOS and visionOS
+	// devices, this is the UDID. For macOS devices, it is the Provisioning
+	// UDID. For example: 00008020-008D4548007B4F26
+	//
+	// OCSF: udid (type string_t, requirement optional)
+	Udid string `json:"udid,omitempty"`
+
 	// UID is the Unique ID. The unique identifier of the device. For example
 	// the Windows TargetSID or AWS EC2 ARN.
 	//
@@ -263,6 +361,12 @@ type Device struct {
 	//
 	// OCSF: uid_alt (type string_t, requirement optional)
 	UIDAlt string `json:"uid_alt,omitempty"`
+
+	// VendorName is the Vendor Name. The vendor for the device. For example
+	// Dell or Lenovo.
+	//
+	// OCSF: vendor_name (type string_t, requirement recommended)
+	VendorName string `json:"vendor_name,omitempty"`
 
 	// VLANUID is the VLAN. The Virtual LAN identifier.
 	//

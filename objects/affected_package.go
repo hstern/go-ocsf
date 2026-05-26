@@ -50,6 +50,13 @@ type AffectedPackage struct {
 	// OCSF: license (type string_t, requirement optional)
 	License string `json:"license,omitempty"`
 
+	// LicenseURL is the Software License URL. The URL pointing to the
+	// license applied on package or software. This is typically a LICENSE.md
+	// file within a repository.
+	//
+	// OCSF: license_url (type url_t, requirement optional)
+	LicenseURL string `json:"license_url,omitempty"`
+
 	// Name is the Name. The software package name.
 	//
 	// OCSF: name (type string_t, requirement required)
@@ -61,9 +68,16 @@ type AffectedPackage struct {
 	// OCSF: package_manager (type string_t, requirement optional)
 	PackageManager string `json:"package_manager,omitempty"`
 
+	// PackageManagerURL is the Package Manager URL. The URL of the package
+	// or library at the package manager, or the specific URL or URI of an
+	// internal package manager link such as AWS CodeArtifact or Artifactory.
+	//
+	// OCSF: package_manager_url (type url_t, requirement optional)
+	PackageManagerURL string `json:"package_manager_url,omitempty"`
+
 	// Path is the Path. The installation path of the affected package.
 	//
-	// OCSF: path (type string_t, requirement optional)
+	// OCSF: path (type file_path_t, requirement optional)
 	Path string `json:"path,omitempty"`
 
 	// Purl is the Package URL. A purl is a URL string used to identify and
@@ -86,6 +100,13 @@ type AffectedPackage struct {
 	// OCSF: remediation (type remediation, requirement optional)
 	Remediation *Remediation `json:"remediation,omitempty"`
 
+	// SrcURL is the Source URL. The link to the specific library or package
+	// such as within GitHub, this is different from the link to the package
+	// manager where the library or package is hosted.
+	//
+	// OCSF: src_url (type url_t, requirement optional)
+	SrcURL string `json:"src_url,omitempty"`
+
 	// Type is the Type. The type of software package, normalized to the
 	// caption of the type_id value. In the case of 'Other', it is defined by
 	// the source.
@@ -97,6 +118,13 @@ type AffectedPackage struct {
 	//
 	// OCSF: type_id (type integer_t, requirement recommended)
 	TypeID int `json:"type_id,omitempty"`
+
+	// UID is the Package UID. A unique identifier for the package or library
+	// reported by the source tool. E.g., the libId within the sbom field of
+	// an OX Security Issue or the SPDX components.*.bom-ref.
+	//
+	// OCSF: uid (type string_t, requirement optional)
+	UID string `json:"uid,omitempty"`
 
 	// VendorName is the Vendor Name. The name of the vendor who published
 	// the software package.

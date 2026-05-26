@@ -10,7 +10,7 @@ schema.
 ## Status
 
 **Pre-release.** First tag will be `v0.1.0`. APIs may shift until
-then. The library currently targets **OCSF schema version 1.3.0**
+then. The library currently targets **OCSF schema version 1.8.0**
 (see [Stability](#stability) below for the version-pin design).
 
 ## Install
@@ -48,7 +48,7 @@ import (
 
 func main() {
     wire := []byte(`{"class_uid":3002,"activity_id":1,"severity_id":1,
-        "metadata":{"product":{"name":"my-idp"},"version":"1.3.0"},
+        "metadata":{"product":{"name":"my-idp"},"version":"1.8.0"},
         "time":1618524549901,"type_uid":300201,
         "user":{"name":"alice"},"service":{"name":"ldap"},
         "cloud":{"provider":"aws"},"osint":[{}]}`)
@@ -163,7 +163,7 @@ for structured handling via `errors.As`.
 
 The library version (SemVer) and the OCSF schema version are
 **independent**. The current schema-version pin is
-`ocsf.SchemaVersion = "1.3.0"`.
+`ocsf.SchemaVersion = "1.8.0"`.
 
 - **Schema-version bumps are library-minor releases.** When
   upstream ships a new OCSF schema, a single PR re-vendors the
@@ -193,7 +193,8 @@ objects/                       ← generated per-object structs
 enums/                         ← generated typed-int enums
                                  (Severity, Activity, ...)
 internal/gen/                  ← codegen tool
-internal/schema/v1.3.0/        ← vendored OCSF schema
+internal/schema/upstream/      ← OCSF schema (git submodule
+                                 pinned to ocsf/ocsf-schema)
 internal/specfixtures/         ← sample events for conformance
 internal/conformance/          ← round-trip / forward-compat /
                                  unmapped passthrough tests

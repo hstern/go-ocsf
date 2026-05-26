@@ -48,6 +48,7 @@ func primitiveGoType(name string) string {
 		"email_t",
 		"file_hash_t",
 		"file_name_t",
+		"file_path_t",
 		"hostname_t",
 		"ip_t",
 		"mac_t",

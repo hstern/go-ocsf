@@ -12,6 +12,8 @@ package objects
 // systems, software, networks, and cloud infrastructure.
 //
 // OCSF name: cis_benchmark_result.
+//
+// Deprecated: Use the Compliance object with Checks object instead.
 type CisBenchmarkResult struct {
 	// Desc is the Description. The CIS benchmark description.
 	//

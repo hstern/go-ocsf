@@ -8,8 +8,8 @@ package enums
 import "strconv"
 
 // Priority is the OCSF Priority ID enum. The normalized priority.
-// Priority identifies the relative importance of the finding. It is a
-// measurement of urgency.
+// Priority identifies the relative importance of the incident or
+// finding. It is a measurement of urgency.
 //
 // OCSF attribute: priority_id.
 type Priority int

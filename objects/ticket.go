@@ -6,7 +6,8 @@
 package objects
 
 // Ticket describes the OCSF Ticket object: The Ticket object represents
-// ticket in the customer's systems like Salesforce, jira etc.
+// ticket in the customer's IT Service Management (ITSM) systems like
+// ServiceNow, Jira, etc.
 //
 // OCSF name: ticket.
 type Ticket struct {
@@ -14,6 +15,25 @@ type Ticket struct {
 	//
 	// OCSF: src_url (type url_t, requirement recommended)
 	SrcURL string `json:"src_url,omitempty"`
+
+	// Status is the Ticket Status. The status of the ticket normalized to
+	// the caption of the status_id value. In the case of 99, this value
+	// should as defined by the source.
+	//
+	// OCSF: status (type string_t, requirement optional)
+	Status string `json:"status,omitempty"`
+
+	// StatusDetails is the Status Details. A list of contextual descriptions
+	// of the status, status_id values.
+	//
+	// OCSF: status_details (type []string_t, requirement optional)
+	StatusDetails []string `json:"status_details,omitempty"`
+
+	// StatusID is the Ticket Status ID. The normalized identifier for the
+	// ticket status.
+	//
+	// OCSF: status_id (type integer_t, requirement optional)
+	StatusID int `json:"status_id,omitempty"`
 
 	// Title is the Title. The title of the ticket.
 	//
@@ -32,7 +52,7 @@ type Ticket struct {
 	// OCSF: type_id (type integer_t, requirement optional)
 	TypeID int `json:"type_id,omitempty"`
 
-	// UID is the Unique ID. Unique ticket identifier like ticket id.
+	// UID is the Unique ID. Unique identifier of the ticket.
 	//
 	// OCSF: uid (type string_t, requirement recommended)
 	UID string `json:"uid,omitempty"`

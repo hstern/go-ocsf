@@ -5,20 +5,50 @@
 
 package objects
 
-// Cloud describes the OCSF Cloud object: The Cloud object contains
-// information about a cloud account such as AWS Account ID, regions,
-// etc.
+// Cloud describes the OCSF Cloud object: The Cloud object describes the
+// cloud computing environment where an event or finding originated. It
+// provides comprehensive context about the cloud infrastructure,
+// including the cloud service provider, account or subscription details,
+// organizational structure, geographic regions, availability zones, and
+// logical partitions.
 //
 // OCSF name: cloud.
 type Cloud struct {
-	// Account is the Account. The account object describes details about the
-	// account that was the source or target of the activity.
+	// Account is the Account. The Account object containing details about
+	// the cloud account, subscription, or billing unit where the event or
+	// finding was created. This object includes properties such as the
+	// account name, unique identifier, type, labels, and tags.Examples:AWS:
+	// Account object with name, uid (Account ID), type, and other account
+	// propertiesAzure: Subscription object with name, uid (Subscription ID),
+	// type, and subscription metadataGCP: Project object with name, uid
+	// (Project ID), type, and project attributesOracle Cloud: Compartment
+	// object with name, uid (Tenancy OCID), type, and compartment details
 	//
 	// OCSF: account (type account, requirement optional)
 	Account *Account `json:"account,omitempty"`
 
-	// Org is the Organization. Organization and org unit relevant to the
-	// event or object.
+	// CloudPartition is the Cloud Partition. The logical grouping or
+	// isolated segment within a cloud provider's infrastructure where the
+	// event or finding was created, often used for compliance, governance,
+	// or regional separation.Examples:AWS: Partition where the event
+	// occurred (aws, aws-cn, aws-us-gov)Azure: Cloud environment where the
+	// event occurred (AzureCloud, AzureUSGovernment, AzureChinaCloud)
+	//
+	// OCSF: cloud_partition (type string_t, requirement optional)
+	CloudPartition string `json:"cloud_partition,omitempty"`
+
+	// Org is the Organization. The Organization object containing details
+	// about the organizational unit or management structure that governs the
+	// account, subscription, or project where the event or finding was
+	// created. This object includes properties such as the organization
+	// name, unique identifier, type, and other organizational
+	// metadata.Examples:AWS: Organization object with name, uid
+	// (Organization ID), type, and other organizational propertiesAzure:
+	// Management Group object with name, uid (Management Group ID), type,
+	// and management group metadataGCP: Organization object with name, uid
+	// (Organization ID), type, and organizational attributesOracle Cloud:
+	// Tenancy object with name, uid (Tenancy OCID), type, and tenancy
+	// details
 	//
 	// OCSF: org (type organization, requirement optional)
 	Org *Organization `json:"org,omitempty"`
@@ -29,20 +59,31 @@ type Cloud struct {
 	// OCSF: project_uid (type string_t, requirement optional)
 	ProjectUID string `json:"project_uid,omitempty"`
 
-	// Provider is the Provider. The unique name of the Cloud services
-	// provider, such as AWS, MS Azure, GCP, etc.
+	// Provider is the Cloud Provider. The unique name of the Cloud services
+	// provider where the event or finding was created. Examples include AWS,
+	// Azure, GCP (Google Cloud Platform), Oracle Cloud, IBM Cloud, Alibaba
+	// Cloud, or other public, private, or hybrid cloud providers.
 	//
 	// OCSF: provider (type string_t, requirement required)
 	Provider string `json:"provider"`
 
-	// Region is the Region. The name of the cloud region, as defined by the
-	// cloud provider.
+	// Region is the Region. The cloud region where the event or finding was
+	// created, as defined by the cloud provider.Examples:AWS: Region where
+	// the event occurred (us-east-1, eu-west-1)Azure: Region where the event
+	// occurred (East US, West Europe)GCP: Region where the event occurred
+	// (us-central1, europe-west1)Oracle Cloud: Region where the event
+	// occurred (us-ashburn-1, uk-london-1)
 	//
 	// OCSF: region (type string_t, requirement recommended)
 	Region string `json:"region,omitempty"`
 
-	// Zone is the Network Zone. The availability zone in the cloud region,
-	// as defined by the cloud provider.
+	// Zone is the Cloud Availability Zone. The availability zone in the
+	// cloud region where the event or finding was created, as defined by the
+	// cloud provider.Examples:AWS: Availability zone where the event
+	// occurred (us-east-1a, us-east-1b)Azure: Availability zone where the
+	// event occurred (1, 2, 3 within a region)GCP: Availability zone where
+	// the event occurred (us-central1-a, us-central1-b)Oracle Cloud:
+	// Availability zone where the event occurred (AD-1, AD-2, AD-3)
 	//
 	// OCSF: zone (type string_t, requirement optional)
 	Zone string `json:"zone,omitempty"`

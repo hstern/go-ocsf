@@ -18,8 +18,8 @@ const (
 	StatusUnknown Status = 0
 	StatusSuccess Status = 1
 	StatusFailure Status = 2
-	// StatusOther: The event status is not mapped. See the status
-	// attribute, which contains a data source specific value.
+	// StatusOther: The status is not mapped. See the status attribute,
+	// which contains a data source specific value.
 	StatusOther Status = 99
 )
 

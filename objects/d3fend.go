@@ -6,26 +6,25 @@
 package objects
 
 // D3fend describes the OCSF MITRE D3FEND™ object: The MITRE D3FEND™
-// object describes the tactic, technique & sub-technique associated with
-// a countermeasure as defined in DEFEND MatrixTM.
+// object describes the tactic & technique associated with a
+// countermeasure.
 //
 // OCSF name: d3fend.
 type D3fend struct {
-	// D3fTactic is the MITRE DEFEND™ Tactic. The Tactic object describes
-	// the tactic ID and/or name that is associated with a countermeasure, as
-	// defined by D3FEND MatrixTM.
+	// D3fTactic is the MITRE D3FEND™ Tactic. The Tactic object describes
+	// the tactic ID and/or name that is associated with a countermeasure.
 	//
 	// OCSF: d3f_tactic (type d3f_tactic, requirement recommended)
 	D3fTactic *D3fTactic `json:"d3f_tactic,omitempty"`
 
-	// D3fTechnique is the MITRE DEFEND™ Technique. The Defend Technique
-	// object describes the technique ID and/or name associated with a
-	// countermeasure, as defined by D3FEND MatrixTM.
+	// D3fTechnique is the MITRE D3FEND™ Technique. The Technique object
+	// describes the technique ID and/or name associated with a
+	// countermeasure.
 	//
 	// OCSF: d3f_technique (type d3f_technique, requirement recommended)
 	D3fTechnique *D3fTechnique `json:"d3f_technique,omitempty"`
 
-	// Version is the Version. The D3FEND MatrixTM version.
+	// Version is the Version. The D3FEND™ Matrix version.
 	//
 	// OCSF: version (type string_t, requirement recommended)
 	Version string `json:"version,omitempty"`

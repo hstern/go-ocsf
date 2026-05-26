@@ -11,6 +11,13 @@ package objects
 //
 // OCSF name: remediation.
 type Remediation struct {
+	// CisControls is the CIS Controls. An array of Center for Internet
+	// Security (CIS) Controls that can be optionally mapped to provide
+	// additional remediation details.
+	//
+	// OCSF: cis_controls (type []cis_control, requirement optional)
+	CisControls []CisControl `json:"cis_controls,omitempty"`
+
 	// Desc is the Description. The description of the remediation strategy.
 	//
 	// OCSF: desc (type string_t, requirement required)

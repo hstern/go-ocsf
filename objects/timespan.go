@@ -8,8 +8,9 @@ package objects
 // Timespan describes the OCSF Time Span object: The Time Span object
 // represents different time period durations. If a timespan is
 // fractional, i.e. crosses one period, e.g. a week and 3 days, more than
-// one may may be populated since each member is of integral type. In
-// that case type_id if present should be set to Other.
+// one may be populated since each member is of integral type. In that
+// case type_id if present should be set to Other.A timespan may also be
+// defined by its time interval boundaries, start_time and end_time.
 //
 // OCSF name: timespan.
 type Timespan struct {
@@ -60,6 +61,18 @@ type Timespan struct {
 	//
 	// OCSF: duration_years (type integer_t, requirement recommended)
 	DurationYears int `json:"duration_years,omitempty"`
+
+	// EndTime is the End Time. The end time or conclusion of the timespan's
+	// interval.
+	//
+	// OCSF: end_time (type timestamp_t, requirement recommended)
+	EndTime int64 `json:"end_time,omitempty"`
+
+	// StartTime is the Start Time. The start time or beginning of the
+	// timespan's interval.
+	//
+	// OCSF: start_time (type timestamp_t, requirement recommended)
+	StartTime int64 `json:"start_time,omitempty"`
 
 	// Type is the Time Span Type. The type of time span duration the object
 	// represents.

@@ -19,6 +19,13 @@ type HTTPRequest struct {
 	// OCSF: args (type string_t, requirement optional)
 	Args string `json:"args,omitempty"`
 
+	// BodyLength is the Request Body Length. The actual length of the HTTP
+	// request body, in number of bytes, independent of a potentially
+	// existing Content-Length header.
+	//
+	// OCSF: body_length (type integer_t, requirement optional)
+	BodyLength int `json:"body_length,omitempty"`
+
 	// HTTPHeaders is the HTTP Headers. Additional HTTP headers of an HTTP
 	// request or response.
 	//
@@ -31,8 +38,8 @@ type HTTPRequest struct {
 	// OCSF: http_method (type string_t, requirement recommended)
 	HTTPMethod string `json:"http_method,omitempty"`
 
-	// Length is the Request Length. The HTTP request length, in number of
-	// bytes.
+	// Length is the Request Length. The length of the entire HTTP request,
+	// in number of bytes.
 	//
 	// OCSF: length (type integer_t, requirement optional)
 	Length int `json:"length,omitempty"`

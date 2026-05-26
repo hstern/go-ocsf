@@ -7,25 +7,23 @@ package objects
 
 // D3fTactic describes the OCSF MITRE D3FEND™ Tactic object: The MITRE
 // D3FEND™ Tactic object describes the tactic ID and/or name that is
-// associated to an attack, as defined by D3FENDTM Matrix.
+// associated to an attack.
 //
 // OCSF name: d3f_tactic.
 type D3fTactic struct {
 	// Name is the Name. The tactic name that is associated with the
-	// defensive technique, as defined by D3FENDTM Matrix. For example:
-	// Isolate.
+	// defensive technique. For example: Isolate.
 	//
-	// OCSF: name (type string_t, requirement optional)
+	// OCSF: name (type string_t, requirement recommended)
 	Name string `json:"name,omitempty"`
 
 	// SrcURL is the Source URL. The versioned permalink of the defensive
-	// tactic, as defined by D3FENDTM Matrix. For example:
-	// https://d3fend.mitre.org/tactic/d3f:Isolate/.
+	// tactic. For example: https://d3fend.mitre.org/tactic/d3f:Isolate/.
 	//
 	// OCSF: src_url (type url_t, requirement optional)
 	SrcURL string `json:"src_url,omitempty"`
 
-	// UID is the Unique ID. The unique identifier of the entity.
+	// UID is the Unique ID. The unique identifier of the defensive tactic.
 	//
 	// OCSF: uid (type string_t, requirement recommended)
 	UID string `json:"uid,omitempty"`

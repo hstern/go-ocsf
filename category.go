@@ -11,11 +11,12 @@ import "strconv"
 // and its class_uid is computed as Category*1000 + the class's
 // identifier within the category.
 //
-// The seven values below are stable for OCSF 1.x. Upstream
+// The eight values below are stable for OCSF 1.x. Upstream
 // has historically added categories without renumbering, so
 // existing constants stay valid across schema versions; new
 // categories appear as additional named constants in
-// later library releases.
+// later library releases (e.g. CategoryUnmannedSystems
+// arrived in 1.8.0).
 type Category int
 
 // String returns the OCSF category caption (e.g.
@@ -38,6 +39,8 @@ func (c Category) String() string {
 		return "Application Activity"
 	case CategoryRemediation:
 		return "Remediation"
+	case CategoryUnmannedSystems:
+		return "Unmanned Systems"
 	}
 	return strconv.Itoa(int(c))
 }
@@ -62,6 +65,8 @@ func (c Category) Name() string {
 		return "application"
 	case CategoryRemediation:
 		return "remediation"
+	case CategoryUnmannedSystems:
+		return "unmanned_systems"
 	}
 	return ""
 }
@@ -100,4 +105,9 @@ const (
 	// CategoryRemediation is the Remediation category (file,
 	// process, network remediation activities).
 	CategoryRemediation Category = 7
+
+	// CategoryUnmannedSystems is the Unmanned Systems category
+	// (UAV/UAS activity, mission planning, tracking). Added in
+	// OCSF 1.8.0.
+	CategoryUnmannedSystems Category = 8
 )

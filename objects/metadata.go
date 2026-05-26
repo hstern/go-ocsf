@@ -6,13 +6,15 @@
 package objects
 
 // Metadata describes the OCSF Metadata object: The Metadata object
-// describes the metadata associated with the event. Defined by D3FEND
-// d3f:Metadata.
+// describes the metadata associated with the event.
 //
 // OCSF name: metadata.
 type Metadata struct {
-	// CorrelationUID is the Correlation UID. The unique identifier used to
-	// correlate events.
+	// CorrelationUID is the Correlation UID. A unique identifier used to
+	// correlate this OCSF event with other related OCSF events, distinct
+	// from the event's uid value. This enables linking multiple OCSF events
+	// that are part of the same activity, transaction, or security incident
+	// across different systems or time periods.
 	//
 	// OCSF: correlation_uid (type string_t, requirement optional)
 	CorrelationUID string `json:"correlation_uid,omitempty"`
@@ -22,10 +24,27 @@ type Metadata struct {
 	// category types.
 	//
 	// OCSF: data_classification (type data_classification, requirement recommended)
+	//
+	// Deprecated: Use the attribute <code>data_classifications</code> instead
 	DataClassification *DataClassification `json:"data_classification,omitempty"`
 
-	// EventCode is the Event Code. The Event ID or Code that the product
-	// uses to describe the event.
+	// DataClassifications is the Data Classification. A list of Data
+	// Classification objects, that include information about data
+	// classification levels and data category types, identified by a
+	// classifier.
+	//
+	// OCSF: data_classifications (type []data_classification, requirement recommended)
+	DataClassifications []DataClassification `json:"data_classifications,omitempty"`
+
+	// Debug is the Debug Information. Debug information about non-fatal
+	// issues with this OCSF event. Each issue is a line in this string
+	// array.
+	//
+	// OCSF: debug (type []string_t, requirement optional)
+	Debug []string `json:"debug,omitempty"`
+
+	// EventCode is the Event Code. The identifier of the original event. For
+	// example the numerical Windows Event Code or Cisco syslog code.
 	//
 	// OCSF: event_code (type string_t, requirement optional)
 	EventCode string `json:"event_code,omitempty"`
@@ -42,36 +61,55 @@ type Metadata struct {
 	// OCSF: extensions (type []extension, requirement optional)
 	Extensions []Extension `json:"extensions,omitempty"`
 
-	// Labels is the Labels. The list of category labels attached to the
-	// event or specific attributes. Labels are user defined tags or aliases
-	// added at normalization time.For example: ["network",
-	// "connection.ip:destination", "device.ip:source"]
+	// IsTruncated is the Is Truncated. Indicates whether the OCSF event data
+	// has been truncated due to size limitations. When true, some event data
+	// may have been omitted to fit within system constraints.
+	//
+	// OCSF: is_truncated (type boolean_t, requirement optional)
+	IsTruncated bool `json:"is_truncated,omitempty"`
+
+	// Labels is the Labels. The list of labels attached to the event. For
+	// example: ["sample", "dev"]
 	//
 	// OCSF: labels (type []string_t, requirement optional)
 	Labels []string `json:"labels,omitempty"`
 
-	// LogLevel is the Log Level. The audit level at which an event was
-	// generated.
+	// LogFormat is the Log Source Format. The format of data in the log
+	// where the data originated. For example CSV, XML, Windows Multiline,
+	// JSON, syslog or Cisco Log Schema.
+	//
+	// OCSF: log_format (type string_t, requirement optional)
+	LogFormat string `json:"log_format,omitempty"`
+
+	// LogLevel is the Log Level. The level at which an event was logged.
+	// This can be log provider specific. For example the audit level.
 	//
 	// OCSF: log_level (type string_t, requirement optional)
 	LogLevel string `json:"log_level,omitempty"`
 
-	// LogName is the Log Name. The event log name. For example, syslog file
-	// name or Windows logging subsystem: Security.
+	// LogName is the Log Name. The event log name, typically for the
+	// consumer of the event. For example, the storage bucket name, SIEM
+	// repository index name, etc.
 	//
 	// OCSF: log_name (type string_t, requirement recommended)
 	LogName string `json:"log_name,omitempty"`
 
 	// LogProvider is the Log Provider. The logging provider or logging
-	// service that logged the event. For example,
-	// Microsoft-Windows-Security-Auditing.
+	// service that logged the event. For example AWS CloudWatch or Splunk.
 	//
-	// OCSF: log_provider (type string_t, requirement recommended)
+	// OCSF: log_provider (type string_t, requirement optional)
 	LogProvider string `json:"log_provider,omitempty"`
 
-	// LogVersion is the Log Version. The event log schema version that
-	// specifies the format of the original event. For example syslog version
-	// or Cisco Log Schema Version.
+	// LogSource is the Log Source. The log system or component where the
+	// data originated. For example, a file path, syslog server name or a
+	// Windows hostname and logging subsystem such as Security.
+	//
+	// OCSF: log_source (type string_t, requirement optional)
+	LogSource string `json:"log_source,omitempty"`
+
+	// LogVersion is the Log Version. The event log schema version of the
+	// original event. For example the syslog version or the Cisco Log Schema
+	// version
 	//
 	// OCSF: log_version (type string_t, requirement optional)
 	LogVersion string `json:"log_version,omitempty"`
@@ -86,9 +124,10 @@ type Metadata struct {
 	LoggedTime int64 `json:"logged_time,omitempty"`
 
 	// Loggers is the Loggers. An array of Logger objects that describe the
-	// devices and logging products between the event source and its eventual
-	// destination. Note, this attribute can be used when there is a complex
-	// end-to-end path of event flow.
+	// pipeline of devices and logging products between the event source and
+	// its eventual destination. Note, this attribute can be used when there
+	// is a complex end-to-end path of event flow and/or to track the chain
+	// of custody of the data.
 	//
 	// OCSF: loggers (type []logger, requirement optional)
 	Loggers []Logger `json:"loggers,omitempty"`
@@ -98,6 +137,17 @@ type Metadata struct {
 	//
 	// OCSF: modified_time (type timestamp_t, requirement optional)
 	ModifiedTime int64 `json:"modified_time,omitempty"`
+
+	// OriginalEventUID is the Original Event ID. The unique identifier
+	// assigned to the event in its original logging system before
+	// transformation to OCSF format. This field preserves the source
+	// system's native event identifier, enabling traceability back to the
+	// raw log entry. For example, a Windows Event Record ID, a syslog
+	// message ID, a Splunk _cd value, or a database transaction log sequence
+	// number.
+	//
+	// OCSF: original_event_uid (type string_t, requirement optional)
+	OriginalEventUID string `json:"original_event_uid,omitempty"`
 
 	// OriginalTime is the Original Time. The original event time as reported
 	// by the event source. For example, the time in the original format from
@@ -126,6 +176,12 @@ type Metadata struct {
 	// OCSF: profiles (type []string_t, requirement optional)
 	Profiles []string `json:"profiles,omitempty"`
 
+	// Reporter is the Reporter. The entity from which the event or finding
+	// was first reported.
+	//
+	// OCSF: reporter (type reporter, requirement recommended)
+	Reporter *Reporter `json:"reporter,omitempty"`
+
 	// Sequence is the Sequence Number. Sequence number of the event. The
 	// sequence number is a value available in some events, to make the exact
 	// ordering of events unambiguous, regardless of the event time
@@ -134,16 +190,70 @@ type Metadata struct {
 	// OCSF: sequence (type integer_t, requirement optional)
 	Sequence int `json:"sequence,omitempty"`
 
+	// Source is the Source. The source of the event or finding. This can be
+	// any distinguishing name for the logical origin of the data — for
+	// example, 'CloudTrail Events', or a use case like 'Attack Simulations'
+	// or 'Vulnerability Scans'.
+	//
+	// OCSF: source (type string_t, requirement optional)
+	Source string `json:"source,omitempty"`
+
+	// Tags is the Tags. The list of tags; {key:value} pairs associated to
+	// the event.
+	//
+	// OCSF: tags (type []key_value_object, requirement optional)
+	Tags []KeyValueObject `json:"tags,omitempty"`
+
 	// TenantUID is the Tenant UID. The unique tenant identifier.
 	//
 	// OCSF: tenant_uid (type string_t, requirement recommended)
 	TenantUID string `json:"tenant_uid,omitempty"`
 
-	// UID is the Event UID. The logging system-assigned unique identifier of
-	// an event instance.
+	// TotalQueuedDuration is the Total Queued Duration. The amount of time
+	// an event spent in a queue awaiting processing. In this case, the value
+	// is the difference between processed_time and logged_time. This
+	// duration is inclusive of all queues between the originator of the
+	// event and the intended long-term storage destination of the event.
+	//
+	// OCSF: total_queued_duration (type timespan, requirement optional)
+	TotalQueuedDuration *Timespan `json:"total_queued_duration,omitempty"`
+
+	// TransformationInfoList is the Transformation Info. An array of
+	// transformation info that describes the mappings or transforms applied
+	// to the data.
+	//
+	// OCSF: transformation_info_list (type []transformation_info, requirement optional)
+	TransformationInfoList []TransformationInfo `json:"transformation_info_list,omitempty"`
+
+	// TransmitTime is the Transmission Time. The time when the event was
+	// transmitted from the logging device to it's next destination.
+	//
+	// OCSF: transmit_time (type timestamp_t, requirement optional)
+	TransmitTime int64 `json:"transmit_time,omitempty"`
+
+	// Type is the Type. The type of the event or finding as a subset of the
+	// source of the event. This can be any distinguishing characteristic of
+	// the data. For example 'Management Events' or 'Device Penetration
+	// Test'.
+	//
+	// OCSF: type (type string_t, requirement optional)
+	Type string `json:"type,omitempty"`
+
+	// UID is the Event UID. A unique identifier assigned to the OCSF event.
+	// This ID is specific to the OCSF event itself and is distinct from the
+	// original event identifier in the source system (see
+	// original_event_uid).
 	//
 	// OCSF: uid (type string_t, requirement optional)
 	UID string `json:"uid,omitempty"`
+
+	// UntruncatedSize is the Untruncated Size. The original size of the OCSF
+	// event data in kilobytes before any truncation occurred. This field is
+	// typically populated when is_truncated is true to indicate the full
+	// size of the original event.
+	//
+	// OCSF: untruncated_size (type integer_t, requirement optional)
+	UntruncatedSize int `json:"untruncated_size,omitempty"`
 
 	// Version is the Version. The version of the OCSF schema, using Semantic
 	// Versioning Specification (SemVer). For example: 1.0.0. Event consumers

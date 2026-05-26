@@ -5,27 +5,27 @@
 
 package objects
 
-// Technique describes the OCSF MITRE ATT&CK® Technique object: The
-// MITRE ATT&CK® Technique object describes the technique ID and/or name
-// associated to an attack, as defined by ATT&CK® Matrix.
+// Technique describes the OCSF MITRE Technique object: The MITRE
+// Technique object describes the ATT&CK® or ATLAS™ Technique ID
+// and/or name associated to an attack.
 //
 // OCSF name: technique.
 type Technique struct {
-	// Name is the Name. The name of the attack technique, as defined by
-	// ATT&CK® Matrix. For example: Active Scanning.
+	// Name is the Name. The name of the attack technique. For example:
+	// Active Scanning or AI Model Inference API Access.
 	//
 	// OCSF: name (type string_t, requirement recommended)
 	Name string `json:"name,omitempty"`
 
 	// SrcURL is the Source URL. The versioned permalink of the attack
-	// technique, as defined by ATT&CK® Matrix. For example:
+	// technique. For example:
 	// https://attack.mitre.org/versions/v14/techniques/T1595/.
 	//
 	// OCSF: src_url (type url_t, requirement optional)
 	SrcURL string `json:"src_url,omitempty"`
 
-	// UID is the Unique ID. The unique identifier of the attack technique,
-	// as defined by ATT&CK® Matrix. For example: T1595.
+	// UID is the Unique ID. The unique identifier of the attack technique.
+	// For example: T1595 or AML.T0040.
 	//
 	// OCSF: uid (type string_t, requirement recommended)
 	UID string `json:"uid,omitempty"`

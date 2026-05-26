@@ -12,6 +12,12 @@ package objects
 //
 // OCSF name: analytic.
 type Analytic struct {
+	// Algorithm is the Algorithm. The algorithm used by the underlying
+	// analytic to generate the finding.
+	//
+	// OCSF: algorithm (type string_t, requirement optional)
+	Algorithm string `json:"algorithm,omitempty"`
+
 	// Category is the Category. The analytic category.
 	//
 	// OCSF: category (type string_t, requirement optional)
@@ -35,6 +41,16 @@ type Analytic struct {
 	//
 	// Deprecated: Related Analytics has been decoupled from this object, instead use <code>finding_info.related_analytics</code>.
 	RelatedAnalytics []Analytic `json:"related_analytics,omitempty"`
+
+	// State is the State. The Analytic state.
+	//
+	// OCSF: state (type string_t, requirement optional)
+	State string `json:"state,omitempty"`
+
+	// StateID is the State ID. The Analytic state identifier.
+	//
+	// OCSF: state_id (type integer_t, requirement optional)
+	StateID int `json:"state_id,omitempty"`
 
 	// Type is the Type. The analytic type.
 	//

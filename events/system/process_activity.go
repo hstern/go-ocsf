@@ -23,14 +23,12 @@ type ProcessActivity struct {
 	Action string `json:"action,omitempty"`
 
 	// ActionID is the Action ID. The action taken by a control or other
-	// policy-based system leading to an outcome or disposition. Dispositions
-	// conform to an action of 1 'Allowed' or 2 'Denied' in most cases. Note
-	// that 99 'Other' is not an option. No action would equate to 1
-	// 'Allowed'. An unknown action may still correspond to a known
-	// disposition. Refer to disposition_id for the outcome of the action.
+	// policy-based system leading to an outcome or disposition. An unknown
+	// action may still correspond to a known disposition. Refer to
+	// disposition_id for the outcome of the action.
 	//
-	// OCSF: action_id (type integer_t, requirement required)
-	ActionID int `json:"action_id"`
+	// OCSF: action_id (type integer_t, requirement recommended)
+	ActionID int `json:"action_id,omitempty"`
 
 	// ActivityID is the Activity ID. The normalized identifier of the
 	// activity that triggered the event.
@@ -52,10 +50,18 @@ type ProcessActivity struct {
 	Actor *objects.Actor `json:"actor"`
 
 	// ActualPermissions is the Actual Permissions. The permissions that were
-	// granted to the in a platform-native format.
+	// granted to the process in a platform-native format.
 	//
 	// OCSF: actual_permissions (type integer_t, requirement recommended)
 	ActualPermissions int `json:"actual_permissions,omitempty"`
+
+	// AiModel is the AI Model. The AI Model object describes the
+	// characteristics of an AI/ML model. Examples include language models
+	// like GPT-4, embedding models like text-embedding-ada-002, and computer
+	// vision models like CLIP.
+	//
+	// OCSF: ai_model (type ai_model, requirement recommended)
+	AiModel *objects.AiModel `json:"ai_model,omitempty"`
 
 	// API is the API Details. Describes details about a typical API
 	// (Application Programming Interface) call.
@@ -63,9 +69,10 @@ type ProcessActivity struct {
 	// OCSF: api (type api, requirement optional)
 	API *objects.API `json:"api,omitempty"`
 
-	// Attacks is the MITRE ATT&CK® Details. An array of MITRE ATT&CK®
-	// objects describing the tactics, techniques & sub-techniques identified
-	// by a security control or finding.
+	// Attacks is the MITRE ATT&CK® and ATLAS™ Details. An array of MITRE
+	// ATT&CK® objects describing identified tactics, techniques &
+	// sub-techniques. The objects are compatible with MITRE ATLAS™
+	// tactics, techniques & sub-techniques.
 	//
 	// OCSF: attacks (type []attack, requirement optional)
 	Attacks []objects.Attack `json:"attacks,omitempty"`
@@ -102,10 +109,31 @@ type ProcessActivity struct {
 	ClassUID int `json:"class_uid"`
 
 	// Cloud is the Cloud. Describes details about the Cloud environment
-	// where the event was originally created or logged.
+	// where the event or finding was created.
 	//
 	// OCSF: cloud (type cloud, requirement required)
 	Cloud *objects.Cloud `json:"cloud"`
+
+	// Confidence is the Confidence. The confidence, normalized to the
+	// caption of the confidence_id value. In the case of 'Other', it is
+	// defined by the event source.
+	//
+	// OCSF: confidence (type string_t, requirement optional)
+	Confidence string `json:"confidence,omitempty"`
+
+	// ConfidenceID is the Confidence ID. The normalized confidence refers to
+	// the accuracy of the rule that created the finding. A rule with a low
+	// confidence means that the finding scope is wide and may create finding
+	// reports that may not be malicious in nature.
+	//
+	// OCSF: confidence_id (type integer_t, requirement recommended)
+	ConfidenceID int `json:"confidence_id,omitempty"`
+
+	// ConfidenceScore is the Confidence Score. The confidence score as
+	// reported by the event source.
+	//
+	// OCSF: confidence_score (type integer_t, requirement optional)
+	ConfidenceScore int `json:"confidence_score,omitempty"`
 
 	// Count is the Count. The number of times that events in the same
 	// logical group occurred during the event Start Time to End Time period.
@@ -163,8 +191,8 @@ type ProcessActivity struct {
 	// OCSF: exit_code (type integer_t, requirement recommended)
 	ExitCode int `json:"exit_code,omitempty"`
 
-	// FirewallRule is the Firewall Rule. The firewall rule that triggered
-	// the event.
+	// FirewallRule is the Firewall Rule. The firewall rule that pertains to
+	// the control that triggered the event, if applicable.
 	//
 	// OCSF: firewall_rule (type firewall_rule, requirement optional)
 	FirewallRule *objects.FirewallRule `json:"firewall_rule,omitempty"`
@@ -182,17 +210,52 @@ type ProcessActivity struct {
 	// OCSF: injection_type_id (type integer_t, requirement recommended)
 	InjectionTypeID int `json:"injection_type_id,omitempty"`
 
+	// IsAlert is the Alert. Indicates that the event is considered to be an
+	// alertable signal. Should be set to true if disposition_id = Alert
+	// among other dispositions, and/or risk_level_id or severity_id of the
+	// event is elevated. Not all control events will be alertable, for
+	// example if disposition_id = Exonerated or disposition_id = Allowed.
+	//
+	// OCSF: is_alert (type boolean_t, requirement recommended)
+	IsAlert bool `json:"is_alert,omitempty"`
+
+	// LaunchType is the Launch Type. The specific type of Launch activity,
+	// normalized to the caption of the launch_type_id value. In the case of
+	// Other it is defined by the event source.
+	//
+	// OCSF: launch_type (type string_t, requirement recommended)
+	LaunchType string `json:"launch_type,omitempty"`
+
+	// LaunchTypeID is the Launch Type ID. The normalized identifier for the
+	// specific type of Launch activity.
+	//
+	// OCSF: launch_type_id (type integer_t, requirement recommended)
+	LaunchTypeID int `json:"launch_type_id,omitempty"`
+
 	// Malware is the Malware. A list of Malware objects, describing details
 	// about the identified malware.
 	//
 	// OCSF: malware (type []malware, requirement optional)
 	Malware []objects.Malware `json:"malware,omitempty"`
 
+	// MalwareScanInfo is the Malware Scan Info. Describes details about the
+	// scan job that identified malware on the target system.
+	//
+	// OCSF: malware_scan_info (type malware_scan_info, requirement optional)
+	MalwareScanInfo *objects.MalwareScanInfo `json:"malware_scan_info,omitempty"`
+
 	// Message is the Message. The description of the event/finding, as
 	// defined by the source.
 	//
 	// OCSF: message (type string_t, requirement recommended)
 	Message string `json:"message,omitempty"`
+
+	// MessageContext is the Message Context. Communication context for AI
+	// system interactions including protocols, roles, clients, and session
+	// information for MCP and other AI communication systems.
+	//
+	// OCSF: message_context (type message_context, requirement optional)
+	MessageContext *objects.MessageContext `json:"message_context,omitempty"`
 
 	// Metadata is the Metadata. The metadata associated with the event or a
 	// finding.
@@ -222,6 +285,13 @@ type ProcessActivity struct {
 	// OCSF: osint (type []osint, requirement required)
 	Osint []objects.Osint `json:"osint"`
 
+	// Policy is the Policy. The policy that pertains to the control that
+	// triggered the event, if applicable. For example the name of an
+	// anti-malware policy or an access control policy.
+	//
+	// OCSF: policy (type policy, requirement optional)
+	Policy *objects.Policy `json:"policy,omitempty"`
+
 	// Process is the Process. The process that was launched, injected into,
 	// opened, or terminated.
 	//
@@ -234,11 +304,46 @@ type ProcessActivity struct {
 	// OCSF: raw_data (type string_t, requirement optional)
 	RawData string `json:"raw_data,omitempty"`
 
+	// RawDataHash is the Raw Data Hash. The hash, which describes the
+	// content of the raw_data field.
+	//
+	// OCSF: raw_data_hash (type fingerprint, requirement optional)
+	RawDataHash *objects.Fingerprint `json:"raw_data_hash,omitempty"`
+
+	// RawDataSize is the Raw Data Size. The size of the raw data which was
+	// transformed into an OCSF event, in bytes.
+	//
+	// OCSF: raw_data_size (type long_t, requirement optional)
+	RawDataSize int64 `json:"raw_data_size,omitempty"`
+
 	// RequestedPermissions is the Requested Permissions. The permissions
-	// mask that were requested by the process.
+	// mask that was requested by the process.
 	//
 	// OCSF: requested_permissions (type integer_t, requirement recommended)
 	RequestedPermissions int `json:"requested_permissions,omitempty"`
+
+	// RiskDetails is the Risk Details. Describes the risk associated with
+	// the finding.
+	//
+	// OCSF: risk_details (type string_t, requirement optional)
+	RiskDetails string `json:"risk_details,omitempty"`
+
+	// RiskLevel is the Risk Level. The risk level, normalized to the caption
+	// of the risk_level_id value.
+	//
+	// OCSF: risk_level (type string_t, requirement optional)
+	RiskLevel string `json:"risk_level,omitempty"`
+
+	// RiskLevelID is the Risk Level ID. The normalized risk level id.
+	//
+	// OCSF: risk_level_id (type integer_t, requirement optional)
+	RiskLevelID int `json:"risk_level_id,omitempty"`
+
+	// RiskScore is the Risk Score. The risk score as reported by the event
+	// source.
+	//
+	// OCSF: risk_score (type integer_t, requirement optional)
+	RiskScore int `json:"risk_score,omitempty"`
 
 	// Severity is the Severity. The event/finding severity, normalized to
 	// the caption of the severity_id value. In the case of 'Other', it is
@@ -357,7 +462,7 @@ func (e ProcessActivity) Validate() error {
 		return &ocsf.ValidationError{ClassUID: 1007, Field: "process", Rule: "required", Reason: "required field is missing"}
 	}
 	switch e.ActionID {
-	case 0, 1, 2, 99:
+	case 0, 1, 2, 3, 4, 99:
 	default:
 		return &ocsf.ValidationError{ClassUID: 1007, Field: "action_id", Rule: "enum", Reason: "value outside the schema's enum range"}
 	}
@@ -373,6 +478,14 @@ func (e ProcessActivity) Validate() error {
 			}
 		case 2:
 			if e.Action != "Denied" {
+				return &ocsf.ValidationError{ClassUID: 1007, Field: "action", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.Action != "Observed" {
+				return &ocsf.ValidationError{ClassUID: 1007, Field: "action", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 4:
+			if e.Action != "Modified" {
 				return &ocsf.ValidationError{ClassUID: 1007, Field: "action", Rule: "enum", Reason: "sibling does not match enum caption"}
 			}
 		}
@@ -443,6 +556,31 @@ func (e ProcessActivity) Validate() error {
 		case 14:
 			if e.ActivityName != "Open" {
 				return &ocsf.ValidationError{ClassUID: 1007, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.ConfidenceID {
+	case 0, 1, 2, 3, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 1007, Field: "confidence_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.Confidence != "" {
+		switch e.ConfidenceID {
+		case 0:
+			if e.Confidence != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 1007, Field: "confidence", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.Confidence != "Low" {
+				return &ocsf.ValidationError{ClassUID: 1007, Field: "confidence", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.Confidence != "Medium" {
+				return &ocsf.ValidationError{ClassUID: 1007, Field: "confidence", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.Confidence != "High" {
+				return &ocsf.ValidationError{ClassUID: 1007, Field: "confidence", Rule: "enum", Reason: "sibling does not match enum caption"}
 			}
 		}
 	}
@@ -592,6 +730,60 @@ func (e ProcessActivity) Validate() error {
 			}
 		}
 	}
+	switch e.LaunchTypeID {
+	case 0, 1, 2, 3, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 1007, Field: "launch_type_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.LaunchType != "" {
+		switch e.LaunchTypeID {
+		case 0:
+			if e.LaunchType != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 1007, Field: "launch_type", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.LaunchType != "Spawn" {
+				return &ocsf.ValidationError{ClassUID: 1007, Field: "launch_type", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.LaunchType != "Fork" {
+				return &ocsf.ValidationError{ClassUID: 1007, Field: "launch_type", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.LaunchType != "Exec" {
+				return &ocsf.ValidationError{ClassUID: 1007, Field: "launch_type", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.RiskLevelID {
+	case 0, 1, 2, 3, 4, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 1007, Field: "risk_level_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.RiskLevel != "" {
+		switch e.RiskLevelID {
+		case 0:
+			if e.RiskLevel != "Info" {
+				return &ocsf.ValidationError{ClassUID: 1007, Field: "risk_level", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.RiskLevel != "Low" {
+				return &ocsf.ValidationError{ClassUID: 1007, Field: "risk_level", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.RiskLevel != "Medium" {
+				return &ocsf.ValidationError{ClassUID: 1007, Field: "risk_level", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.RiskLevel != "High" {
+				return &ocsf.ValidationError{ClassUID: 1007, Field: "risk_level", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 4:
+			if e.RiskLevel != "Critical" {
+				return &ocsf.ValidationError{ClassUID: 1007, Field: "risk_level", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
 	switch e.SeverityID {
 	case 0, 1, 2, 3, 4, 5, 6, 99:
 	default:
@@ -630,7 +822,7 @@ func (e ProcessActivity) Validate() error {
 		}
 	}
 	switch e.StatusID {
-	case 0, 1, 2, 3, 4, 99:
+	case 0, 1, 2, 3, 4, 5, 6, 99:
 	default:
 		return &ocsf.ValidationError{ClassUID: 1007, Field: "status_id", Rule: "enum", Reason: "value outside the schema's enum range"}
 	}
@@ -654,6 +846,14 @@ func (e ProcessActivity) Validate() error {
 			}
 		case 4:
 			if e.Status != "Resolved" {
+				return &ocsf.ValidationError{ClassUID: 1007, Field: "status", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 5:
+			if e.Status != "Archived" {
+				return &ocsf.ValidationError{ClassUID: 1007, Field: "status", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 6:
+			if e.Status != "Deleted" {
 				return &ocsf.ValidationError{ClassUID: 1007, Field: "status", Rule: "enum", Reason: "sibling does not match enum caption"}
 			}
 		}

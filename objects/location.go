@@ -7,10 +7,19 @@ package objects
 
 // Location describes the OCSF Geo Location object: The Geo Location
 // object describes a geographical location, usually associated with an
-// IP address. Defined by D3FEND d3f:PhysicalLocation.
+// IP address.
 //
 // OCSF name: location.
 type Location struct {
+	// AerialHeight is the Aerial Height. Expressed as either height above
+	// takeoff location or height above ground level (AGL) for a UAS current
+	// location. This value is provided in meters and must have a minimum
+	// resolution of 1 m. Special Values: Invalid, No Value, or Unknown:
+	// -1000 m.
+	//
+	// OCSF: aerial_height (type string_t, requirement optional)
+	AerialHeight string `json:"aerial_height,omitempty"`
+
 	// City is the City. The name of the city.
 	//
 	// OCSF: city (type string_t, requirement recommended)
@@ -28,8 +37,7 @@ type Location struct {
 	// OCSF: coordinates (type []float_t, requirement optional)
 	Coordinates []float64 `json:"coordinates,omitempty"`
 
-	// Country is the Country. The ISO 3166-1 Alpha-2 country code. For the
-	// complete list of country codes see ISO 3166-1 alpha-2 codes.Note: The
+	// Country is the Country. The ISO 3166-1 Alpha-2 country code.Note: The
 	// two letter country code should be capitalized. For example: US or CA.
 	//
 	// OCSF: country (type string_t, requirement recommended)
@@ -40,6 +48,22 @@ type Location struct {
 	// OCSF: desc (type string_t, requirement optional)
 	Desc string `json:"desc,omitempty"`
 
+	// GeodeticAltitude is the Geodetic Altitude. The aircraft distance above
+	// or below the ellipsoid as measured along a line that passes through
+	// the aircraft and is normal to the surface of the WGS-84 ellipsoid.
+	// This value is provided in meters and must have a minimum resolution of
+	// 1 m. Special Values: Invalid, No Value, or Unknown: -1000 m.
+	//
+	// OCSF: geodetic_altitude (type string_t, requirement optional)
+	GeodeticAltitude string `json:"geodetic_altitude,omitempty"`
+
+	// GeodeticVerticalAccuracy is the Geodetic Vertical Accuracy. Provides
+	// quality/containment on geodetic altitude. This is based on ADS-B
+	// Geodetic Vertical Accuracy (GVA). Measured in meters.
+	//
+	// OCSF: geodetic_vertical_accuracy (type string_t, requirement optional)
+	GeodeticVerticalAccuracy string `json:"geodetic_vertical_accuracy,omitempty"`
+
 	// Geohash is the Geohash. Geohash of the geo-coordinates (latitude and
 	// longitude).Geohashing is a geocoding system used to encode geographic
 	// coordinates in decimal degrees, to a single string.
@@ -47,15 +71,24 @@ type Location struct {
 	// OCSF: geohash (type string_t, requirement optional)
 	Geohash string `json:"geohash,omitempty"`
 
-	// IsOnPremises is the On Premises. The indication of whether the
-	// location is on premises.
+	// HorizontalAccuracy is the Horizontal Accuracy. Provides
+	// quality/containment on horizontal position. This is based on ADS-B
+	// NACp. Measured in meters.
+	//
+	// OCSF: horizontal_accuracy (type string_t, requirement optional)
+	HorizontalAccuracy string `json:"horizontal_accuracy,omitempty"`
+
+	// IsOnPremises is the On-Premises. Indicates whether the location is
+	// on-premises.
 	//
 	// OCSF: is_on_premises (type boolean_t, requirement optional)
 	IsOnPremises bool `json:"is_on_premises,omitempty"`
 
-	// Isp is the ISP. The name of the Internet Service Provider (ISP).
+	// Isp is the ISP Name. The name of the Internet Service Provider (ISP).
 	//
 	// OCSF: isp (type string_t, requirement optional)
+	//
+	// Deprecated: Utilize <code>isp</code> attribute available in <code>network_endpoint, whois</code> objects according to your use-case.
 	Isp string `json:"isp,omitempty"`
 
 	// Lat is the Latitude. The geographical Latitude coordinate represented
@@ -75,6 +108,16 @@ type Location struct {
 	// OCSF: postal_code (type string_t, requirement optional)
 	PostalCode string `json:"postal_code,omitempty"`
 
+	// PressureAltitude is the Pressure Altitude. The uncorrected barometric
+	// pressure altitude (based on reference standard 29.92 inHg, 1013.25 mb)
+	// provides a reference for algorithms that utilize 'altitude deltas'
+	// between aircraft. This value is provided in meters and must have a
+	// minimum resolution of 1 m.. Special Values: Invalid, No Value, or
+	// Unknown: -1000 m.
+	//
+	// OCSF: pressure_altitude (type string_t, requirement optional)
+	PressureAltitude string `json:"pressure_altitude,omitempty"`
+
 	// Provider is the Provider. The provider of the geographical location
 	// data.
 	//
@@ -82,9 +125,8 @@ type Location struct {
 	Provider string `json:"provider,omitempty"`
 
 	// Region is the Region. The alphanumeric code that identifies the
-	// principal subdivision (e.g. province or state) of the country. Region
-	// codes are defined at ISO 3166-2 and have a limit of three characters.
-	// For example, see the region codes for the US.
+	// principal subdivision (e.g. province or state) of the country. For
+	// example, 'CH-VD' for the Canton of Vaud, Switzerland
 	//
 	// OCSF: region (type string_t, requirement optional)
 	Region string `json:"region,omitempty"`

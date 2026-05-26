@@ -10,10 +10,10 @@
 // Usage:
 //
 //	# Summary mode — load schema and print a one-line summary.
-//	go run ./internal/gen -schema internal/schema/v1.3.0
+//	go run ./internal/gen -schema internal/schema/upstream
 //
 //	# Emit mode — load schema and write per-object Go files.
-//	go run ./internal/gen -schema internal/schema/v1.3.0 -emit -out .
+//	go run ./internal/gen -schema internal/schema/upstream -emit -out .
 //
 // The -schema flag is required so future schema-version bumps
 // pass a different vendored directory without code changes. The
@@ -39,7 +39,7 @@ func main() {
 func run(args []string, stdout, stderr io.Writer) int {
 	fs := flag.NewFlagSet("gen", flag.ContinueOnError)
 	fs.SetOutput(stderr)
-	schemaDir := fs.String("schema", "", "path to a vendored OCSF schema directory (e.g. internal/schema/v1.3.0)")
+	schemaDir := fs.String("schema", "", "path to a vendored OCSF schema directory (e.g. internal/schema/upstream)")
 	emitMode := fs.Bool("emit", false, "write Go source files for the loaded schema")
 	outDir := fs.String("out", ".", "output directory when -emit is set (writes <out>/objects/*.go)")
 	modulePath := fs.String("module", "github.com/hstern/go-ocsf", "Go module path of the repository being emitted into")

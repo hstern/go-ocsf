@@ -7,31 +7,37 @@ package objects
 
 // Organization describes the OCSF Organization object: The Organization
 // object describes characteristics of an organization or company and its
-// division if any.
+// division if any. Additionally, it also describes cloud and
+// Software-as-a-Service (SaaS) logical hierarchies such as AWS
+// Organizations, Google Cloud Organizations, Oracle Cloud Tenancies, and
+// similar constructs.
 //
 // OCSF name: organization.
 type Organization struct {
-	// Name is the Name. The name of the organization. For example, Widget,
-	// Inc.
+	// Name is the Name. The name of the organization, Oracle Cloud Tenancy,
+	// Google Cloud Organization, or AWS Organization. For example, Widget,
+	// Inc. or the AWS Organization name .
 	//
 	// OCSF: name (type string_t, requirement recommended)
 	Name string `json:"name,omitempty"`
 
-	// OuName is the Org Unit Name. The name of the organizational unit,
-	// within an organization. For example, Finance, IT, R&D
+	// OuName is the Org Unit Name. The name of an organizational unit,
+	// Google Cloud Folder, or AWS Org Unit. For example, the GCP Project
+	// Name , or Dev_Prod_OU .
 	//
 	// OCSF: ou_name (type string_t, requirement recommended)
 	OuName string `json:"ou_name,omitempty"`
 
-	// OuUID is the Org Unit ID. The alternate identifier for an entity's
-	// unique identifier. For example, its Active Directory OU DN or AWS OU
-	// ID.
+	// OuUID is the Org Unit ID. The unique identifier of an organizational
+	// unit, Google Cloud Folder, or AWS Org Unit. For example, an Oracle
+	// Cloud Tenancy ID , AWS OU ID , or GCP Folder ID .
 	//
 	// OCSF: ou_uid (type string_t, requirement optional)
 	OuUID string `json:"ou_uid,omitempty"`
 
-	// UID is the Unique ID. The unique identifier of the organization. For
-	// example, its Active Directory or AWS Org ID.
+	// UID is the Unique ID. The unique identifier of the organization,
+	// Oracle Cloud Tenancy, Google Cloud Organization, or AWS Organization.
+	// For example, an AWS Org ID or Oracle Cloud Domain ID .
 	//
 	// OCSF: uid (type string_t, requirement recommended)
 	UID string `json:"uid,omitempty"`

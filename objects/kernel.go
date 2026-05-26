@@ -9,7 +9,7 @@ package objects
 // object provides information about a specific kernel resource,
 // including its name and type. It describes essential attributes
 // associated with a resource managed by the kernel of an operating
-// system. Defined by D3FEND d3f:Kernel.
+// system.
 //
 // OCSF name: kernel.
 type Kernel struct {
@@ -26,7 +26,7 @@ type Kernel struct {
 
 	// Path is the Path. The full path of the kernel resource.
 	//
-	// OCSF: path (type string_t, requirement optional)
+	// OCSF: path (type file_path_t, requirement optional)
 	Path string `json:"path,omitempty"`
 
 	// SystemCall is the System Call. The system call that was invoked.

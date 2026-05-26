@@ -83,11 +83,37 @@ type Evidences struct {
 	// OCSF: file (type file, requirement recommended)
 	File *File `json:"file,omitempty"`
 
+	// HTTPRequest is the HTTP Request. Describes details about the http
+	// request associated to the activity that triggered the detection.
+	//
+	// OCSF: http_request (type http_request, requirement recommended)
+	HTTPRequest *HTTPRequest `json:"http_request,omitempty"`
+
+	// HTTPResponse is the HTTP Response. Describes details about the http
+	// response associated to the activity that triggered the detection.
+	//
+	// OCSF: http_response (type http_response, requirement recommended)
+	HTTPResponse *HTTPResponse `json:"http_response,omitempty"`
+
+	// Ja4FingerprintList is the JA4+ Fingerprints. Describes details about
+	// the JA4+ fingerprints that triggered the detection.
+	//
+	// OCSF: ja4_fingerprint_list (type []ja4_fingerprint, requirement recommended)
+	Ja4FingerprintList []Ja4Fingerprint `json:"ja4_fingerprint_list,omitempty"`
+
 	// Job is the Job. Describes details about the scheduled job that was
 	// associated with the activity that triggered the detection.
 	//
 	// OCSF: job (type job, requirement recommended)
 	Job *Job `json:"job,omitempty"`
+
+	// Name is the Name. The naming convention or type identifier of the
+	// evidence associated with the security detection. For example, the
+	// @odata.type from Microsoft Graph Alerts V2 or display_name from
+	// CrowdStrike Falcon Incident Behaviors.
+	//
+	// OCSF: name (type string_t, requirement optional)
+	Name string `json:"name,omitempty"`
 
 	// Process is the Process. Describes details about the process associated
 	// to the activity that triggered the detection.
@@ -101,11 +127,39 @@ type Evidences struct {
 	// OCSF: query (type dns_query, requirement recommended)
 	Query *DNSQuery `json:"query,omitempty"`
 
+	// Resources is the Cloud Resources. Describes details about the cloud
+	// resources directly related to activity that triggered the detection.
+	// For resources impacted by the detection, use Affected Resources at the
+	// top-level of the finding.
+	//
+	// OCSF: resources (type []resource_details, requirement recommended)
+	Resources []ResourceDetails `json:"resources,omitempty"`
+
+	// Script is the Script. Describes details about the script that was
+	// associated with the activity that triggered the detection.
+	//
+	// OCSF: script (type script, requirement recommended)
+	Script *Script `json:"script,omitempty"`
+
 	// SrcEndpoint is the Source Endpoint. Describes details about the source
 	// of the network activity that triggered the detection.
 	//
 	// OCSF: src_endpoint (type network_endpoint, requirement recommended)
 	SrcEndpoint *NetworkEndpoint `json:"src_endpoint,omitempty"`
+
+	// TLS is the TLS. Describes details about the Transport Layer Security
+	// (TLS) activity that triggered the detection.
+	//
+	// OCSF: tls (type tls, requirement recommended)
+	TLS *TLS `json:"tls,omitempty"`
+
+	// UID is the Unique ID. The unique identifier of the evidence associated
+	// with the security detection. For example, the activity_id from
+	// CrowdStrike Falcon Alerts or behavior_id from CrowdStrike Falcon
+	// Incident Behaviors.
+	//
+	// OCSF: uid (type string_t, requirement optional)
+	UID string `json:"uid,omitempty"`
 
 	// URL is the URL. The URL object that pertains to the event or object
 	// associated to the activity that triggered the detection.
@@ -119,4 +173,20 @@ type Evidences struct {
 	//
 	// OCSF: user (type user, requirement recommended)
 	User *User `json:"user,omitempty"`
+
+	// Verdict is the Verdict. The normalized verdict of the evidence
+	// associated with the security detection.
+	//
+	// OCSF: verdict (type string_t, requirement optional)
+	Verdict string `json:"verdict,omitempty"`
+
+	// VerdictID is the Verdict ID. The normalized verdict (or status) ID of
+	// the evidence associated with the security detection. For example,
+	// Microsoft Graph Security Alerts contain a verdict enumeration for each
+	// type of evidence associated with the Alert. This is typically set by
+	// an automated investigation process or an analyst/investigator assigned
+	// to the finding.
+	//
+	// OCSF: verdict_id (type integer_t, requirement optional)
+	VerdictID int `json:"verdict_id,omitempty"`
 }

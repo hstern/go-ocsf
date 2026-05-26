@@ -11,54 +11,52 @@ import (
 	"github.com/hstern/go-ocsf/internal/gen/schema"
 )
 
-// TestLoadVendoredV130 is the end-to-end smoke test: read the
-// repository's vendored OCSF 1.3.0 schema and check the high-level
-// counts plus a handful of spot-check invariants (well-known class
-// UIDs, attribute resolution, profile presence). Asserting on
-// counts catches the kind of partial-load failure where a single
-// directory walk misses files; asserting on specific classes
-// catches misresolved extends chains.
+// TestLoadUpstream is the end-to-end smoke test: read the
+// repository's submodule-pinned OCSF schema and check the
+// high-level counts plus a handful of spot-check invariants
+// (well-known class UIDs, attribute resolution). Asserting on
+// counts catches the kind of partial-load failure where a
+// single directory walk misses files; asserting on specific
+// classes catches misresolved extends chains.
 //
-// Counts are reported by upstream's v1.3.0 release and verified by
-// hand-counting the vendored directory; if upstream changes them
-// in a future patch (unlikely for a tagged release), the test
-// would need an update alongside the schema bump.
-func TestLoadVendoredV130(t *testing.T) {
+// The counts below match the upstream 1.8.0 release and will
+// shift with each schema-version bump (OCSF-29 onward); the
+// shape of the test stays the same.
+func TestLoadUpstream(t *testing.T) {
 	_, thisFile, _, ok := runtime.Caller(0)
 	if !ok {
 		t.Fatal("runtime.Caller failed")
 	}
 	repoRoot := filepath.Join(filepath.Dir(thisFile), "..", "..", "..")
-	schemaDir := filepath.Join(repoRoot, "internal", "schema", "v1.3.0")
+	schemaDir := filepath.Join(repoRoot, "internal", "schema", "upstream")
 
 	s, err := schema.Load(schemaDir)
 	if err != nil {
 		t.Fatalf("Load(%q): %v", schemaDir, err)
 	}
 
-	if got, want := s.Version, "1.3.0"; got != want {
+	if got, want := s.Version, "1.8.0"; got != want {
 		t.Errorf("Version = %q, want %q", got, want)
 	}
-	if got, want := len(s.Categories), 7; got != want {
-		t.Errorf("Categories = %d, want %d (system, findings, iam, network, discovery, application, remediation)", got, want)
+	if got, want := len(s.Categories), 8; got != want {
+		t.Errorf("Categories = %d, want %d (system, findings, iam, network, discovery, application, remediation, unmanned_systems)", got, want)
 	}
 	if c, found := s.Categories["iam"]; !found || c.UID != 3 {
 		t.Errorf("Categories[iam] = %+v, want UID 3", c)
 	}
-	if got := len(s.Dictionary.Attributes); got < 500 {
-		// Upstream has 627 attributes at 1.3.0; allow some slack
-		// for benign upstream edits in a future patch but flag any
-		// dramatic loss.
-		t.Errorf("Dictionary.Attributes = %d, want >= 500", got)
+	if got := len(s.Dictionary.Attributes); got < 800 {
+		// Upstream has 907 attributes at 1.8.0; allow some slack
+		// for benign upstream edits but flag any dramatic loss.
+		t.Errorf("Dictionary.Attributes = %d, want >= 800", got)
 	}
-	if got := len(s.Dictionary.Types); got != 22 {
-		t.Errorf("Dictionary.Types = %d, want 22", got)
+	if got := len(s.Dictionary.Types); got != 23 {
+		t.Errorf("Dictionary.Types = %d, want 23", got)
 	}
-	if got := len(s.Objects); got < 100 {
-		t.Errorf("Objects = %d, want >= 100", got)
+	if got := len(s.Objects); got < 150 {
+		t.Errorf("Objects = %d, want >= 150", got)
 	}
-	if got := len(s.Events); got < 60 {
-		t.Errorf("Events = %d, want >= 60", got)
+	if got := len(s.Events); got < 70 {
+		t.Errorf("Events = %d, want >= 70", got)
 	}
 
 	// Spot check: well-known class UIDs.
@@ -97,8 +95,7 @@ func TestLoadVendoredV130(t *testing.T) {
 
 	// Spot check: dictionary type resolution. The user object's
 	// `name` attribute is typed username_t locally (override of the
-	// dictionary type) and `email_addr` should remain whatever the
-	// dictionary says.
+	// dictionary type).
 	user, ok := s.Objects["user"]
 	if !ok {
 		t.Fatal("Objects[user] missing")

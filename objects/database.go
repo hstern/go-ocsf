@@ -23,12 +23,29 @@ type Database struct {
 	// category types.
 	//
 	// OCSF: data_classification (type data_classification, requirement recommended)
+	//
+	// Deprecated: Use the attribute <code>data_classifications</code> instead
 	DataClassification *DataClassification `json:"data_classification,omitempty"`
+
+	// DataClassifications is the Data Classification. A list of Data
+	// Classification objects, that include information about data
+	// classification levels and data category types, identified by a
+	// classifier.
+	//
+	// OCSF: data_classifications (type []data_classification, requirement recommended)
+	DataClassifications []DataClassification `json:"data_classifications,omitempty"`
 
 	// Desc is the Description. The description of the database.
 	//
 	// OCSF: desc (type string_t, requirement optional)
 	Desc string `json:"desc,omitempty"`
+
+	// EmbeddingModel is the Embedding Model. Model used for creating
+	// embeddings (if applicable). For example: text-embedding-ada-002 or
+	// all-MiniLM-L6-v2.
+	//
+	// OCSF: embedding_model (type string_t, requirement optional)
+	EmbeddingModel string `json:"embedding_model,omitempty"`
 
 	// Groups is the Groups. The group names to which the database belongs.
 	//

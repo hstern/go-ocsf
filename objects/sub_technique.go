@@ -5,27 +5,27 @@
 
 package objects
 
-// SubTechnique describes the OCSF MITRE ATT&CK® Sub Technique object:
-// The MITRE ATT&CK® Sub Technique object describes the sub technique ID
-// and/or name associated to an attack, as defined by ATT&CK® Matrix.
+// SubTechnique describes the OCSF MITRE Sub-technique object: The MITRE
+// Sub-technique object describes the ATT&CK® or ATLAS™ Sub-technique
+// ID and/or name associated to an attack.
 //
 // OCSF name: sub_technique.
 type SubTechnique struct {
-	// Name is the Name. The name of the attack sub technique, as defined by
-	// ATT&CK® Matrix. For example: Scanning IP Blocks.
+	// Name is the Name. The name of the attack sub-technique. For example:
+	// Scanning IP Blocks or User Execution: Unsafe ML Artifacts.
 	//
-	// OCSF: name (type string_t, requirement optional)
+	// OCSF: name (type string_t, requirement recommended)
 	Name string `json:"name,omitempty"`
 
-	// SrcURL is the Source URL. The versioned permalink of the attack sub
-	// technique, as defined by ATT&CK® Matrix. For example:
+	// SrcURL is the Source URL. The versioned permalink of the attack
+	// sub-technique. For example:
 	// https://attack.mitre.org/versions/v14/techniques/T1595/001/.
 	//
 	// OCSF: src_url (type url_t, requirement optional)
 	SrcURL string `json:"src_url,omitempty"`
 
-	// UID is the Unique ID. The unique identifier of the attack sub
-	// technique, as defined by ATT&CK® Matrix. For example: T1595.001.
+	// UID is the Unique ID. The unique identifier of the attack
+	// sub-technique. For example: T1595.001 or AML.T0011.000.
 	//
 	// OCSF: uid (type string_t, requirement recommended)
 	UID string `json:"uid,omitempty"`

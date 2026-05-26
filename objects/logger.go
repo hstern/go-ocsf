@@ -18,28 +18,49 @@ type Logger struct {
 	// OCSF: device (type device, requirement recommended)
 	Device *Device `json:"device,omitempty"`
 
-	// LogLevel is the Log Level. The audit level at which an event was
-	// generated.
+	// EventUID is the Event UID. The unique identifier of the event assigned
+	// by the logger.
+	//
+	// OCSF: event_uid (type string_t, requirement optional)
+	EventUID string `json:"event_uid,omitempty"`
+
+	// IsTruncated is the Is Truncated. Indicates whether the OCSF event data
+	// has been truncated due to size limitations. When true, some event data
+	// may have been omitted to fit within system constraints.
+	//
+	// OCSF: is_truncated (type boolean_t, requirement optional)
+	IsTruncated bool `json:"is_truncated,omitempty"`
+
+	// LogFormat is the Log Format. The format of data in the log. For
+	// example JSON, syslog or CSV.
+	//
+	// OCSF: log_format (type string_t, requirement optional)
+	LogFormat string `json:"log_format,omitempty"`
+
+	// LogLevel is the Log Level. The level at which an event was logged.
+	// This can be log provider specific. For example the audit level.
 	//
 	// OCSF: log_level (type string_t, requirement optional)
 	LogLevel string `json:"log_level,omitempty"`
 
-	// LogName is the Log Name. The event log name. For example, syslog file
-	// name or Windows logging subsystem: Security.
+	// LogName is the Log Name. The log name for the logging provider log, or
+	// the file name of the system log. This may be an intermediate
+	// store-and-forward log or a vendor destination log. For example
+	// /archive/server1/var/log/messages.0 or /var/log/.
 	//
 	// OCSF: log_name (type string_t, requirement recommended)
 	LogName string `json:"log_name,omitempty"`
 
 	// LogProvider is the Log Provider. The logging provider or logging
-	// service that logged the event. For example,
-	// Microsoft-Windows-Security-Auditing.
+	// service that logged the event. This may be an intermediate application
+	// store-and-forward log or a vendor destination log.
 	//
 	// OCSF: log_provider (type string_t, requirement recommended)
 	LogProvider string `json:"log_provider,omitempty"`
 
-	// LogVersion is the Log Version. The event log schema version that
-	// specifies the format of the original event. For example syslog version
-	// or Cisco Log Schema Version.
+	// LogVersion is the Log Version. The event log schema version of the
+	// original event. For example the syslog version or the Cisco Log Schema
+	// version
 	//
 	// OCSF: log_version (type string_t, requirement optional)
 	LogVersion string `json:"log_version,omitempty"`
@@ -68,7 +89,7 @@ type Logger struct {
 	// TransmitTime is the Transmission Time. The time when the event was
 	// transmitted from the logging device to it's next destination.
 	//
-	// OCSF: transmit_time (type timestamp_t, requirement optional)
+	// OCSF: transmit_time (type timestamp_t, requirement recommended)
 	TransmitTime int64 `json:"transmit_time,omitempty"`
 
 	// UID is the Unique ID. The unique identifier of the logging product
@@ -77,7 +98,15 @@ type Logger struct {
 	// OCSF: uid (type string_t, requirement recommended)
 	UID string `json:"uid,omitempty"`
 
-	// Version is the Version. The version of the logging product.
+	// UntruncatedSize is the Untruncated Size. The original size of the OCSF
+	// event data in kilobytes before any truncation occurred. This field is
+	// typically populated when is_truncated is true to indicate the full
+	// size of the original event.
+	//
+	// OCSF: untruncated_size (type integer_t, requirement optional)
+	UntruncatedSize int `json:"untruncated_size,omitempty"`
+
+	// Version is the Version. The version of the logging provider.
 	//
 	// OCSF: version (type string_t, requirement optional)
 	Version string `json:"version,omitempty"`

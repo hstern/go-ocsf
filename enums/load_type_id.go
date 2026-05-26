@@ -8,7 +8,7 @@ package enums
 import "strconv"
 
 // LoadType is the OCSF Load Type ID enum. The normalized identifier of
-// the load type. See specific uasge.
+// the load type. See specific usage.
 //
 // OCSF attribute: load_type_id.
 type LoadType int

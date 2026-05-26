@@ -35,6 +35,8 @@ type CVE struct {
 	// catalog.
 	//
 	// OCSF: cwe (type cwe, requirement optional)
+	//
+	// Deprecated: Use <code>related_cwes</code> attribute instead.
 	Cwe *Cwe `json:"cwe,omitempty"`
 
 	// CweUID is the CWE UID. The Common Weakness Enumeration (CWE) unique
@@ -80,6 +82,12 @@ type CVE struct {
 	//
 	// OCSF: references (type []string_t, requirement recommended)
 	References []string `json:"references,omitempty"`
+
+	// RelatedCwes is the Related CWEs. Describes the Common Weakness
+	// Enumeration (CWE) details related to the CVE Record.
+	//
+	// OCSF: related_cwes (type []cwe, requirement optional)
+	RelatedCwes []Cwe `json:"related_cwes,omitempty"`
 
 	// Title is the Title. A title or a brief phrase summarizing the CVE
 	// record.

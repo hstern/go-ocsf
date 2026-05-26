@@ -7,7 +7,7 @@ package enums
 
 import "strconv"
 
-// Confidence is the OCSF Confidence Id enum. The normalized confidence
+// Confidence is the OCSF Confidence ID enum. The normalized confidence
 // refers to the accuracy of the rule that created the finding. A rule
 // with a low confidence means that the finding scope is wide and may
 // create finding reports that may not be malicious in nature.

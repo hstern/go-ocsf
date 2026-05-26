@@ -31,6 +31,19 @@ type LDAPPerson struct {
 	// OCSF: deleted_time (type timestamp_t, requirement optional)
 	DeletedTime int64 `json:"deleted_time,omitempty"`
 
+	// Department is the Department. The name of the department in which the
+	// user works.
+	//
+	// OCSF: department (type string_t, requirement optional)
+	Department string `json:"department,omitempty"`
+
+	// DisplayName is the Display Name. The display name of the LDAP person.
+	// According to RFC 2798, this is the preferred name of a person to be
+	// used when displaying entries.
+	//
+	// OCSF: display_name (type string_t, requirement optional)
+	DisplayName string `json:"display_name,omitempty"`
+
 	// EmailAddrs is the Email Addresses. A list of additional email
 	// addresses for the user.
 	//
@@ -120,8 +133,20 @@ type LDAPPerson struct {
 	// OCSF: office_location (type string_t, requirement optional)
 	OfficeLocation string `json:"office_location,omitempty"`
 
+	// PhoneNumber is the Telephone Number. The telephone number of the user.
+	// Corresponds to the LDAP Telephone-Number CN.
+	//
+	// OCSF: phone_number (type string_t, requirement optional)
+	PhoneNumber string `json:"phone_number,omitempty"`
+
 	// Surname is the Surname. The last or family name for the user.
 	//
 	// OCSF: surname (type string_t, requirement optional)
 	Surname string `json:"surname,omitempty"`
+
+	// Tags is the Tags. The list of tags; {key:value} pairs associated to
+	// the user.
+	//
+	// OCSF: tags (type []key_value_object, requirement optional)
+	Tags []KeyValueObject `json:"tags,omitempty"`
 }

@@ -9,7 +9,8 @@ package objects
 // collection or association of entities, such as users, policies, or
 // devices. It serves as a logical grouping mechanism to organize and
 // manage entities with similar characteristics or permissions within a
-// system or organization.
+// system or organization, including but not limited to purposes of
+// access control.
 //
 // OCSF name: group.
 type Group struct {
@@ -34,14 +35,20 @@ type Group struct {
 	// OCSF: privileges (type []string_t, requirement optional)
 	Privileges []string `json:"privileges,omitempty"`
 
-	// Type is the Account Type. The type of the group or account.
+	// Type is the Group Type. The type of the group.
 	//
 	// OCSF: type (type string_t, requirement optional)
 	Type string `json:"type,omitempty"`
 
 	// UID is the Unique ID. The unique identifier of the group. For example,
 	// for Windows events this is the security identifier (SID) of the group.
+	// Another example, pool id or desktop id that the device belongs to.
 	//
 	// OCSF: uid (type string_t, requirement recommended)
 	UID string `json:"uid,omitempty"`
+
+	// UIDAlt is the Alternate ID. The alternate unique identifier.
+	//
+	// OCSF: uid_alt (type string_t, requirement optional)
+	UIDAlt string `json:"uid_alt,omitempty"`
 }

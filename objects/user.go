@@ -6,8 +6,7 @@
 package objects
 
 // User describes the OCSF User object: The User object describes the
-// characteristics of a user/person or a security principal. Defined by
-// D3FEND d3f:UserAccount.
+// characteristics of a user/person or a security principal.
 //
 // OCSF name: user.
 type User struct {
@@ -21,7 +20,15 @@ type User struct {
 	// user's credential. For example, AWS Access Key ID.
 	//
 	// OCSF: credential_uid (type string_t, requirement optional)
+	//
+	// Deprecated: Use <code>programmatic_credentials</code> instead.
 	CredentialUID string `json:"credential_uid,omitempty"`
+
+	// DisplayName is the Display Name. The display name of the user, as
+	// reported by the product.
+	//
+	// OCSF: display_name (type string_t, requirement optional)
+	DisplayName string `json:"display_name,omitempty"`
 
 	// Domain is the Domain. The domain where the user is defined. For
 	// example: the LDAP or Active Directory domain.
@@ -34,8 +41,14 @@ type User struct {
 	// OCSF: email_addr (type email_t, requirement optional)
 	EmailAddr string `json:"email_addr,omitempty"`
 
-	// FullName is the Full Name. The full name of the person, as per the
-	// LDAP Common Name attribute (cn).
+	// ForwardAddr is the Forwarding Address. The user's forwarding email
+	// address.
+	//
+	// OCSF: forward_addr (type email_t, requirement optional)
+	ForwardAddr string `json:"forward_addr,omitempty"`
+
+	// FullName is the Full Name. The full name of the user, as reported by
+	// the product.
 	//
 	// OCSF: full_name (type string_t, requirement optional)
 	FullName string `json:"full_name,omitempty"`
@@ -45,6 +58,12 @@ type User struct {
 	//
 	// OCSF: groups (type []group, requirement optional)
 	Groups []Group `json:"groups,omitempty"`
+
+	// HasMFA is the MFA Assigned. The user has a multi-factor or
+	// secondary-factor device assigned.
+	//
+	// OCSF: has_mfa (type boolean_t, requirement recommended)
+	HasMFA bool `json:"has_mfa,omitempty"`
 
 	// LDAPPerson is the LDAP Person. The additional LDAP attributes that
 	// describe a person.
@@ -62,6 +81,18 @@ type User struct {
 	//
 	// OCSF: org (type organization, requirement optional)
 	Org *Organization `json:"org,omitempty"`
+
+	// PhoneNumber is the Telephone Number. The telephone number of the user.
+	//
+	// OCSF: phone_number (type string_t, requirement optional)
+	PhoneNumber string `json:"phone_number,omitempty"`
+
+	// ProgrammaticCredentials is the Programmatic Credentials. Details about
+	// the programmatic credential (API keys, access tokens, certificates,
+	// etc) associated to the user.
+	//
+	// OCSF: programmatic_credentials (type []programmatic_credential, requirement optional)
+	ProgrammaticCredentials []ProgrammaticCredential `json:"programmatic_credentials,omitempty"`
 
 	// RiskLevel is the Risk Level. The risk level, normalized to the caption
 	// of the risk_level_id value.

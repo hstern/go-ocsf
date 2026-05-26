@@ -11,6 +11,12 @@ package objects
 //
 // OCSF name: affected_code.
 type AffectedCode struct {
+	// EndColumn is the End Column. The column number of the last part of the
+	// assessed code identified as vulnerable.
+	//
+	// OCSF: end_column (type integer_t, requirement recommended)
+	EndColumn int `json:"end_column,omitempty"`
+
 	// EndLine is the End Line. The line number of the last line of code
 	// block identified as vulnerable.
 	//
@@ -34,6 +40,18 @@ type AffectedCode struct {
 	//
 	// OCSF: remediation (type remediation, requirement optional)
 	Remediation *Remediation `json:"remediation,omitempty"`
+
+	// Rule is the Related Rule. Details about the specific rule, e.g., those
+	// defined as part of a larger policy, that triggered the finding.
+	//
+	// OCSF: rule (type rule, requirement recommended)
+	Rule *Rule `json:"rule,omitempty"`
+
+	// StartColumn is the Start Column. The column number of the first part
+	// of the assessed code identified as vulnerable.
+	//
+	// OCSF: start_column (type integer_t, requirement recommended)
+	StartColumn int `json:"start_column,omitempty"`
 
 	// StartLine is the Start Line. The line number of the first line of code
 	// block identified as vulnerable.

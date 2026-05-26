@@ -12,6 +12,8 @@ package objects
 // vectors.
 //
 // OCSF name: cis_csc.
+//
+// Deprecated: Use the cis_control object instead.
 type CisCsc struct {
 	// Control is the Security Control. A Control is prescriptive,
 	// prioritized, and simplified set of best practices that one can use to

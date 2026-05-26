@@ -29,8 +29,8 @@ type Job struct {
 
 	// File is the File. The file that pertains to the job.
 	//
-	// OCSF: file (type file, requirement required)
-	File *File `json:"file"`
+	// OCSF: file (type file, requirement optional)
+	File *File `json:"file,omitempty"`
 
 	// LastRunTime is the Last Run. The time when the job was last run.
 	//

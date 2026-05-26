@@ -1,0 +1,3 @@
+[submodule "internal/schema/upstream"]
+	path = internal/schema/upstream
+	url = https://github.com/ocsf/ocsf-schema.git

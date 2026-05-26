@@ -6,7 +6,7 @@
 package objects
 
 // Module describes the OCSF Module object: The Module object describes
-// the load attributes of a module.
+// the attributes of a module.
 //
 // OCSF name: module.
 type Module struct {
@@ -21,11 +21,18 @@ type Module struct {
 	// OCSF: file (type file, requirement recommended)
 	File *File `json:"file,omitempty"`
 
-	// FunctionName is the Function Name. The entry-point function of the
+	// FunctionInvocation is the Function Invocation. Details about the
+	// invocation of the function given in function_name.
+	//
+	// OCSF: function_invocation (type function_invocation, requirement optional)
+	FunctionInvocation *FunctionInvocation `json:"function_invocation,omitempty"`
+
+	// FunctionName is the Function Name. The invoked function in the module.
+	// For load and unload events, this is the entry-point function of the
 	// module. The system calls the entry-point function whenever a process
 	// or thread loads or unloads the module.
 	//
-	// OCSF: function_name (type string_t, requirement optional)
+	// OCSF: function_name (type string_t, requirement recommended)
 	FunctionName string `json:"function_name,omitempty"`
 
 	// LoadType is the Load Type. The load type, normalized to the caption of
@@ -38,8 +45,8 @@ type Module struct {
 	// LoadTypeID is the Load Type ID. The normalized identifier for how the
 	// module was loaded in memory.
 	//
-	// OCSF: load_type_id (type integer_t, requirement required)
-	LoadTypeID int `json:"load_type_id"`
+	// OCSF: load_type_id (type integer_t, requirement recommended)
+	LoadTypeID int `json:"load_type_id,omitempty"`
 
 	// StartAddress is the Start Address. The start address of the execution.
 	//
