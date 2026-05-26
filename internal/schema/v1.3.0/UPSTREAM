@@ -1,0 +1,34 @@
+Upstream source for this vendored copy
+---------------------------------------
+
+Repository:  https://github.com/ocsf/ocsf-schema
+Tag:         1.3.0
+Commit SHA:  c8bde8c4cc7e93bb4a36e873623bbe099da22fb5
+
+The vendored tree is a verbatim copy of the upstream tag, with the
+following non-schema artifacts removed for minimality (they're
+recoverable from the upstream tag if needed):
+
+  - .github/             upstream CI workflows
+  - .vscode/             editor config
+  - CHANGELOG.md         upstream changelog
+  - CONTRIBUTING.md      upstream contributor guide
+  - README.md            upstream README
+  - extensions.md        upstream extension docs
+  - ocsf.png             upstream logo image
+
+Retained: LICENSE, NOTICE, version.json, dictionary.json,
+categories.json, and the events/, objects/, extensions/, includes/,
+metaschema/, profiles/, and templates/ directories.
+
+Verification
+------------
+
+To verify the vendored tree matches the upstream tag:
+
+  git clone --depth 1 --branch 1.3.0 https://github.com/ocsf/ocsf-schema /tmp/ocsf-upstream
+  diff -ruN --no-dereference \
+    --exclude=.git --exclude=.github --exclude=.vscode \
+    --exclude=CHANGELOG.md --exclude=CONTRIBUTING.md \
+    --exclude=README.md --exclude=extensions.md --exclude=ocsf.png \
+    /tmp/ocsf-upstream internal/schema/v1.3.0
