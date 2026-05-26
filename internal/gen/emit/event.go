@@ -436,6 +436,19 @@ func writeEnumValidate(w io.Writer, _ *schema.Schema, ec schema.EventClass, clas
 // they have no out-of-set check we can express against a
 // `string` field, and upstream's "Other" sibling-escape
 // convention doesn't apply.
+//
+// The classification metadata attributes — class_uid,
+// category_uid, type_uid — are also skipped. The dictionary
+// declares an `enum` block on each of them, but the block is a
+// documentation-only placeholder (just `{0: Base Event}` or
+// `{0: Uncategorized}`); the real legal values come from
+// categories.json (for category_uid) and from the per-class
+// `uid` registration (for class_uid). Treating them as enums
+// would flag every concrete event class as out-of-range,
+// because the wire's category_uid value isn't in the
+// placeholder enum's `{0}` set. The codegen pipeline's own
+// OCSFClassUID() / OCSFCategoryUID() methods are the
+// authoritative source.
 func enumAttrsForValidate(ec schema.EventClass) []schema.ClassAttr {
 	out := make([]schema.ClassAttr, 0, len(ec.Attributes))
 	for _, a := range ec.Attributes { //nolint:gocritic // copy fine in codegen path
@@ -448,9 +461,24 @@ func enumAttrsForValidate(ec schema.EventClass) []schema.ClassAttr {
 		if a.Type != "integer_t" && a.Type != "long_t" {
 			continue
 		}
+		if isPlaceholderClassificationEnum(a.Name) {
+			continue
+		}
 		out = append(out, a)
 	}
 	return out
+}
+
+// isPlaceholderClassificationEnum reports whether the named
+// attribute's dictionary enum block is a documentation-only
+// placeholder (class_uid / category_uid / type_uid). See
+// enumAttrsForValidate's doc for why these are skipped.
+func isPlaceholderClassificationEnum(attrName string) bool {
+	switch attrName {
+	case "class_uid", "category_uid", "type_uid":
+		return true
+	}
+	return false
 }
 
 // writeEnumMembershipCheck emits the switch-based
