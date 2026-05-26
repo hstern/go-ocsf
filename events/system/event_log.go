@@ -7,6 +7,7 @@ package system
 
 import (
 	"encoding/json"
+	"github.com/hstern/go-ocsf"
 	"github.com/hstern/go-ocsf/objects"
 )
 
@@ -321,3 +322,7 @@ func (EventLog) OCSFCategoryUID() int { return 1 }
 
 // OCSFCategoryName returns the OCSF category_name (system).
 func (EventLog) OCSFCategoryName() string { return "system" }
+
+func init() {
+	ocsf.RegisterClass(1008, func() ocsf.Event { return &EventLog{} })
+}

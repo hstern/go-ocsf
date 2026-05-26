@@ -79,6 +79,12 @@ func primitiveGoType(name string) string {
 // flows through one constant rather than scattered strings.
 const objectsPkg = "github.com/hstern/go-ocsf/objects"
 
+// rootPkg is the Go-import path of the root ocsf package
+// (where Event, BaseEvent, Parse, RegisterClass live). Used by
+// concrete event-class emission to register themselves at
+// init time.
+const rootPkg = "github.com/hstern/go-ocsf"
+
 // fieldImports lists every import path the package needs for a
 // given attribute's Go type, given the currently-emitting Go
 // package name. Returned in slice form to keep ordering

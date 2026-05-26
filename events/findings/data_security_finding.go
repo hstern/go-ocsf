@@ -7,6 +7,7 @@ package findings
 
 import (
 	"encoding/json"
+	"github.com/hstern/go-ocsf"
 	"github.com/hstern/go-ocsf/objects"
 )
 
@@ -421,3 +422,7 @@ func (DataSecurityFinding) OCSFCategoryUID() int { return 2 }
 
 // OCSFCategoryName returns the OCSF category_name (findings).
 func (DataSecurityFinding) OCSFCategoryName() string { return "findings" }
+
+func init() {
+	ocsf.RegisterClass(2006, func() ocsf.Event { return &DataSecurityFinding{} })
+}
