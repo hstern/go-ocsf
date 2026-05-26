@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"sort"
+	"strconv"
 	"strings"
 
 	"github.com/hstern/go-ocsf/internal/gen/schema"
@@ -185,7 +186,6 @@ func writeEventValidate(w io.Writer, s *schema.Schema, ec schema.EventClass, typ
 	if _, err := fmt.Fprintf(w, "func (e %s) Validate() error {\n", typeName); err != nil {
 		return err
 	}
-	emitted := 0
 	for _, rc := range required {
 		check, ok := requiredFieldCheck(rc.goType)
 		if !ok {
@@ -200,9 +200,10 @@ func writeEventValidate(w io.Writer, s *schema.Schema, ec schema.EventClass, typ
 		if _, err := fmt.Fprintln(w, "\t}"); err != nil {
 			return err
 		}
-		emitted++
 	}
-	_ = emitted
+	if err := writeEnumValidate(w, nil, ec, classUID); err != nil {
+		return err
+	}
 	if _, err := fmt.Fprintln(w, "\treturn nil"); err != nil {
 		return err
 	}
@@ -210,6 +211,210 @@ func writeEventValidate(w io.Writer, s *schema.Schema, ec schema.EventClass, typ
 		return err
 	}
 	return nil
+}
+
+// writeEnumValidate emits the enum-membership and
+// sibling-correspondence checks per OCSF-17. The checks run
+// after the required-field checks so a required-but-zero enum
+// field surfaces as "missing" (when its Go type allows that
+// detection) rather than "out-of-enum"; the inverse error
+// message would be misleading.
+//
+// Membership: for every class attribute whose Go type is `int`
+// and whose resolved Enum is non-empty, emit a switch that
+// covers the known values and returns
+// `ValidationError{Rule: "enum"}` from the default arm.
+//
+// Sibling correspondence: for every `<x>_id` attribute that has
+// a sibling string field present on the same class, emit a
+// switch that asserts the sibling string equals the upstream
+// caption of the matching enum value. The OCSF "Other"
+// convention — typically id 99 with caption "Other" — is
+// the documented escape valve for free-form sibling strings,
+// so the correspondence check skips when the id is the "Other"
+// value.
+//
+// The emitter walks attributes in name-sorted order so the
+// generated switch arms come out byte-stable across runs (the
+// codegen-diff gate from OCSF-12 depends on this).
+func writeEnumValidate(w io.Writer, _ *schema.Schema, ec schema.EventClass, classUID int) error {
+	enumAttrs := enumAttrsForValidate(ec)
+	attrByName := map[string]schema.ClassAttr{}
+	for _, a := range ec.Attributes { //nolint:gocritic // copy fine in codegen path
+		attrByName[a.Name] = a
+	}
+	for _, a := range enumAttrs { //nolint:gocritic // copy fine in codegen path
+		if err := writeEnumMembershipCheck(w, a, classUID); err != nil {
+			return err
+		}
+		if a.Sibling == "" {
+			continue
+		}
+		sib, ok := attrByName[a.Sibling]
+		if !ok || sib.Type != "string_t" || sib.IsArray {
+			// Sibling not on this class, or has an
+			// unexpected shape — skip the correspondence check
+			// rather than emit code that won't compile.
+			continue
+		}
+		if err := writeSiblingCorrespondenceCheck(w, a, sib, classUID); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// enumAttrsForValidate returns the class's enum-bearing scalar
+// int attributes in name-sorted order. Non-int enums
+// (e.g. the `depth` string enum from OCSF-11) are skipped;
+// they have no out-of-set check we can express against a
+// `string` field, and upstream's "Other" sibling-escape
+// convention doesn't apply.
+func enumAttrsForValidate(ec schema.EventClass) []schema.ClassAttr {
+	out := make([]schema.ClassAttr, 0, len(ec.Attributes))
+	for _, a := range ec.Attributes { //nolint:gocritic // copy fine in codegen path
+		if len(a.Enum) == 0 {
+			continue
+		}
+		if a.IsArray {
+			continue
+		}
+		if a.Type != "integer_t" && a.Type != "long_t" {
+			continue
+		}
+		out = append(out, a)
+	}
+	return out
+}
+
+// writeEnumMembershipCheck emits the switch-based
+// out-of-set check for a single enum attribute. The arms
+// cover every value present in the resolved Enum (dictionary +
+// any per-class additions); the default arm returns
+// ValidationError{Rule:"enum"}.
+func writeEnumMembershipCheck(w io.Writer, a schema.ClassAttr, classUID int) error {
+	ids := sortedEnumIDsInt(a.Enum)
+	fieldName := goFieldName(a.Name)
+	if _, err := fmt.Fprintf(w, "\tswitch e.%s {\n", fieldName); err != nil {
+		return err
+	}
+	if _, err := fmt.Fprint(w, "\tcase "); err != nil {
+		return err
+	}
+	for i, id := range ids {
+		if i > 0 {
+			if _, err := fmt.Fprint(w, ", "); err != nil {
+				return err
+			}
+		}
+		if _, err := fmt.Fprint(w, id); err != nil {
+			return err
+		}
+	}
+	if _, err := fmt.Fprintln(w, ":"); err != nil {
+		return err
+	}
+	if _, err := fmt.Fprintln(w, "\tdefault:"); err != nil {
+		return err
+	}
+	if _, err := fmt.Fprintf(w, "\t\treturn &ocsf.ValidationError{ClassUID: %d, Field: %q, Rule: \"enum\", Reason: \"value outside the schema's enum range\"}\n", classUID, a.Name); err != nil {
+		return err
+	}
+	if _, err := fmt.Fprintln(w, "\t}"); err != nil {
+		return err
+	}
+	return nil
+}
+
+// writeSiblingCorrespondenceCheck emits the per-value
+// correspondence assertion linking an `<x>_id` attribute to
+// its sibling string. The OCSF "Other" convention (typically
+// id == 99 with caption "Other") is the documented escape
+// valve for free-form sibling strings — we skip that arm so
+// publishers using it for vendor-specific labels don't trip
+// the check.
+//
+// The emitted code only fires when both the id is a known
+// value (other than the Other escape) AND the sibling string
+// is non-empty; an empty sibling is normal for a publisher
+// that knows only the id.
+func writeSiblingCorrespondenceCheck(w io.Writer, a, sib schema.ClassAttr, classUID int) error {
+	idField := goFieldName(a.Name)
+	sibField := goFieldName(sib.Name)
+	otherID := otherEnumID(a.Enum)
+	ids := sortedEnumIDsInt(a.Enum)
+	if _, err := fmt.Fprintf(w, "\tif e.%s != \"\" {\n", sibField); err != nil {
+		return err
+	}
+	if _, err := fmt.Fprintf(w, "\t\tswitch e.%s {\n", idField); err != nil {
+		return err
+	}
+	for _, id := range ids {
+		v := a.Enum[id]
+		if otherID != "" && id == otherID {
+			// Skip — the "Other" id allows any sibling
+			// string by upstream convention.
+			continue
+		}
+		caption := v.Caption
+		if caption == "" {
+			continue
+		}
+		if _, err := fmt.Fprintf(w, "\t\tcase %s:\n", id); err != nil {
+			return err
+		}
+		if _, err := fmt.Fprintf(w, "\t\t\tif e.%s != %q {\n", sibField, caption); err != nil {
+			return err
+		}
+		if _, err := fmt.Fprintf(w, "\t\t\t\treturn &ocsf.ValidationError{ClassUID: %d, Field: %q, Rule: \"enum\", Reason: \"sibling does not match enum caption\"}\n", classUID, sib.Name); err != nil {
+			return err
+		}
+		if _, err := fmt.Fprintln(w, "\t\t\t}"); err != nil {
+			return err
+		}
+	}
+	if _, err := fmt.Fprintln(w, "\t\t}"); err != nil {
+		return err
+	}
+	if _, err := fmt.Fprintln(w, "\t}"); err != nil {
+		return err
+	}
+	return nil
+}
+
+// otherEnumID returns the enum key whose caption is "Other",
+// if any. OCSF's convention is to assign id 99 to the
+// free-form escape value, but the emitter detects by caption
+// to stay robust against the rare case where upstream uses a
+// different id.
+func otherEnumID(enum map[string]schema.EnumValue) string {
+	for id, v := range enum {
+		if v.Caption == "Other" {
+			return id
+		}
+	}
+	return ""
+}
+
+// sortedEnumIDsInt returns the enum keys in ascending integer
+// order. Non-numeric keys (none expected for int enums) are
+// excluded; an enum whose keys aren't all numeric is treated
+// as empty here, since the membership check needs numeric
+// case labels.
+func sortedEnumIDsInt(enum map[string]schema.EnumValue) []string {
+	out := make([]string, 0, len(enum))
+	for id := range enum {
+		if _, err := strconv.Atoi(id); err != nil {
+			continue
+		}
+		out = append(out, id)
+	}
+	sort.Slice(out, func(i, j int) bool {
+		ai, _ := strconv.Atoi(out[i])
+		bi, _ := strconv.Atoi(out[j])
+		return ai < bi
+	})
+	return out
 }
 
 // eventHasValidatableRequired reports whether ec has at least

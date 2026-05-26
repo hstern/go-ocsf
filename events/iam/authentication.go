@@ -351,6 +351,261 @@ func (e Authentication) Validate() error {
 	if e.User == nil {
 		return &ocsf.ValidationError{ClassUID: 3002, Field: "user", Rule: "required", Reason: "required field is missing"}
 	}
+	switch e.ActivityID {
+	case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 3002, Field: "activity_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.ActivityName != "" {
+		switch e.ActivityID {
+		case 0:
+			if e.ActivityName != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.ActivityName != "Logon" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.ActivityName != "Logoff" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.ActivityName != "Authentication Ticket" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 4:
+			if e.ActivityName != "Service Ticket Request" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 5:
+			if e.ActivityName != "Service Ticket Renew" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 6:
+			if e.ActivityName != "Preauth" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 7:
+			if e.ActivityName != "Attach Policy" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 8:
+			if e.ActivityName != "Detach Policy" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 9:
+			if e.ActivityName != "Lock" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 10:
+			if e.ActivityName != "MFA Factor Enable" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 11:
+			if e.ActivityName != "MFA Factor Disable" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.AuthProtocolID {
+	case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 3002, Field: "auth_protocol_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.AuthProtocol != "" {
+		switch e.AuthProtocolID {
+		case 0:
+			if e.AuthProtocol != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "auth_protocol", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.AuthProtocol != "NTLM" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "auth_protocol", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.AuthProtocol != "Kerberos" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "auth_protocol", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.AuthProtocol != "Digest" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "auth_protocol", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 4:
+			if e.AuthProtocol != "OpenID" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "auth_protocol", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 5:
+			if e.AuthProtocol != "SAML" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "auth_protocol", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 6:
+			if e.AuthProtocol != "OAUTH 2.0" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "auth_protocol", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 7:
+			if e.AuthProtocol != "PAP" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "auth_protocol", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 8:
+			if e.AuthProtocol != "CHAP" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "auth_protocol", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 9:
+			if e.AuthProtocol != "EAP" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "auth_protocol", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 10:
+			if e.AuthProtocol != "RADIUS" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "auth_protocol", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.CategoryUID {
+	case 0:
+	default:
+		return &ocsf.ValidationError{ClassUID: 3002, Field: "category_uid", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.CategoryName != "" {
+		switch e.CategoryUID {
+		case 0:
+			if e.CategoryName != "Uncategorized" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "category_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.ClassUID {
+	case 0:
+	default:
+		return &ocsf.ValidationError{ClassUID: 3002, Field: "class_uid", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.ClassName != "" {
+		switch e.ClassUID {
+		case 0:
+			if e.ClassName != "Base Event" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "class_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.LogonTypeID {
+	case 0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 3002, Field: "logon_type_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.LogonType != "" {
+		switch e.LogonTypeID {
+		case 0:
+			if e.LogonType != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "logon_type", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.LogonType != "System" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "logon_type", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.LogonType != "Interactive" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "logon_type", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.LogonType != "Network" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "logon_type", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 4:
+			if e.LogonType != "Batch" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "logon_type", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 5:
+			if e.LogonType != "OS Service" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "logon_type", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 7:
+			if e.LogonType != "Unlock" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "logon_type", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 8:
+			if e.LogonType != "Network Cleartext" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "logon_type", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 9:
+			if e.LogonType != "New Credentials" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "logon_type", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 10:
+			if e.LogonType != "Remote Interactive" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "logon_type", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 11:
+			if e.LogonType != "Cached Interactive" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "logon_type", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 12:
+			if e.LogonType != "Cached Remote Interactive" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "logon_type", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 13:
+			if e.LogonType != "Cached Unlock" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "logon_type", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.SeverityID {
+	case 0, 1, 2, 3, 4, 5, 6, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 3002, Field: "severity_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.Severity != "" {
+		switch e.SeverityID {
+		case 0:
+			if e.Severity != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "severity", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.Severity != "Informational" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "severity", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.Severity != "Low" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "severity", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.Severity != "Medium" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "severity", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 4:
+			if e.Severity != "High" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "severity", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 5:
+			if e.Severity != "Critical" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "severity", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 6:
+			if e.Severity != "Fatal" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "severity", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.StatusID {
+	case 0, 1, 2, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 3002, Field: "status_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.Status != "" {
+		switch e.StatusID {
+		case 0:
+			if e.Status != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "status", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.Status != "Success" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "status", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.Status != "Failure" {
+				return &ocsf.ValidationError{ClassUID: 3002, Field: "status", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
 	return nil
 }
 

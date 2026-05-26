@@ -364,6 +364,310 @@ func (e DatastoreActivity) Validate() error {
 	if e.SrcEndpoint == nil {
 		return &ocsf.ValidationError{ClassUID: 6005, Field: "src_endpoint", Rule: "required", Reason: "required field is missing"}
 	}
+	switch e.ActionID {
+	case 0, 1, 2, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 6005, Field: "action_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.Action != "" {
+		switch e.ActionID {
+		case 0:
+			if e.Action != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "action", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.Action != "Allowed" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "action", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.Action != "Denied" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "action", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.ActivityID {
+	case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 6005, Field: "activity_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.ActivityName != "" {
+		switch e.ActivityID {
+		case 0:
+			if e.ActivityName != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.ActivityName != "Read" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.ActivityName != "Update" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.ActivityName != "Connect" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 4:
+			if e.ActivityName != "Query" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 5:
+			if e.ActivityName != "Write" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 6:
+			if e.ActivityName != "Create" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 7:
+			if e.ActivityName != "Delete" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 8:
+			if e.ActivityName != "List" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 9:
+			if e.ActivityName != "Encrypt" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 10:
+			if e.ActivityName != "Decrypt" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.CategoryUID {
+	case 0:
+	default:
+		return &ocsf.ValidationError{ClassUID: 6005, Field: "category_uid", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.CategoryName != "" {
+		switch e.CategoryUID {
+		case 0:
+			if e.CategoryName != "Uncategorized" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "category_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.ClassUID {
+	case 0:
+	default:
+		return &ocsf.ValidationError{ClassUID: 6005, Field: "class_uid", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.ClassName != "" {
+		switch e.ClassUID {
+		case 0:
+			if e.ClassName != "Base Event" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "class_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.DispositionID {
+	case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 6005, Field: "disposition_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.Disposition != "" {
+		switch e.DispositionID {
+		case 0:
+			if e.Disposition != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.Disposition != "Allowed" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.Disposition != "Blocked" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.Disposition != "Quarantined" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 4:
+			if e.Disposition != "Isolated" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 5:
+			if e.Disposition != "Deleted" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 6:
+			if e.Disposition != "Dropped" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 7:
+			if e.Disposition != "Custom Action" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 8:
+			if e.Disposition != "Approved" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 9:
+			if e.Disposition != "Restored" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 10:
+			if e.Disposition != "Exonerated" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 11:
+			if e.Disposition != "Corrected" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 12:
+			if e.Disposition != "Partially Corrected" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 13:
+			if e.Disposition != "Uncorrected" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 14:
+			if e.Disposition != "Delayed" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 15:
+			if e.Disposition != "Detected" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 16:
+			if e.Disposition != "No Action" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 17:
+			if e.Disposition != "Logged" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 18:
+			if e.Disposition != "Tagged" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 19:
+			if e.Disposition != "Alert" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 20:
+			if e.Disposition != "Count" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 21:
+			if e.Disposition != "Reset" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 22:
+			if e.Disposition != "Captcha" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 23:
+			if e.Disposition != "Challenge" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 24:
+			if e.Disposition != "Access Revoked" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 25:
+			if e.Disposition != "Rejected" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 26:
+			if e.Disposition != "Unauthorized" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 27:
+			if e.Disposition != "Error" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.SeverityID {
+	case 0, 1, 2, 3, 4, 5, 6, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 6005, Field: "severity_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.Severity != "" {
+		switch e.SeverityID {
+		case 0:
+			if e.Severity != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "severity", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.Severity != "Informational" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "severity", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.Severity != "Low" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "severity", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.Severity != "Medium" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "severity", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 4:
+			if e.Severity != "High" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "severity", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 5:
+			if e.Severity != "Critical" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "severity", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 6:
+			if e.Severity != "Fatal" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "severity", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.StatusID {
+	case 0, 1, 2, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 6005, Field: "status_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.Status != "" {
+		switch e.StatusID {
+		case 0:
+			if e.Status != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "status", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.Status != "Success" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "status", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.Status != "Failure" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "status", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.TypeID {
+	case 0, 1, 2, 3, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 6005, Field: "type_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.Type != "" {
+		switch e.TypeID {
+		case 0:
+			if e.Type != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "type", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.Type != "Database" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "type", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.Type != "Databucket" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "type", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.Type != "Table" {
+				return &ocsf.ValidationError{ClassUID: 6005, Field: "type", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
 	return nil
 }
 

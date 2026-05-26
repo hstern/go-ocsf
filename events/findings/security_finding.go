@@ -390,6 +390,271 @@ func (e SecurityFinding) Validate() error {
 	if len(e.Osint) == 0 {
 		return &ocsf.ValidationError{ClassUID: 2001, Field: "osint", Rule: "required", Reason: "required field is missing"}
 	}
+	switch e.ActivityID {
+	case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 2001, Field: "activity_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.ActivityName != "" {
+		switch e.ActivityID {
+		case 0:
+			if e.ActivityName != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.ActivityName != "Create" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.ActivityName != "Update" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.ActivityName != "Close" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 4:
+			if e.ActivityName != "Duration Violation" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 5:
+			if e.ActivityName != "Pause Violation" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 6:
+			if e.ActivityName != "Error" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 7:
+			if e.ActivityName != "Paused" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 8:
+			if e.ActivityName != "Resumed" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 9:
+			if e.ActivityName != "Restarted" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 10:
+			if e.ActivityName != "Delayed" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.CategoryUID {
+	case 0:
+	default:
+		return &ocsf.ValidationError{ClassUID: 2001, Field: "category_uid", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.CategoryName != "" {
+		switch e.CategoryUID {
+		case 0:
+			if e.CategoryName != "Uncategorized" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "category_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.ClassUID {
+	case 0:
+	default:
+		return &ocsf.ValidationError{ClassUID: 2001, Field: "class_uid", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.ClassName != "" {
+		switch e.ClassUID {
+		case 0:
+			if e.ClassName != "Base Event" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "class_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.ConfidenceID {
+	case 0, 1, 2, 3, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 2001, Field: "confidence_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.Confidence != "" {
+		switch e.ConfidenceID {
+		case 0:
+			if e.Confidence != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "confidence", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.Confidence != "Low" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "confidence", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.Confidence != "Medium" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "confidence", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.Confidence != "High" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "confidence", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.ImpactID {
+	case 0, 1, 2, 3, 4, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 2001, Field: "impact_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.Impact != "" {
+		switch e.ImpactID {
+		case 0:
+			if e.Impact != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "impact", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.Impact != "Low" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "impact", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.Impact != "Medium" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "impact", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.Impact != "High" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "impact", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 4:
+			if e.Impact != "Critical" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "impact", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.RiskLevelID {
+	case 0, 1, 2, 3, 4, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 2001, Field: "risk_level_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.RiskLevel != "" {
+		switch e.RiskLevelID {
+		case 0:
+			if e.RiskLevel != "Info" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "risk_level", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.RiskLevel != "Low" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "risk_level", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.RiskLevel != "Medium" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "risk_level", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.RiskLevel != "High" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "risk_level", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 4:
+			if e.RiskLevel != "Critical" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "risk_level", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.SeverityID {
+	case 0, 1, 2, 3, 4, 5, 6, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 2001, Field: "severity_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.Severity != "" {
+		switch e.SeverityID {
+		case 0:
+			if e.Severity != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "severity", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.Severity != "Informational" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "severity", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.Severity != "Low" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "severity", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.Severity != "Medium" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "severity", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 4:
+			if e.Severity != "High" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "severity", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 5:
+			if e.Severity != "Critical" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "severity", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 6:
+			if e.Severity != "Fatal" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "severity", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.StateID {
+	case 0, 1, 2, 3, 4, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 2001, Field: "state_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.State != "" {
+		switch e.StateID {
+		case 0:
+			if e.State != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "state", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.State != "New" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "state", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.State != "In Progress" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "state", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.State != "Suppressed" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "state", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 4:
+			if e.State != "Resolved" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "state", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.StatusID {
+	case 0, 1, 2, 3, 4, 5, 6, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 2001, Field: "status_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.Status != "" {
+		switch e.StatusID {
+		case 0:
+			if e.Status != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "status", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.Status != "New" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "status", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.Status != "In Progress" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "status", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.Status != "On Hold" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "status", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 4:
+			if e.Status != "Resolved" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "status", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 5:
+			if e.Status != "Closed" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "status", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 6:
+			if e.Status != "Error" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "status", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
 	return nil
 }
 
