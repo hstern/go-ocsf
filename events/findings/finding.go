@@ -284,5 +284,131 @@ func (e Finding) Validate() error {
 	if len(e.Osint) == 0 {
 		return &ocsf.ValidationError{ClassUID: 0, Field: "osint", Rule: "required", Reason: "required field is missing"}
 	}
+	switch e.ActivityID {
+	case 0, 1, 2, 3, 4, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 0, Field: "activity_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.ActivityName != "" {
+		switch e.ActivityID {
+		case 0:
+			if e.ActivityName != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 0, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.ActivityName != "Create" {
+				return &ocsf.ValidationError{ClassUID: 0, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.ActivityName != "Update" {
+				return &ocsf.ValidationError{ClassUID: 0, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.ActivityName != "Close" {
+				return &ocsf.ValidationError{ClassUID: 0, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 4:
+			if e.ActivityName != "Suppressed" {
+				return &ocsf.ValidationError{ClassUID: 0, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.CategoryUID {
+	case 0:
+	default:
+		return &ocsf.ValidationError{ClassUID: 0, Field: "category_uid", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.CategoryName != "" {
+		switch e.CategoryUID {
+		case 0:
+			if e.CategoryName != "Uncategorized" {
+				return &ocsf.ValidationError{ClassUID: 0, Field: "category_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.ClassUID {
+	case 0:
+	default:
+		return &ocsf.ValidationError{ClassUID: 0, Field: "class_uid", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.ClassName != "" {
+		switch e.ClassUID {
+		case 0:
+			if e.ClassName != "Base Event" {
+				return &ocsf.ValidationError{ClassUID: 0, Field: "class_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.ConfidenceID {
+	case 0, 1, 2, 3, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 0, Field: "confidence_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	switch e.SeverityID {
+	case 0, 1, 2, 3, 4, 5, 6, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 0, Field: "severity_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.Severity != "" {
+		switch e.SeverityID {
+		case 0:
+			if e.Severity != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 0, Field: "severity", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.Severity != "Informational" {
+				return &ocsf.ValidationError{ClassUID: 0, Field: "severity", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.Severity != "Low" {
+				return &ocsf.ValidationError{ClassUID: 0, Field: "severity", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.Severity != "Medium" {
+				return &ocsf.ValidationError{ClassUID: 0, Field: "severity", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 4:
+			if e.Severity != "High" {
+				return &ocsf.ValidationError{ClassUID: 0, Field: "severity", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 5:
+			if e.Severity != "Critical" {
+				return &ocsf.ValidationError{ClassUID: 0, Field: "severity", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 6:
+			if e.Severity != "Fatal" {
+				return &ocsf.ValidationError{ClassUID: 0, Field: "severity", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.StatusID {
+	case 0, 1, 2, 3, 4, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 0, Field: "status_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.Status != "" {
+		switch e.StatusID {
+		case 0:
+			if e.Status != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 0, Field: "status", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.Status != "New" {
+				return &ocsf.ValidationError{ClassUID: 0, Field: "status", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.Status != "In Progress" {
+				return &ocsf.ValidationError{ClassUID: 0, Field: "status", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.Status != "Suppressed" {
+				return &ocsf.ValidationError{ClassUID: 0, Field: "status", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 4:
+			if e.Status != "Resolved" {
+				return &ocsf.ValidationError{ClassUID: 0, Field: "status", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
 	return nil
 }
