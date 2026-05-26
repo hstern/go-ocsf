@@ -7,47 +7,98 @@ package objects
 
 // Compliance describes the OCSF Compliance object: The Compliance object
 // contains information about Industry and Regulatory Framework
-// standards, controls and requirements.
+// standards, controls and requirements or details about custom
+// assessments utilized in a compliance evaluation. Standards define
+// broad security frameworks, controls represent specific security
+// requirements within those frameworks, and checks are the testable
+// verification points used to determine if controls are properly
+// implemented.
 //
 // OCSF name: compliance.
 type Compliance struct {
-	// ComplianceReferences is the Complaince References Articles. A list of
-	// sources of information or tools that help organizations understand,
-	// interpret, and implement compliance standards. They provide guidance,
-	// best practices, and examples.
+	// Assessments is the Assessments. A list of assessments associated with
+	// the compliance requirements evaluation.
+	//
+	// OCSF: assessments (type []assessment, requirement optional)
+	Assessments []Assessment `json:"assessments,omitempty"`
+
+	// Category is the Category. The category a control framework pertains
+	// to, as reported by the source tool, such as Asset Management or Risk
+	// Assessment.
+	//
+	// OCSF: category (type string_t, requirement optional)
+	Category string `json:"category,omitempty"`
+
+	// Checks is the Compliance Checks. A list of compliance checks
+	// associated with specific industry standards or frameworks. Each check
+	// represents an individual rule or requirement that has been evaluated
+	// against a target device. Checks typically include details such as the
+	// check name (e.g., CIS: 'Ensure mounting of cramfs filesystems is
+	// disabled' or DISA STIG descriptive titles), unique identifiers (such
+	// as CIS identifier '1.1.1.1' or DISA STIG identifier 'V-230234'),
+	// descriptions (detailed explanations of security requirements or
+	// vulnerability discussions), and version information.
+	//
+	// OCSF: checks (type []check, requirement optional)
+	Checks []Check `json:"checks,omitempty"`
+
+	// ComplianceReferences is the Compliance Standard References. A list of
+	// reference KB articles that provide information to help organizations
+	// understand, interpret, and implement compliance standards. They
+	// provide guidance, best practices, and examples.
 	//
 	// OCSF: compliance_references (type []kb_article, requirement optional)
+	//
+	// Deprecated: Use the Compliance object with Check array instead.
 	ComplianceReferences []KbArticle `json:"compliance_references,omitempty"`
 
-	// ComplianceStandards is the Compliance Standards Articles. A list of
+	// ComplianceStandards is the Compliance Standards: Details. A list of
 	// established guidelines or criteria that define specific requirements
 	// an organization must follow.
 	//
 	// OCSF: compliance_standards (type []kb_article, requirement optional)
+	//
+	// Deprecated: Use the Compliance object with Check array instead.
 	ComplianceStandards []KbArticle `json:"compliance_standards,omitempty"`
 
-	// Control is the Security Control. A Control is prescriptive,
-	// prioritized, and simplified set of best practices that one can use to
-	// strengthen their cybersecurity posture. e.g. AWS SecurityHub Controls,
-	// CIS Controls.
+	// Control is the Security Control. A Control is a prescriptive,
+	// actionable set of specifications that strengthens device posture. The
+	// control specifies required security measures, while the specific
+	// implementation values are defined in control_parameters. E.g., CIS AWS
+	// Foundations Benchmark 1.2.0 - Control 2.1 - Ensure CloudTrail is
+	// enabled in all regions
 	//
 	// OCSF: control (type string_t, requirement recommended)
 	Control string `json:"control,omitempty"`
 
-	// Requirements is the Compliance Requirements. A list of requirements
-	// associated to a specific control in an industry or regulatory
-	// framework. e.g. NIST.800-53.r5 AU-10
+	// ControlParameters is the Control Parameters. The list of control
+	// parameters evaluated in a Compliance check. E.g., parameters for
+	// CloudTrail configuration might include multiRegionTrailEnabled: true,
+	// logFileValidationEnabled: true, and requiredRegions: [us-east-1,
+	// us-west-2]
+	//
+	// OCSF: control_parameters (type []key_value_object, requirement optional)
+	ControlParameters []KeyValueObject `json:"control_parameters,omitempty"`
+
+	// Desc is the Description. The description or criteria of a control.
+	//
+	// OCSF: desc (type string_t, requirement optional)
+	Desc string `json:"desc,omitempty"`
+
+	// Requirements is the Compliance Requirements. The specific compliance
+	// requirements being evaluated. E.g., PCI DSS Requirement 8.2.3 -
+	// Passwords must meet minimum complexity requirements or HIPAA Security
+	// Rule 164.312(a)(2)(iv) - Implement encryption and decryption
+	// mechanisms
 	//
 	// OCSF: requirements (type []string_t, requirement optional)
 	Requirements []string `json:"requirements,omitempty"`
 
-	// Standards is the Security Standards. Security standards are a set of
-	// criteria organizations can follow to protect sensitive and
-	// confidential information. e.g. NIST SP 800-53, CIS AWS Foundations
-	// Benchmark v1.4.0, ISO/IEC 27001
+	// Standards is the Compliance Standards: List. The regulatory or
+	// industry standards being evaluated for compliance.
 	//
-	// OCSF: standards (type []string_t, requirement required)
-	Standards []string `json:"standards"`
+	// OCSF: standards (type []string_t, requirement recommended)
+	Standards []string `json:"standards,omitempty"`
 
 	// Status is the Status. The resultant status of the compliance check
 	// normalized to the caption of the status_id value. In the case of
@@ -66,7 +117,15 @@ type Compliance struct {
 	// status, status_code values.
 	//
 	// OCSF: status_detail (type string_t, requirement optional)
+	//
+	// Deprecated: Use the <code> status_details </code> attribute instead.
 	StatusDetail string `json:"status_detail,omitempty"`
+
+	// StatusDetails is the Status Details. A list of contextual descriptions
+	// of the status, status_code values.
+	//
+	// OCSF: status_details (type []string_t, requirement optional)
+	StatusDetails []string `json:"status_details,omitempty"`
 
 	// StatusID is the Status ID. The normalized status identifier of the
 	// compliance check.

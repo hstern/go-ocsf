@@ -6,8 +6,7 @@
 package objects
 
 // URL describes the OCSF Uniform Resource Locator object: The Uniform
-// Resource Locator(URL) object describes the characteristics of a URL.
-// Defined in RFC 1738 and by D3FEND d3f:URL.
+// Resource Locator (URL) object describes the characteristics of a URL.
 //
 // OCSF name: url.
 type URL struct {

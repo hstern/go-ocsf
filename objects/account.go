@@ -7,20 +7,47 @@ package objects
 
 // Account describes the OCSF Account object: The Account object contains
 // details about the account that initiated or performed a specific
-// activity within a system or application.
+// activity within a system or application. Additionally, the Account
+// object refers to logical Cloud and Software-as-a-Service (SaaS) based
+// containers such as AWS Accounts, Azure Subscriptions, Oracle Cloud
+// Compartments, Google Cloud Projects, and otherwise.
 //
 // OCSF name: account.
 type Account struct {
-	// Labels is the Labels. The list of labels/tags associated to the
-	// account.
+	// IsDisabled is the Disabled. Indicates if the account is disabled.
+	//
+	// OCSF: is_disabled (type boolean_t, requirement optional)
+	IsDisabled bool `json:"is_disabled,omitempty"`
+
+	// IsLocked is the Locked. Indicates if the account is locked. For
+	// example, due to the amount of failed logins.
+	//
+	// OCSF: is_locked (type boolean_t, requirement optional)
+	IsLocked bool `json:"is_locked,omitempty"`
+
+	// IsOnPremisesSyncEnabled is the On-Premises Sync Enabled. Indicates
+	// whether synchronization with an on-premises directory service is
+	// enabled. For example, Microsoft Entra Connect.
+	//
+	// OCSF: is_on_premises_sync_enabled (type boolean_t, requirement optional)
+	IsOnPremisesSyncEnabled bool `json:"is_on_premises_sync_enabled,omitempty"`
+
+	// Labels is the Labels. The list of labels associated to the account.
 	//
 	// OCSF: labels (type []string_t, requirement optional)
 	Labels []string `json:"labels,omitempty"`
 
-	// Name is the Name. The name of the account (e.g. GCP Account Name).
+	// Name is the Name. The name of the account (e.g. GCP Project name ,
+	// Linux Account name or AWS Account name).
 	//
 	// OCSF: name (type string_t, requirement recommended)
 	Name string `json:"name,omitempty"`
+
+	// Tags is the Tags. The list of tags; {key:value} pairs associated to
+	// the account.
+	//
+	// OCSF: tags (type []key_value_object, requirement optional)
+	Tags []KeyValueObject `json:"tags,omitempty"`
 
 	// Type is the Type. The account type, normalized to the caption of
 	// 'account_type_id'. In the case of 'Other', it is defined by the event
@@ -35,7 +62,8 @@ type Account struct {
 	TypeID int `json:"type_id,omitempty"`
 
 	// UID is the Unique ID. The unique identifier of the account (e.g. AWS
-	// Account ID).
+	// Account ID , OCID , GCP Project ID , Azure Subscription ID , Google
+	// Workspace Customer ID , or M365 Tenant UID).
 	//
 	// OCSF: uid (type string_t, requirement recommended)
 	UID string `json:"uid,omitempty"`

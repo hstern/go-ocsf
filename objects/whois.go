@@ -36,7 +36,8 @@ type Whois struct {
 	// OCSF: dnssec_status_id (type integer_t, requirement recommended)
 	DnssecStatusID int `json:"dnssec_status_id,omitempty"`
 
-	// Domain is the Domain. The name of the domain.
+	// Domain is the Domain. The domain name corresponding to the WHOIS
+	// record.
 	//
 	// OCSF: domain (type string_t, requirement recommended)
 	Domain string `json:"domain,omitempty"`
@@ -52,6 +53,21 @@ type Whois struct {
 	//
 	// OCSF: email_addr (type email_t, requirement optional)
 	EmailAddr string `json:"email_addr,omitempty"`
+
+	// Isp is the ISP Name. The name of the Internet Service Provider (ISP).
+	//
+	// OCSF: isp (type string_t, requirement optional)
+	Isp string `json:"isp,omitempty"`
+
+	// IspOrg is the ISP Org. The organization name of the Internet Service
+	// Provider (ISP). This represents the parent organization or company
+	// that owns/operates the ISP. For example, Comcast Corporation would be
+	// the ISP org for Xfinity internet service. This attribute helps
+	// identify the ultimate provider when ISPs operate under different brand
+	// names.
+	//
+	// OCSF: isp_org (type string_t, requirement optional)
+	IspOrg string `json:"isp_org,omitempty"`
 
 	// LastSeenTime is the Last Updated At. When the WHOIS record was last
 	// updated or seen at.

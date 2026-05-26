@@ -16,6 +16,12 @@ import (
 //
 // OCSF name: _resource.
 type Resource struct {
+	// CreatedTime is the Created Time. The time when the resource was
+	// created.
+	//
+	// OCSF: created_time (type timestamp_t, requirement optional)
+	CreatedTime int64 `json:"created_time,omitempty"`
+
 	// Data is the Data. Additional data describing the resource.
 	//
 	// OCSF: data (type json_t, requirement optional)
@@ -26,18 +32,39 @@ type Resource struct {
 	// category types.
 	//
 	// OCSF: data_classification (type data_classification, requirement recommended)
+	//
+	// Deprecated: Use the attribute <code>data_classifications</code> instead
 	DataClassification *DataClassification `json:"data_classification,omitempty"`
 
-	// Labels is the Labels. The list of labels/tags associated to a
-	// resource.
+	// DataClassifications is the Data Classification. A list of Data
+	// Classification objects, that include information about data
+	// classification levels and data category types, identified by a
+	// classifier.
+	//
+	// OCSF: data_classifications (type []data_classification, requirement recommended)
+	DataClassifications []DataClassification `json:"data_classifications,omitempty"`
+
+	// Labels is the Labels. The list of labels associated to the resource.
 	//
 	// OCSF: labels (type []string_t, requirement optional)
 	Labels []string `json:"labels,omitempty"`
+
+	// ModifiedTime is the Modified Time. The time when the resource was last
+	// modified.
+	//
+	// OCSF: modified_time (type timestamp_t, requirement optional)
+	ModifiedTime int64 `json:"modified_time,omitempty"`
 
 	// Name is the Name. The name of the resource.
 	//
 	// OCSF: name (type string_t, requirement recommended)
 	Name string `json:"name,omitempty"`
+
+	// Tags is the Tags. The list of tags; {key:value} pairs associated to
+	// the resource.
+	//
+	// OCSF: tags (type []key_value_object, requirement optional)
+	Tags []KeyValueObject `json:"tags,omitempty"`
 
 	// Type is the Type. The resource type as defined by the event source.
 	//
@@ -46,6 +73,12 @@ type Resource struct {
 
 	// UID is the Unique ID. The unique identifier of the resource.
 	//
-	// OCSF: uid (type string_t, requirement recommended)
+	// OCSF: uid (type resource_uid_t, requirement recommended)
 	UID string `json:"uid,omitempty"`
+
+	// UIDAlt is the Alternate ID. The alternative unique identifier of the
+	// resource.
+	//
+	// OCSF: uid_alt (type resource_uid_t, requirement optional)
+	UIDAlt string `json:"uid_alt,omitempty"`
 }

@@ -9,8 +9,7 @@ package objects
 // Certificate, also known as a Public Key Certificate, object contains
 // information about the ownership and usage of a public key. It serves
 // as a means to establish trust in the authenticity and integrity of the
-// public key and the associated entity. Defined by D3FEND
-// d3f:Certificate.
+// public key and the associated entity.
 //
 // OCSF name: certificate.
 type Certificate struct {
@@ -29,8 +28,8 @@ type Certificate struct {
 	// Fingerprints is the Fingerprints. The fingerprint list of the
 	// certificate.
 	//
-	// OCSF: fingerprints (type []fingerprint, requirement required)
-	Fingerprints []Fingerprint `json:"fingerprints"`
+	// OCSF: fingerprints (type []fingerprint, requirement recommended)
+	Fingerprints []Fingerprint `json:"fingerprints,omitempty"`
 
 	// IsSelfSigned is the Certificate Self-Signed. Denotes whether a digital
 	// certificate is self-signed or signed by a known certificate authority
@@ -44,6 +43,12 @@ type Certificate struct {
 	//
 	// OCSF: issuer (type string_t, requirement required)
 	Issuer string `json:"issuer"`
+
+	// Sans is the Subject Alternative Names. The list of subject alternative
+	// names that are secured by a specific certificate.
+	//
+	// OCSF: sans (type []san, requirement optional)
+	Sans []San `json:"sans,omitempty"`
 
 	// SerialNumber is the Certificate Serial Number. The serial number of
 	// the certificate used to create the digital signature.

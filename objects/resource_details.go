@@ -21,12 +21,21 @@ type ResourceDetails struct {
 	// OCSF: agent_list (type []agent, requirement optional)
 	AgentList []Agent `json:"agent_list,omitempty"`
 
-	// CloudPartition is the Cloud Partition. The canonical cloud partition
-	// name to which the region is assigned (e.g. AWS Partitions: aws,
-	// aws-cn, aws-us-gov).
+	// CloudPartition is the Cloud Partition. The logical grouping or
+	// isolated segment within a cloud provider's infrastructure where the
+	// resource is located. Examples include AWS partitions (aws, aws-cn,
+	// aws-us-gov), Azure cloud environments (AzureCloud, AzureUSGovernment,
+	// AzureChinaCloud), or similar logical divisions in other cloud
+	// providers.
 	//
 	// OCSF: cloud_partition (type string_t, requirement optional)
 	CloudPartition string `json:"cloud_partition,omitempty"`
+
+	// CreatedTime is the Created Time. The time when the resource was
+	// created.
+	//
+	// OCSF: created_time (type timestamp_t, requirement optional)
+	CreatedTime int64 `json:"created_time,omitempty"`
 
 	// Criticality is the Criticality. The criticality of the resource as
 	// defined by the event source.
@@ -44,18 +53,53 @@ type ResourceDetails struct {
 	// category types.
 	//
 	// OCSF: data_classification (type data_classification, requirement recommended)
+	//
+	// Deprecated: Use the attribute <code>data_classifications</code> instead
 	DataClassification *DataClassification `json:"data_classification,omitempty"`
+
+	// DataClassifications is the Data Classification. A list of Data
+	// Classification objects, that include information about data
+	// classification levels and data category types, identified by a
+	// classifier.
+	//
+	// OCSF: data_classifications (type []data_classification, requirement recommended)
+	DataClassifications []DataClassification `json:"data_classifications,omitempty"`
 
 	// Group is the Group. The name of the related resource group.
 	//
 	// OCSF: group (type group, requirement optional)
 	Group *Group `json:"group,omitempty"`
 
-	// Labels is the Labels. The list of labels/tags associated to a
-	// resource.
+	// Hostname is the Hostname. The fully qualified name of the resource.
+	//
+	// OCSF: hostname (type hostname_t, requirement recommended)
+	Hostname string `json:"hostname,omitempty"`
+
+	// IP is the IP Address. The IP address of the resource, in either IPv4
+	// or IPv6 format.
+	//
+	// OCSF: ip (type ip_t, requirement recommended)
+	IP string `json:"ip,omitempty"`
+
+	// IsBackedUp is the Back Ups Configured. Indicates whether the device or
+	// resource has a backup enabled, such as an automated snapshot or a
+	// cloud backup. For example, this is indicated by the cloudBackupEnabled
+	// value within JAMF Pro mobile devices or the registration of an AWS ARN
+	// with the AWS Backup service.
+	//
+	// OCSF: is_backed_up (type boolean_t, requirement optional)
+	IsBackedUp bool `json:"is_backed_up,omitempty"`
+
+	// Labels is the Labels. The list of labels associated to the resource.
 	//
 	// OCSF: labels (type []string_t, requirement optional)
 	Labels []string `json:"labels,omitempty"`
+
+	// ModifiedTime is the Modified Time. The time when the resource was last
+	// modified.
+	//
+	// OCSF: modified_time (type timestamp_t, requirement optional)
+	ModifiedTime int64 `json:"modified_time,omitempty"`
 
 	// Name is the Name. The name of the resource.
 	//
@@ -68,16 +112,60 @@ type ResourceDetails struct {
 	// OCSF: namespace (type string_t, requirement optional)
 	Namespace string `json:"namespace,omitempty"`
 
-	// Owner is the Owner. The identity of the service or user account that
-	// owns the resource.
+	// Owner is the Owner. The details of the entity that owns the resource.
+	// This object includes properties such as the owner's name, unique
+	// identifier, type, domain, and other relevant attributes that help
+	// identify the resource owner within the environment.
 	//
 	// OCSF: owner (type user, requirement recommended)
 	Owner *User `json:"owner,omitempty"`
 
-	// Region is the Region. The cloud region of the resource.
+	// Provider is the Cloud Provider. The cloud service provider that hosts
+	// or manages the resource. This field is typically used when the
+	// resource is managed by a different provider than the one generating
+	// the event or finding. Examples include AWS, Azure, GCP (Google Cloud
+	// Platform), Oracle Cloud, IBM Cloud, Alibaba Cloud, or other public,
+	// private, or hybrid cloud providers.
+	//
+	// OCSF: provider (type string_t, requirement optional)
+	Provider string `json:"provider,omitempty"`
+
+	// Region is the Region. The cloud region where the resource is hosted,
+	// as defined by the cloud provider. This represents the physical or
+	// logical geographic area containing the infrastructure supporting the
+	// resource. Examples include AWS regions (us-east-1, eu-west-1), Azure
+	// regions (East US, West Europe), GCP regions (us-central1,
+	// europe-west1), or Oracle Cloud regions (us-ashburn-1, uk-london-1).
 	//
 	// OCSF: region (type string_t, requirement optional)
 	Region string `json:"region,omitempty"`
+
+	// ResourceRelationship is the Resource Relationship. A graph
+	// representation showing how this resource relates to and interacts with
+	// other entities in the environment. This can include parent/child
+	// relationships, dependencies, or other connections.
+	//
+	// OCSF: resource_relationship (type graph, requirement optional)
+	ResourceRelationship *Graph `json:"resource_relationship,omitempty"`
+
+	// Role is the Role. The role of the resource in the context of the event
+	// or finding, normalized to the caption of the role_id value. In the
+	// case of 'Other', it is defined by the event source.
+	//
+	// OCSF: role (type string_t, requirement optional)
+	Role string `json:"role,omitempty"`
+
+	// RoleID is the Role ID. The normalized identifier of the resource's
+	// role in the context of the event or finding.
+	//
+	// OCSF: role_id (type integer_t, requirement recommended)
+	RoleID int `json:"role_id,omitempty"`
+
+	// Tags is the Tags. The list of tags; {key:value} pairs associated to
+	// the resource.
+	//
+	// OCSF: tags (type []key_value_object, requirement optional)
+	Tags []KeyValueObject `json:"tags,omitempty"`
 
 	// Type is the Type. The resource type as defined by the event source.
 	//
@@ -86,12 +174,27 @@ type ResourceDetails struct {
 
 	// UID is the Unique ID. The unique identifier of the resource.
 	//
-	// OCSF: uid (type string_t, requirement recommended)
+	// OCSF: uid (type resource_uid_t, requirement recommended)
 	UID string `json:"uid,omitempty"`
+
+	// UIDAlt is the Alternate ID. The alternative unique identifier of the
+	// resource.
+	//
+	// OCSF: uid_alt (type resource_uid_t, requirement optional)
+	UIDAlt string `json:"uid_alt,omitempty"`
 
 	// Version is the Version. The version of the resource. For example
 	// 1.2.3.
 	//
 	// OCSF: version (type string_t, requirement optional)
 	Version string `json:"version,omitempty"`
+
+	// Zone is the Cloud Availability Zone. The availability zone within a
+	// cloud region where the resource is located. Examples include AWS
+	// availability zones (us-east-1a, us-east-1b), Azure availability zones
+	// (1, 2, 3 within a region), GCP zones (us-central1-a, us-central1-b),
+	// or Oracle Cloud availability domains (AD-1, AD-2, AD-3).
+	//
+	// OCSF: zone (type string_t, requirement optional)
+	Zone string `json:"zone,omitempty"`
 }

@@ -25,6 +25,11 @@ type Container struct {
 	// OCSF: image (type image, requirement recommended)
 	Image *Image `json:"image,omitempty"`
 
+	// Labels is the Labels. The list of labels associated to the container.
+	//
+	// OCSF: labels (type []string_t, requirement optional)
+	Labels []string `json:"labels,omitempty"`
+
 	// Name is the Name. The container name.
 	//
 	// OCSF: name (type string_t, requirement recommended)
@@ -64,6 +69,12 @@ type Container struct {
 	//
 	// OCSF: tag (type string_t, requirement optional)
 	Tag string `json:"tag,omitempty"`
+
+	// Tags is the Tags. The list of tags; {key:value} pairs associated to
+	// the container.
+	//
+	// OCSF: tags (type []key_value_object, requirement optional)
+	Tags []KeyValueObject `json:"tags,omitempty"`
 
 	// UID is the Unique ID. The full container unique identifier for this
 	// instantiation of the container. For example:

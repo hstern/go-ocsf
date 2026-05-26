@@ -18,7 +18,7 @@ const (
 	// DataLifecycleStateUnknown: The data lifecycle state is unknown.
 	DataLifecycleStateUnknown DataLifecycleState = 0
 	// DataLifecycleStateDataAtRest: The data was stored on physical or
-	// logcial media and was not actively moving through the network
+	// logical media and was not actively moving through the network
 	// nor was being processed. E.g., data stored in a database, PDF
 	// files in a file share, or EHR records in object storage.
 	DataLifecycleStateDataAtRest DataLifecycleState = 1

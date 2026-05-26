@@ -21,9 +21,9 @@ type Osint struct {
 	// OCSF: answers (type []dns_answer, requirement optional)
 	Answers []DNSAnswer `json:"answers,omitempty"`
 
-	// Attacks is the MITRE ATT&CK® Details. MITRE ATT&CK Tactics,
-	// Techniques, and/or Procedures (TTPs) pertinent to an indicator or
-	// OSINT analysis.
+	// Attacks is the MITRE ATT&CK® and ATLAS™ Details. MITRE ATT&CK
+	// Tactics, Techniques, and/or Procedures (TTPs) pertinent to an
+	// indicator or OSINT analysis.
 	//
 	// OCSF: attacks (type []attack, requirement optional)
 	Attacks []Attack `json:"attacks,omitempty"`
@@ -33,6 +33,18 @@ type Osint struct {
 	//
 	// OCSF: autonomous_system (type autonomous_system, requirement optional)
 	AutonomousSystem *AutonomousSystem `json:"autonomous_system,omitempty"`
+
+	// Campaign is the Campaign. The campaign object describes details about
+	// the campaign that was the source of the activity.
+	//
+	// OCSF: campaign (type campaign, requirement optional)
+	Campaign *Campaign `json:"campaign,omitempty"`
+
+	// Category is the Category. Categorizes the threat indicator based on
+	// its functional or operational role.
+	//
+	// OCSF: category (type string_t, requirement optional)
+	Category string `json:"category,omitempty"`
 
 	// Comment is the Analyst Comments. Analyst commentary or source
 	// commentary about an indicator or OSINT analysis.
@@ -48,7 +60,7 @@ type Osint struct {
 	// OCSF: confidence (type string_t, requirement optional)
 	Confidence string `json:"confidence,omitempty"`
 
-	// ConfidenceID is the Confidence Id. The normalized confidence refers to
+	// ConfidenceID is the Confidence ID. The normalized confidence refers to
 	// the accuracy of collected information related to the OSINT or how
 	// pertinent an indicator or analysis is to a specific event or finding.
 	// A low confidence means that the information collected or analysis
@@ -57,6 +69,44 @@ type Osint struct {
 	//
 	// OCSF: confidence_id (type integer_t, requirement recommended)
 	ConfidenceID int `json:"confidence_id,omitempty"`
+
+	// CreatedTime is the Created Time. The timestamp when the indicator was
+	// initially created or identified.
+	//
+	// OCSF: created_time (type timestamp_t, requirement optional)
+	CreatedTime int64 `json:"created_time,omitempty"`
+
+	// Creator is the Creator. The identifier of the user, system, or
+	// organization that contributed the indicator.
+	//
+	// OCSF: creator (type user, requirement optional)
+	Creator *User `json:"creator,omitempty"`
+
+	// Desc is the Description. A detailed explanation of the indicator,
+	// including its context, purpose, and relevance.
+	//
+	// OCSF: desc (type string_t, requirement optional)
+	Desc string `json:"desc,omitempty"`
+
+	// DetectionPattern is the Detection Pattern. The specific detection
+	// pattern or signature associated with the indicator.
+	//
+	// OCSF: detection_pattern (type string_t, requirement optional)
+	DetectionPattern string `json:"detection_pattern,omitempty"`
+
+	// DetectionPatternType is the Detection Pattern. The detection pattern
+	// type, normalized to the caption of the detection_pattern_type_id
+	// value. In the case of 'Other', it is defined by the event source.
+	//
+	// OCSF: detection_pattern_type (type string_t, requirement optional)
+	DetectionPatternType string `json:"detection_pattern_type,omitempty"`
+
+	// DetectionPatternTypeID is the Detection Pattern Type ID. Specifies the
+	// type of detection pattern used to identify the associated threat
+	// indicator.
+	//
+	// OCSF: detection_pattern_type_id (type integer_t, requirement optional)
+	DetectionPatternTypeID int `json:"detection_pattern_type_id,omitempty"`
 
 	// Email is the Related Email. Any email information pertinent to an
 	// indicator or OSINT analysis.
@@ -71,11 +121,43 @@ type Osint struct {
 	// OCSF: email_auth (type email_auth, requirement optional)
 	EmailAuth *EmailAuth `json:"email_auth,omitempty"`
 
+	// ExpirationTime is the Expiration Time. The expiration date of the
+	// indicator, after which it is no longer considered reliable.
+	//
+	// OCSF: expiration_time (type timestamp_t, requirement optional)
+	ExpirationTime int64 `json:"expiration_time,omitempty"`
+
+	// ExternalUID is the External ID. A unique identifier assigned by an
+	// external system for cross-referencing.
+	//
+	// OCSF: external_uid (type string_t, requirement optional)
+	ExternalUID string `json:"external_uid,omitempty"`
+
+	// File is the Related File. Any pertinent file information related to an
+	// indicator or OSINT analysis.
+	//
+	// OCSF: file (type file, requirement optional)
+	File *File `json:"file,omitempty"`
+
+	// IntrusionSets is the Intrusion Sets. A grouping of adversarial
+	// behaviors and resources believed to be associated with specific threat
+	// actors or campaigns. Intrusion sets often encompass multiple campaigns
+	// and are used to organize related activities under a common label.
+	//
+	// OCSF: intrusion_sets (type []string_t, requirement optional)
+	IntrusionSets []string `json:"intrusion_sets,omitempty"`
+
 	// KillChain is the Kill Chain. Lockheed Martin Kill Chain Phases
 	// pertinent to an indicator or OSINT analysis.
 	//
 	// OCSF: kill_chain (type []kill_chain_phase, requirement optional)
 	KillChain []KillChainPhase `json:"kill_chain,omitempty"`
+
+	// Labels is the Labels. Tags or keywords associated with the indicator
+	// to enhance searchability.
+	//
+	// OCSF: labels (type []string_t, requirement optional)
+	Labels []string `json:"labels,omitempty"`
 
 	// Location is the Geo Location. Any pertinent geolocation information
 	// related to an indicator or OSINT analysis.
@@ -83,10 +165,68 @@ type Osint struct {
 	// OCSF: location (type location, requirement optional)
 	Location *Location `json:"location,omitempty"`
 
-	// Name is the Name. The name of the entity.
+	// Malware is the Malware. A list of Malware objects, describing details
+	// about the identified malware.
 	//
-	// OCSF: name (type string_t, requirement recommended)
+	// OCSF: malware (type []malware, requirement optional)
+	Malware []Malware `json:"malware,omitempty"`
+
+	// ModifiedTime is the Modified Time. The timestamp of the last
+	// modification or update to the indicator.
+	//
+	// OCSF: modified_time (type timestamp_t, requirement optional)
+	ModifiedTime int64 `json:"modified_time,omitempty"`
+
+	// Name is the Name. The name is a pointer/reference to an attribute
+	// within the OCSF event data. For example: file.name.
+	//
+	// OCSF: name (type string_t, requirement optional)
 	Name string `json:"name,omitempty"`
+
+	// References is the References. Provides a reference to an external
+	// source of information related to the CTI being represented. This may
+	// include a URL, a document, or some other type of reference that
+	// provides additional context or information about the CTI.
+	//
+	// OCSF: references (type []string_t, requirement optional)
+	References []string `json:"references,omitempty"`
+
+	// RelatedAnalytics is the Related Analytics. Any analytics related to an
+	// indicator or OSINT analysis.
+	//
+	// OCSF: related_analytics (type []analytic, requirement optional)
+	RelatedAnalytics []Analytic `json:"related_analytics,omitempty"`
+
+	// Reputation is the Reputation Scores. Related reputational analysis
+	// from third-party engines and analysts for a given indicator or OSINT
+	// analysis.
+	//
+	// OCSF: reputation (type reputation, requirement optional)
+	Reputation *Reputation `json:"reputation,omitempty"`
+
+	// RiskScore is the Risk Score. A numerical representation of the threat
+	// indicator’s risk level.
+	//
+	// OCSF: risk_score (type integer_t, requirement optional)
+	RiskScore int `json:"risk_score,omitempty"`
+
+	// Script is the Related Script Data. Any pertinent script information
+	// related to an indicator or OSINT analysis.
+	//
+	// OCSF: script (type script, requirement optional)
+	Script *Script `json:"script,omitempty"`
+
+	// Severity is the Severity. Represents the severity level of the threat
+	// indicator, typically reflecting its potential impact or damage.
+	//
+	// OCSF: severity (type string_t, requirement optional)
+	Severity string `json:"severity,omitempty"`
+
+	// SeverityID is the Severity ID. The normalized severity level of the
+	// threat indicator, typically reflecting its potential impact or damage.
+	//
+	// OCSF: severity_id (type integer_t, requirement optional)
+	SeverityID int `json:"severity_id,omitempty"`
 
 	// Signatures is the Related Digital Signatures. Any digital signatures
 	// or hashes related to an indicator or OSINT analysis.
@@ -107,6 +247,19 @@ type Osint struct {
 	// OCSF: subdomains (type []string_t, requirement optional)
 	Subdomains []string `json:"subdomains,omitempty"`
 
+	// Subnet is the Related Subnet. A CIDR or network block related to an
+	// indicator or OSINT analysis.
+	//
+	// OCSF: subnet (type subnet_t, requirement optional)
+	Subnet string `json:"subnet,omitempty"`
+
+	// ThreatActor is the Threat Actor. A threat actor is an individual or
+	// group that conducts malicious cyber activities, often with financial,
+	// political, or ideological motives.
+	//
+	// OCSF: threat_actor (type threat_actor, requirement optional)
+	ThreatActor *ThreatActor `json:"threat_actor,omitempty"`
+
 	// Tlp is the Traffic Light Protocol. The Traffic Light Protocol was
 	// created to facilitate greater sharing of potentially sensitive
 	// information and more effective collaboration. TLP provides a simple
@@ -126,10 +279,17 @@ type Osint struct {
 	// OCSF: type_id (type integer_t, requirement required)
 	TypeID int `json:"type_id"`
 
-	// UID is the Unique ID. The unique identifier of the entity.
+	// UID is the Unique ID. The unique identifier for the OSINT object.
 	//
-	// OCSF: uid (type string_t, requirement recommended)
+	// OCSF: uid (type string_t, requirement optional)
 	UID string `json:"uid,omitempty"`
+
+	// UploadedTime is the Uploaded Time. The timestamp indicating when the
+	// associated indicator or intelligence was added to the system or
+	// repository.
+	//
+	// OCSF: uploaded_time (type timestamp_t, requirement optional)
+	UploadedTime int64 `json:"uploaded_time,omitempty"`
 
 	// Value is the Indicator. The actual indicator value in scope, e.g., a
 	// SHA-256 hash hexdigest or a domain name.

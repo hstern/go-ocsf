@@ -14,14 +14,14 @@ package objects
 type Extension struct {
 	// Name is the Name. The schema extension name. For example: dev.
 	//
-	// OCSF: name (type string_t, requirement required)
-	Name string `json:"name"`
+	// OCSF: name (type string_t, requirement recommended)
+	Name string `json:"name,omitempty"`
 
 	// UID is the Unique ID. The schema extension unique identifier. For
 	// example: 999.
 	//
-	// OCSF: uid (type string_t, requirement required)
-	UID string `json:"uid"`
+	// OCSF: uid (type string_t, requirement recommended)
+	UID string `json:"uid,omitempty"`
 
 	// Version is the Version. The schema extension version. For example:
 	// 1.0.0-alpha.2.

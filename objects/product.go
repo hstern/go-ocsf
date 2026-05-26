@@ -22,7 +22,17 @@ type Product struct {
 	// category types.
 	//
 	// OCSF: data_classification (type data_classification, requirement recommended)
+	//
+	// Deprecated: Use the attribute <code>data_classifications</code> instead
 	DataClassification *DataClassification `json:"data_classification,omitempty"`
+
+	// DataClassifications is the Data Classification. A list of Data
+	// Classification objects, that include information about data
+	// classification levels and data category types, identified by a
+	// classifier.
+	//
+	// OCSF: data_classifications (type []data_classification, requirement recommended)
+	DataClassifications []DataClassification `json:"data_classifications,omitempty"`
 
 	// Feature is the Feature. The feature that reported the event.
 	//
@@ -58,8 +68,8 @@ type Product struct {
 
 	// VendorName is the Vendor Name. The name of the vendor of the product.
 	//
-	// OCSF: vendor_name (type string_t, requirement required)
-	VendorName string `json:"vendor_name"`
+	// OCSF: vendor_name (type string_t, requirement recommended)
+	VendorName string `json:"vendor_name,omitempty"`
 
 	// Version is the Version. The version of the product, as defined by the
 	// event source. For example: 2013.1.3-beta.

@@ -18,8 +18,17 @@ type FindingInfo struct {
 	// OCSF: analytic (type analytic, requirement recommended)
 	Analytic *Analytic `json:"analytic,omitempty"`
 
-	// Attacks is the MITRE ATT&CK® Details. The MITRE ATT&CK® technique
-	// and associated tactics related to the finding.
+	// AttackGraph is the Attack Graph. An Attack Graph describes possible
+	// routes an attacker could take through an environment. It describes
+	// relationships between resources and their findings, such as malware
+	// detections, vulnerabilities, misconfigurations, and other security
+	// actions.
+	//
+	// OCSF: attack_graph (type graph, requirement optional)
+	AttackGraph *Graph `json:"attack_graph,omitempty"`
+
+	// Attacks is the MITRE ATT&CK® and ATLAS™ Details. The MITRE ATT&CK®
+	// technique and associated tactics related to the finding.
 	//
 	// OCSF: attacks (type []attack, requirement optional)
 	Attacks []Attack `json:"attacks,omitempty"`
@@ -70,6 +79,12 @@ type FindingInfo struct {
 	// OCSF: modified_time (type timestamp_t, requirement optional)
 	ModifiedTime int64 `json:"modified_time,omitempty"`
 
+	// Product is the Product. Details about the product that reported the
+	// finding.
+	//
+	// OCSF: product (type product, requirement optional)
+	Product *Product `json:"product,omitempty"`
+
 	// ProductUID is the Product Identifier. The unique identifier of the
 	// product that reported the finding.
 	//
@@ -82,11 +97,18 @@ type FindingInfo struct {
 	// OCSF: related_analytics (type []analytic, requirement optional)
 	RelatedAnalytics []Analytic `json:"related_analytics,omitempty"`
 
-	// RelatedEvents is the Related Events. Describes events and/or other
-	// findings related to the finding as identified by the security product.
+	// RelatedEvents is the Related Events/Findings. Describes events and/or
+	// other findings related to the finding as identified by the security
+	// product. Note that these events may or may not be in OCSF.
 	//
 	// OCSF: related_events (type []related_event, requirement optional)
 	RelatedEvents []RelatedEvent `json:"related_events,omitempty"`
+
+	// RelatedEventsCount is the Related Events/Findings Count. Number of
+	// related events or findings.
+	//
+	// OCSF: related_events_count (type integer_t, requirement optional)
+	RelatedEventsCount int `json:"related_events_count,omitempty"`
 
 	// SrcURL is the Source URL. The URL pointing to the source of the
 	// finding.
@@ -94,11 +116,23 @@ type FindingInfo struct {
 	// OCSF: src_url (type url_t, requirement optional)
 	SrcURL string `json:"src_url,omitempty"`
 
+	// Tags is the Tags. The list of tags; {key:value} pairs associated with
+	// the finding.
+	//
+	// OCSF: tags (type []key_value_object, requirement optional)
+	Tags []KeyValueObject `json:"tags,omitempty"`
+
 	// Title is the Title. A title or a brief phrase summarizing the reported
 	// finding.
 	//
-	// OCSF: title (type string_t, requirement required)
-	Title string `json:"title"`
+	// OCSF: title (type string_t, requirement recommended)
+	Title string `json:"title,omitempty"`
+
+	// Traits is the Traits. The list of key traits or characteristics
+	// extracted from the finding.
+	//
+	// OCSF: traits (type []trait, requirement optional)
+	Traits []Trait `json:"traits,omitempty"`
 
 	// Types is the Types. One or more types of the reported finding.
 	//
@@ -109,4 +143,10 @@ type FindingInfo struct {
 	//
 	// OCSF: uid (type string_t, requirement required)
 	UID string `json:"uid"`
+
+	// UIDAlt is the Alternate ID. The alternative unique identifier of the
+	// reported finding.
+	//
+	// OCSF: uid_alt (type string_t, requirement optional)
+	UIDAlt string `json:"uid_alt,omitempty"`
 }

@@ -12,7 +12,7 @@ import (
 	"github.com/hstern/go-ocsf/internal/specfixtures"
 )
 
-// TestFixturesParseAndValidate walks the embedded v1.3.0 fixture
+// TestFixturesParseAndValidate walks the embedded v1.8.0 fixture
 // tree and confirms every JSON file Parses into the expected
 // shape and Validates without error. The forward-compat
 // `future/` subdirectory parses into BaseEvent (whose Validate
@@ -23,9 +23,9 @@ import (
 // byte-stable round-trip property test lands in OCSF-23 with
 // the full conformance scaffold.
 func TestFixturesParseAndValidate(t *testing.T) {
-	fixtures := specfixtures.V130()
+	fixtures := specfixtures.V180()
 	var fixtureCount int
-	err := fs.WalkDir(fixtures, "v1.3.0", func(path string, d fs.DirEntry, err error) error {
+	err := fs.WalkDir(fixtures, "v1.8.0", func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
@@ -74,7 +74,7 @@ func TestFixturesParseAndValidate(t *testing.T) {
 // fixture lands as a BaseEvent — the forward-compat fallback
 // is the property OCSF-24 will test more thoroughly.
 func TestFixturesIncludeForwardCompat(t *testing.T) {
-	data, err := fs.ReadFile(specfixtures.V130(), "v1.3.0/future/unknown_class-9999.json")
+	data, err := fs.ReadFile(specfixtures.V180(), "v1.8.0/future/unknown_class-9999.json")
 	if err != nil {
 		t.Fatalf("read forward-compat fixture: %v", err)
 	}

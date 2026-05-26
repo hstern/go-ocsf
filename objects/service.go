@@ -20,6 +20,12 @@ type Service struct {
 	// OCSF: name (type string_t, requirement recommended)
 	Name string `json:"name,omitempty"`
 
+	// Tags is the Tags. The list of tags; {key:value} pairs associated to
+	// the service.
+	//
+	// OCSF: tags (type []key_value_object, requirement optional)
+	Tags []KeyValueObject `json:"tags,omitempty"`
+
 	// UID is the Unique ID. The unique identifier of the service.
 	//
 	// OCSF: uid (type string_t, requirement recommended)

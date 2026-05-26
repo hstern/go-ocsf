@@ -82,6 +82,6 @@ type KbArticle struct {
 
 	// UID is the Unique ID. The unique identifier for the kb article.
 	//
-	// OCSF: uid (type string_t, requirement required)
-	UID string `json:"uid"`
+	// OCSF: uid (type string_t, requirement recommended)
+	UID string `json:"uid,omitempty"`
 }

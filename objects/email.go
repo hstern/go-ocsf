@@ -6,35 +6,101 @@
 package objects
 
 // Email describes the OCSF Email object: The Email object describes the
-// email metadata such as sender, recipients, and direction. Defined by
-// D3FEND d3f:Email.
+// email metadata such as sender, recipients, and direction, and can
+// include embedded URLs and files.
 //
 // OCSF name: email.
 type Email struct {
-	// Cc is the Cc. The email header Cc values, as defined by RFC 5322.
+	// Cc is the Cc. The machine-readable email header Cc values, as defined
+	// by RFC 5322. For example example.user@usersdomain.com.
 	//
 	// OCSF: cc (type []email_t, requirement optional)
 	Cc []string `json:"cc,omitempty"`
+
+	// CcMailboxes is the Cc Mailboxes. The human-readable email header Cc
+	// Mailbox values. For example 'Example User
+	// &lt;example.user@usersdomain.com&gt;'.
+	//
+	// OCSF: cc_mailboxes (type []string_t, requirement optional)
+	CcMailboxes []string `json:"cc_mailboxes,omitempty"`
 
 	// DataClassification is the Data Classification. The Data Classification
 	// object includes information about data classification levels and data
 	// category types.
 	//
 	// OCSF: data_classification (type data_classification, requirement recommended)
+	//
+	// Deprecated: Use the attribute <code>data_classifications</code> instead
 	DataClassification *DataClassification `json:"data_classification,omitempty"`
 
-	// DeliveredTo is the Delivered To. The Delivered-To email header field.
+	// DataClassifications is the Data Classification. A list of Data
+	// Classification objects, that include information about data
+	// classification levels and data category types, identified by a
+	// classifier.
+	//
+	// OCSF: data_classifications (type []data_classification, requirement recommended)
+	DataClassifications []DataClassification `json:"data_classifications,omitempty"`
+
+	// DeliveredTo is the Delivered To. The machine-readable Delivered-To
+	// email header field. For example example.user@usersdomain.com
 	//
 	// OCSF: delivered_to (type email_t, requirement optional)
+	//
+	// Deprecated: Use the <code> delivered_to_list </code> attribute instead.
 	DeliveredTo string `json:"delivered_to,omitempty"`
 
-	// From is the From. The email header From values, as defined by RFC
-	// 5322.
+	// DeliveredToList is the Delivered To List. The machine-readable
+	// Delivered-To email header values. For example
+	// example.user@usersdomain.com
 	//
-	// OCSF: from (type email_t, requirement required)
-	From string `json:"from"`
+	// OCSF: delivered_to_list (type []email_t, requirement optional)
+	DeliveredToList []string `json:"delivered_to_list,omitempty"`
 
-	// MessageUID is the Message UID. The email header Message-Id value, as
+	// Files is the Files. The files embedded or attached to the email.
+	//
+	// OCSF: files (type []file, requirement optional)
+	Files []File `json:"files,omitempty"`
+
+	// From is the From. The machine-readable email header From value, as
+	// defined by RFC 5322. For example example.user@usersdomain.com.
+	//
+	// OCSF: from (type email_t, requirement recommended)
+	From string `json:"from,omitempty"`
+
+	// FromList is the From List. The machine-readable email header From
+	// values. This array should contain the value in from. For example
+	// example.user@usersdomain.com.
+	//
+	// OCSF: from_list (type []email_t, requirement optional)
+	FromList []string `json:"from_list,omitempty"`
+
+	// FromMailbox is the From Mailbox. The human-readable email header From
+	// Mailbox value. For example 'Example User
+	// &lt;example.user@usersdomain.com&gt;'.
+	//
+	// OCSF: from_mailbox (type string_t, requirement optional)
+	FromMailbox string `json:"from_mailbox,omitempty"`
+
+	// FromMailboxes is the From Mailboxes. The human-readable email header
+	// From Mailbox values. This array should contain the value in
+	// from_mailbox. For example 'Example User
+	// &lt;example.user@usersdomain.com&gt;'.
+	//
+	// OCSF: from_mailboxes (type []email_t, requirement optional)
+	FromMailboxes []string `json:"from_mailboxes,omitempty"`
+
+	// HTTPHeaders is the HTTP Headers. Additional HTTP headers of an HTTP
+	// request or response.
+	//
+	// OCSF: http_headers (type []http_header, requirement optional)
+	HTTPHeaders []HTTPHeader `json:"http_headers,omitempty"`
+
+	// IsRead is the Read. The indication of whether the email has been read.
+	//
+	// OCSF: is_read (type boolean_t, requirement optional)
+	IsRead bool `json:"is_read,omitempty"`
+
+	// MessageUID is the Message UID. The email header Message-ID value, as
 	// defined by RFC 5322.
 	//
 	// OCSF: message_uid (type string_t, requirement recommended)
@@ -45,11 +111,60 @@ type Email struct {
 	// OCSF: raw_header (type string_t, requirement optional)
 	RawHeader string `json:"raw_header,omitempty"`
 
-	// ReplyTo is the Reply To. The email header Reply-To values, as defined
-	// by RFC 5322.
+	// ReplyTo is the Reply To. The machine-readable email header Reply-To
+	// value, as defined by RFC 5322. For example
+	// example.user@usersdomain.com
 	//
 	// OCSF: reply_to (type email_t, requirement recommended)
+	//
+	// Deprecated: Use the <code> reply_to_list </code> attribute instead.
 	ReplyTo string `json:"reply_to,omitempty"`
+
+	// ReplyToList is the Reply To List. The machine-readable email header
+	// Reply-To values, as defined by RFC 5322. For example
+	// example.user@usersdomain.com
+	//
+	// OCSF: reply_to_list (type []email_t, requirement optional)
+	ReplyToList []string `json:"reply_to_list,omitempty"`
+
+	// ReplyToMailboxes is the Reply To Mailboxes. The human-readable email
+	// header Reply To Mailbox values. For example 'Example User
+	// &lt;example.user@usersdomain.com&gt;'.
+	//
+	// OCSF: reply_to_mailboxes (type []string_t, requirement optional)
+	ReplyToMailboxes []string `json:"reply_to_mailboxes,omitempty"`
+
+	// ReturnPath is the Return Path. The address found in the 'Return-Path'
+	// header, which indicates where bounce messages (non-delivery reports)
+	// should be sent. This address is often set by the sending system and
+	// may differ from the 'From' or 'Sender' addresses. For example,
+	// mailer-daemon@senderserver.com.
+	//
+	// OCSF: return_path (type email_t, requirement optional)
+	ReturnPath string `json:"return_path,omitempty"`
+
+	// Sender is the Sender. The machine readable email address of the system
+	// or server that actually transmitted the email message, extracted from
+	// the email headers per RFC 5322. This differs from the from field,
+	// which shows the message author. The sender field is most commonly used
+	// when multiple addresses appear in the from_list field, or when the
+	// transmitting system is different from the message author (such as when
+	// sending on behalf of someone else).
+	//
+	// OCSF: sender (type email_t, requirement optional)
+	Sender string `json:"sender,omitempty"`
+
+	// SenderMailbox is the Sender Mailbox. The human readable email address
+	// of the system or server that actually transmitted the email message,
+	// extracted from the email headers per RFC 5322. This differs from the
+	// from_mailbox field, which shows the message author. The sender mailbox
+	// field is most commonly used when multiple addresses appear in the
+	// from_mailboxes field, or when the transmitting system is different
+	// from the message author (such as when sending on behalf of someone
+	// else).
+	//
+	// OCSF: sender_mailbox (type string_t, requirement optional)
+	SenderMailbox string `json:"sender_mailbox,omitempty"`
 
 	// Size is the Size. The size in bytes of the email, including
 	// attachments.
@@ -60,11 +175,15 @@ type Email struct {
 	// SMTPFrom is the SMTP From. The value of the SMTP MAIL FROM command.
 	//
 	// OCSF: smtp_from (type email_t, requirement recommended)
+	//
+	// Deprecated: Use the <code> from </code> attribute instead.
 	SMTPFrom string `json:"smtp_from,omitempty"`
 
 	// SMTPTo is the SMTP To. The value of the SMTP envelope RCPT TO command.
 	//
 	// OCSF: smtp_to (type []email_t, requirement recommended)
+	//
+	// Deprecated: Use the <code> to </code> attribute instead.
 	SMTPTo []string `json:"smtp_to,omitempty"`
 
 	// Subject is the Subject. The email header Subject value, as defined by
@@ -73,15 +192,29 @@ type Email struct {
 	// OCSF: subject (type string_t, requirement recommended)
 	Subject string `json:"subject,omitempty"`
 
-	// To is the To. The email header To values, as defined by RFC 5322.
+	// To is the To. The machine-readable email header To values, as defined
+	// by RFC 5322. For example example.user@usersdomain.com
 	//
-	// OCSF: to (type []email_t, requirement required)
-	To []string `json:"to"`
+	// OCSF: to (type []email_t, requirement recommended)
+	To []string `json:"to,omitempty"`
 
-	// UID is the Email UID. The email unique identifier.
+	// ToMailboxes is the To Mailboxes. The human-readable email header To
+	// Mailbox values. For example 'Example User
+	// &lt;example.user@usersdomain.com&gt;'.
+	//
+	// OCSF: to_mailboxes (type []string_t, requirement optional)
+	ToMailboxes []string `json:"to_mailboxes,omitempty"`
+
+	// UID is the Email Thread UID. The unique identifier of the email
+	// thread.
 	//
 	// OCSF: uid (type string_t, requirement recommended)
 	UID string `json:"uid,omitempty"`
+
+	// Urls is the URLs. The URLs embedded in the email.
+	//
+	// OCSF: urls (type []url, requirement optional)
+	Urls []URL `json:"urls,omitempty"`
 
 	// XOriginatingIP is the X-Originating-IP. The X-Originating-IP header
 	// identifying the emails originating IP address(es).

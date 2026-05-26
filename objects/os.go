@@ -7,7 +7,7 @@ package objects
 
 // OS describes the OCSF Operating System (OS) object: The Operating
 // System (OS) object describes characteristics of an OS, such as Linux
-// or Windows. Defined by D3FEND d3f:OperatingSystem.
+// or Windows.
 //
 // OCSF name: os.
 type OS struct {
@@ -17,8 +17,8 @@ type OS struct {
 	Build string `json:"build,omitempty"`
 
 	// Country is the Country. The operating system country code, as defined
-	// by the ISO 3166-1 standard (Alpha-2 code). For the complete list of
-	// country codes, see ISO 3166-1 alpha-2 codes.
+	// by the ISO 3166-1 standard (Alpha-2 code).Note: The two letter country
+	// code should be capitalized. For example: US or CA.
 	//
 	// OCSF: country (type string_t, requirement optional)
 	Country string `json:"country,omitempty"`
@@ -41,6 +41,13 @@ type OS struct {
 	//
 	// OCSF: edition (type string_t, requirement optional)
 	Edition string `json:"edition,omitempty"`
+
+	// KernelRelease is the Kernel Release. The kernel release of the
+	// operating system. On Unix-based systems, this is determined from the
+	// uname -r command output, for example "5.15.0-122-generic".
+	//
+	// OCSF: kernel_release (type string_t, requirement optional)
+	KernelRelease string `json:"kernel_release,omitempty"`
 
 	// Lang is the Language. The two letter lower case language codes, as
 	// defined by ISO 639-1. For example: en (English), de (German), or fr

@@ -20,7 +20,12 @@ import (
 // fingerprinting, statistical analysis, machine learning or other
 // methodologies. The finding describes the actors and endpoints who
 // accessed or own the sensitive data, as well as the resources which
-// store the sensitive data.
+// store the sensitive data. Note: if the event producer is a security
+// control, the security_control profile should be applied and its
+// attacks information, if present, should be duplicated into the
+// finding_info object. Note: If the Finding is an incident, i.e.
+// requires incident workflow, also apply the incident profile or
+// aggregate this finding into an Incident Finding.
 //
 // OCSF name: data_security_finding. class_uid: 2006.
 type DataSecurityFinding struct {
@@ -30,14 +35,12 @@ type DataSecurityFinding struct {
 	Action string `json:"action,omitempty"`
 
 	// ActionID is the Action ID. The action taken by a control or other
-	// policy-based system leading to an outcome or disposition. Dispositions
-	// conform to an action of 1 'Allowed' or 2 'Denied' in most cases. Note
-	// that 99 'Other' is not an option. No action would equate to 1
-	// 'Allowed'. An unknown action may still correspond to a known
-	// disposition. Refer to disposition_id for the outcome of the action.
+	// policy-based system leading to an outcome or disposition. An unknown
+	// action may still correspond to a known disposition. Refer to
+	// disposition_id for the outcome of the action.
 	//
-	// OCSF: action_id (type integer_t, requirement required)
-	ActionID int `json:"action_id"`
+	// OCSF: action_id (type integer_t, requirement recommended)
+	ActionID int `json:"action_id,omitempty"`
 
 	// ActivityID is the Activity ID. The normalized identifier of the Data
 	// Security Finding activity.
@@ -65,9 +68,22 @@ type DataSecurityFinding struct {
 	// OCSF: api (type api, requirement optional)
 	API *objects.API `json:"api,omitempty"`
 
-	// Attacks is the MITRE ATT&CK® Details. An array of MITRE ATT&CK®
-	// objects describing the tactics, techniques & sub-techniques identified
-	// by a security control or finding.
+	// Assignee is the Assignee. The details of the user assigned to an
+	// Incident.
+	//
+	// OCSF: assignee (type user, requirement optional)
+	Assignee *objects.User `json:"assignee,omitempty"`
+
+	// AssigneeGroup is the Assignee Group. The details of the group assigned
+	// to an Incident.
+	//
+	// OCSF: assignee_group (type group, requirement optional)
+	AssigneeGroup *objects.Group `json:"assignee_group,omitempty"`
+
+	// Attacks is the MITRE ATT&CK® and ATLAS™ Details. An array of MITRE
+	// ATT&CK® objects describing identified tactics, techniques &
+	// sub-techniques. The objects are compatible with MITRE ATLAS™
+	// tactics, techniques & sub-techniques.
 	//
 	// OCSF: attacks (type []attack, requirement optional)
 	Attacks []objects.Attack `json:"attacks,omitempty"`
@@ -104,7 +120,7 @@ type DataSecurityFinding struct {
 	ClassUID int `json:"class_uid"`
 
 	// Cloud is the Cloud. Describes details about the Cloud environment
-	// where the event was originally created or logged.
+	// where the event or finding was created.
 	//
 	// OCSF: cloud (type cloud, requirement required)
 	Cloud *objects.Cloud `json:"cloud"`
@@ -121,7 +137,7 @@ type DataSecurityFinding struct {
 	// OCSF: confidence (type string_t, requirement optional)
 	Confidence string `json:"confidence,omitempty"`
 
-	// ConfidenceID is the Confidence Id. The normalized confidence refers to
+	// ConfidenceID is the Confidence ID. The normalized confidence refers to
 	// the accuracy of the rule that created the finding. A rule with a low
 	// confidence means that the finding scope is wide and may create finding
 	// reports that may not be malicious in nature.
@@ -227,8 +243,8 @@ type DataSecurityFinding struct {
 	// OCSF: finding_info (type finding_info, requirement required)
 	FindingInfo *objects.FindingInfo `json:"finding_info"`
 
-	// FirewallRule is the Firewall Rule. The firewall rule that triggered
-	// the event.
+	// FirewallRule is the Firewall Rule. The firewall rule that pertains to
+	// the control that triggered the event, if applicable.
 	//
 	// OCSF: firewall_rule (type firewall_rule, requirement optional)
 	FirewallRule *objects.FirewallRule `json:"firewall_rule,omitempty"`
@@ -240,22 +256,49 @@ type DataSecurityFinding struct {
 	// OCSF: impact (type string_t, requirement optional)
 	Impact string `json:"impact,omitempty"`
 
-	// ImpactID is the Impact ID. The normalized impact of the finding.
+	// ImpactID is the Impact ID. The normalized impact of the incident or
+	// finding. Per NIST, this is the magnitude of harm that can be expected
+	// to result from the consequences of unauthorized disclosure,
+	// modification, destruction, or loss of information or information
+	// system availability.
 	//
 	// OCSF: impact_id (type integer_t, requirement optional)
 	ImpactID int `json:"impact_id,omitempty"`
 
-	// ImpactScore is the Impact. The impact of the finding, valid range
-	// 0-100.
+	// ImpactScore is the Impact Score. The impact as an integer value of the
+	// finding, valid range 0-100.
 	//
 	// OCSF: impact_score (type integer_t, requirement optional)
 	ImpactScore int `json:"impact_score,omitempty"`
+
+	// IsAlert is the Alert. Indicates that the event is considered to be an
+	// alertable signal. For example, an activity_id of 'Create' could
+	// constitute an alertable signal and the value would be true, while
+	// 'Close' likely would not and either omit the attribute or set its
+	// value to false. Note that other events with the security_control
+	// profile may also be deemed alertable signals and may also carry
+	// is_alert = true attributes.
+	//
+	// OCSF: is_alert (type boolean_t, requirement recommended)
+	IsAlert bool `json:"is_alert,omitempty"`
+
+	// IsSuspectedBreach is the Suspected Breach. A determination based on
+	// analytics as to whether a potential breach was found.
+	//
+	// OCSF: is_suspected_breach (type boolean_t, requirement optional)
+	IsSuspectedBreach bool `json:"is_suspected_breach,omitempty"`
 
 	// Malware is the Malware. A list of Malware objects, describing details
 	// about the identified malware.
 	//
 	// OCSF: malware (type []malware, requirement optional)
 	Malware []objects.Malware `json:"malware,omitempty"`
+
+	// MalwareScanInfo is the Malware Scan Info. Describes details about the
+	// scan job that identified malware on the target system.
+	//
+	// OCSF: malware_scan_info (type malware_scan_info, requirement optional)
+	MalwareScanInfo *objects.MalwareScanInfo `json:"malware_scan_info,omitempty"`
 
 	// Message is the Message. The description of the event/finding, as
 	// defined by the source.
@@ -285,17 +328,61 @@ type DataSecurityFinding struct {
 	// OCSF: osint (type []osint, requirement required)
 	Osint []objects.Osint `json:"osint"`
 
+	// Policy is the Policy. The policy that pertains to the control that
+	// triggered the event, if applicable. For example the name of an
+	// anti-malware policy or an access control policy.
+	//
+	// OCSF: policy (type policy, requirement optional)
+	Policy *objects.Policy `json:"policy,omitempty"`
+
+	// Priority is the Priority. The priority, normalized to the caption of
+	// the priority_id value. In the case of 'Other', it is defined by the
+	// event source.
+	//
+	// OCSF: priority (type string_t, requirement optional)
+	Priority string `json:"priority,omitempty"`
+
+	// PriorityID is the Priority ID. The normalized priority. Priority
+	// identifies the relative importance of the incident or finding. It is a
+	// measurement of urgency.
+	//
+	// OCSF: priority_id (type integer_t, requirement recommended)
+	PriorityID int `json:"priority_id,omitempty"`
+
 	// RawData is the Raw Data. The raw event/finding data as received from
 	// the source.
 	//
 	// OCSF: raw_data (type string_t, requirement optional)
 	RawData string `json:"raw_data,omitempty"`
 
-	// Resources is the Affected Resources. Describes details about resources
-	// where classified or sensitive data is stored in, or was accessed from.
+	// RawDataHash is the Raw Data Hash. The hash, which describes the
+	// content of the raw_data field.
+	//
+	// OCSF: raw_data_hash (type fingerprint, requirement optional)
+	RawDataHash *objects.Fingerprint `json:"raw_data_hash,omitempty"`
+
+	// RawDataSize is the Raw Data Size. The size of the raw data which was
+	// transformed into an OCSF event, in bytes.
+	//
+	// OCSF: raw_data_size (type long_t, requirement optional)
+	RawDataSize int64 `json:"raw_data_size,omitempty"`
+
+	// Resources is the Additional Resources. Describes details about
+	// additional resources, where classified or sensitive data is stored in,
+	// or was accessed from. You can populate this object, if the specific
+	// resource type objects available in the class (database, databucket,
+	// table, file) aren't sufficient; OR You can also choose to duplicate
+	// uid, name of the specific resources objects, for a consistent access
+	// to resource uids across all findings.
 	//
 	// OCSF: resources (type []resource_details, requirement recommended)
 	Resources []objects.ResourceDetails `json:"resources,omitempty"`
+
+	// RiskDetails is the Risk Details. Describes the risk associated with
+	// the finding.
+	//
+	// OCSF: risk_details (type string_t, requirement optional)
+	RiskDetails string `json:"risk_details,omitempty"`
 
 	// RiskLevel is the Risk Level. The risk level, normalized to the caption
 	// of the risk_level_id value.
@@ -330,11 +417,17 @@ type DataSecurityFinding struct {
 	// OCSF: severity_id (type integer_t, requirement required)
 	SeverityID int `json:"severity_id"`
 
-	// SrcEndpoint is the Affected Resources. Details about the source
-	// endpoint where classified or sensitive data was accessed from.
+	// SrcEndpoint is the Source Endpoint. Details about the source endpoint
+	// where classified or sensitive data was accessed from.
 	//
 	// OCSF: src_endpoint (type network_endpoint, requirement recommended)
 	SrcEndpoint *objects.NetworkEndpoint `json:"src_endpoint,omitempty"`
+
+	// SrcURL is the Source URL. A Url link used to access the original
+	// incident.
+	//
+	// OCSF: src_url (type url_t, requirement recommended)
+	SrcURL string `json:"src_url,omitempty"`
 
 	// StartTime is the Start Time. The time of the least recent event
 	// included in the finding.
@@ -376,6 +469,19 @@ type DataSecurityFinding struct {
 	// OCSF: table (type table, requirement recommended)
 	Table *objects.Table `json:"table,omitempty"`
 
+	// Ticket is the Ticket. The linked ticket in the ticketing system.
+	//
+	// OCSF: ticket (type ticket, requirement optional)
+	//
+	// Deprecated: Use <code>tickets</code> instead.
+	Ticket *objects.Ticket `json:"ticket,omitempty"`
+
+	// Tickets is the Tickets. The associated ticket(s) in the ticketing
+	// system. Each ticket contains details like ticket ID, status, etc.
+	//
+	// OCSF: tickets (type []ticket, requirement optional)
+	Tickets []objects.Ticket `json:"tickets,omitempty"`
+
 	// Time is the Event Time. The normalized event occurrence time or the
 	// finding creation time.
 	//
@@ -408,6 +514,27 @@ type DataSecurityFinding struct {
 	//
 	// OCSF: unmapped (type object, requirement optional)
 	Unmapped json.RawMessage `json:"unmapped,omitempty"`
+
+	// VendorAttributes is the Vendor Attributes. The Vendor Attributes
+	// object can be used to represent values of attributes populated by the
+	// Vendor/Finding Provider. It can help distinguish between the
+	// vendor-provided values and consumer-updated values, of key attributes
+	// like severity_id.The original finding producer should not populate
+	// this object. It should be populated by consuming systems that support
+	// data mutability.
+	//
+	// OCSF: vendor_attributes (type vendor_attributes, requirement optional)
+	VendorAttributes *objects.VendorAttributes `json:"vendor_attributes,omitempty"`
+
+	// Verdict is the Verdict. The verdict assigned to an Incident finding.
+	//
+	// OCSF: verdict (type string_t, requirement recommended)
+	Verdict string `json:"verdict,omitempty"`
+
+	// VerdictID is the Verdict ID. The normalized verdict of an Incident.
+	//
+	// OCSF: verdict_id (type integer_t, requirement recommended)
+	VerdictID int `json:"verdict_id,omitempty"`
 }
 
 // OCSFClassUID returns the OCSF class_uid for Data Security Finding (2006).
@@ -439,7 +566,7 @@ func (e DataSecurityFinding) Validate() error {
 		return &ocsf.ValidationError{ClassUID: 2006, Field: "osint", Rule: "required", Reason: "required field is missing"}
 	}
 	switch e.ActionID {
-	case 0, 1, 2, 99:
+	case 0, 1, 2, 3, 4, 99:
 	default:
 		return &ocsf.ValidationError{ClassUID: 2006, Field: "action_id", Rule: "enum", Reason: "value outside the schema's enum range"}
 	}
@@ -455,6 +582,14 @@ func (e DataSecurityFinding) Validate() error {
 			}
 		case 2:
 			if e.Action != "Denied" {
+				return &ocsf.ValidationError{ClassUID: 2006, Field: "action", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.Action != "Observed" {
+				return &ocsf.ValidationError{ClassUID: 2006, Field: "action", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 4:
+			if e.Action != "Modified" {
 				return &ocsf.ValidationError{ClassUID: 2006, Field: "action", Rule: "enum", Reason: "sibling does not match enum caption"}
 			}
 		}
@@ -492,6 +627,26 @@ func (e DataSecurityFinding) Validate() error {
 	case 0, 1, 2, 3, 99:
 	default:
 		return &ocsf.ValidationError{ClassUID: 2006, Field: "confidence_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.Confidence != "" {
+		switch e.ConfidenceID {
+		case 0:
+			if e.Confidence != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 2006, Field: "confidence", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.Confidence != "Low" {
+				return &ocsf.ValidationError{ClassUID: 2006, Field: "confidence", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.Confidence != "Medium" {
+				return &ocsf.ValidationError{ClassUID: 2006, Field: "confidence", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.Confidence != "High" {
+				return &ocsf.ValidationError{ClassUID: 2006, Field: "confidence", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
 	}
 	switch e.DispositionID {
 	case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 99:
@@ -643,6 +798,35 @@ func (e DataSecurityFinding) Validate() error {
 			}
 		}
 	}
+	switch e.PriorityID {
+	case 0, 1, 2, 3, 4, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 2006, Field: "priority_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.Priority != "" {
+		switch e.PriorityID {
+		case 0:
+			if e.Priority != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 2006, Field: "priority", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.Priority != "Low" {
+				return &ocsf.ValidationError{ClassUID: 2006, Field: "priority", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.Priority != "Medium" {
+				return &ocsf.ValidationError{ClassUID: 2006, Field: "priority", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.Priority != "High" {
+				return &ocsf.ValidationError{ClassUID: 2006, Field: "priority", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 4:
+			if e.Priority != "Critical" {
+				return &ocsf.ValidationError{ClassUID: 2006, Field: "priority", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
 	switch e.RiskLevelID {
 	case 0, 1, 2, 3, 4, 99:
 	default:
@@ -710,7 +894,7 @@ func (e DataSecurityFinding) Validate() error {
 		}
 	}
 	switch e.StatusID {
-	case 0, 1, 2, 3, 4, 99:
+	case 0, 1, 2, 3, 4, 5, 6, 99:
 	default:
 		return &ocsf.ValidationError{ClassUID: 2006, Field: "status_id", Rule: "enum", Reason: "value outside the schema's enum range"}
 	}
@@ -735,6 +919,67 @@ func (e DataSecurityFinding) Validate() error {
 		case 4:
 			if e.Status != "Resolved" {
 				return &ocsf.ValidationError{ClassUID: 2006, Field: "status", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 5:
+			if e.Status != "Archived" {
+				return &ocsf.ValidationError{ClassUID: 2006, Field: "status", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 6:
+			if e.Status != "Deleted" {
+				return &ocsf.ValidationError{ClassUID: 2006, Field: "status", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.VerdictID {
+	case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 2006, Field: "verdict_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.Verdict != "" {
+		switch e.VerdictID {
+		case 0:
+			if e.Verdict != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 2006, Field: "verdict", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.Verdict != "False Positive" {
+				return &ocsf.ValidationError{ClassUID: 2006, Field: "verdict", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.Verdict != "True Positive" {
+				return &ocsf.ValidationError{ClassUID: 2006, Field: "verdict", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.Verdict != "Disregard" {
+				return &ocsf.ValidationError{ClassUID: 2006, Field: "verdict", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 4:
+			if e.Verdict != "Suspicious" {
+				return &ocsf.ValidationError{ClassUID: 2006, Field: "verdict", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 5:
+			if e.Verdict != "Benign" {
+				return &ocsf.ValidationError{ClassUID: 2006, Field: "verdict", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 6:
+			if e.Verdict != "Test" {
+				return &ocsf.ValidationError{ClassUID: 2006, Field: "verdict", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 7:
+			if e.Verdict != "Insufficient Data" {
+				return &ocsf.ValidationError{ClassUID: 2006, Field: "verdict", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 8:
+			if e.Verdict != "Security Risk" {
+				return &ocsf.ValidationError{ClassUID: 2006, Field: "verdict", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 9:
+			if e.Verdict != "Managed Externally" {
+				return &ocsf.ValidationError{ClassUID: 2006, Field: "verdict", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 10:
+			if e.Verdict != "Duplicate" {
+				return &ocsf.ValidationError{ClassUID: 2006, Field: "verdict", Rule: "enum", Reason: "sibling does not match enum caption"}
 			}
 		}
 	}

@@ -23,14 +23,12 @@ type NetworkActivity struct {
 	Action string `json:"action,omitempty"`
 
 	// ActionID is the Action ID. The action taken by a control or other
-	// policy-based system leading to an outcome or disposition. Dispositions
-	// conform to an action of 1 'Allowed' or 2 'Denied' in most cases. Note
-	// that 99 'Other' is not an option. No action would equate to 1
-	// 'Allowed'. An unknown action may still correspond to a known
-	// disposition. Refer to disposition_id for the outcome of the action.
+	// policy-based system leading to an outcome or disposition. An unknown
+	// action may still correspond to a known disposition. Refer to
+	// disposition_id for the outcome of the action.
 	//
-	// OCSF: action_id (type integer_t, requirement required)
-	ActionID int `json:"action_id"`
+	// OCSF: action_id (type integer_t, requirement recommended)
+	ActionID int `json:"action_id,omitempty"`
 
 	// ActivityID is the Activity ID. The normalized identifier of the
 	// activity that triggered the event.
@@ -45,7 +43,8 @@ type NetworkActivity struct {
 	ActivityName string `json:"activity_name,omitempty"`
 
 	// Actor is the Actor. The actor object describes details about the
-	// user/role/process that was the source of the activity.
+	// user/role/process that was the source of the activity. Note that this
+	// is not the threat actor of a campaign but may be part of a campaign.
 	//
 	// OCSF: actor (type actor, requirement optional)
 	Actor *objects.Actor `json:"actor,omitempty"`
@@ -56,15 +55,29 @@ type NetworkActivity struct {
 	// OCSF: api (type api, requirement optional)
 	API *objects.API `json:"api,omitempty"`
 
-	// AppName is the Application Name. The name of the application
-	// associated with the event or object.
+	// AppName is the Application Name. The network application name
+	// identified by tools such as NBAR or App ID (e.g., youtube, facebook,
+	// webex). This represents a specific network application that uses
+	// standard protocols (such as https or quic) to deliver its service.
 	//
 	// OCSF: app_name (type string_t, requirement optional)
 	AppName string `json:"app_name,omitempty"`
 
-	// Attacks is the MITRE ATT&CK® Details. An array of MITRE ATT&CK®
-	// objects describing the tactics, techniques & sub-techniques identified
-	// by a security control or finding.
+	// AppProtocolName is the Application Protocol Name. The
+	// application-layer (Layer 7) protocol name identified by deep packet
+	// inspection or packet parsing (e.g., https, quic, ssh, dns), expressed
+	// as an IANA-registered service name from the IANA Service Name and
+	// Transport Protocol Port Number Registry. Note: Port numbers alone are
+	// not always a reliable indicator of the actual application protocol in
+	// use.
+	//
+	// OCSF: app_protocol_name (type string_t, requirement optional)
+	AppProtocolName string `json:"app_protocol_name,omitempty"`
+
+	// Attacks is the MITRE ATT&CK® and ATLAS™ Details. An array of MITRE
+	// ATT&CK® objects describing identified tactics, techniques &
+	// sub-techniques. The objects are compatible with MITRE ATLAS™
+	// tactics, techniques & sub-techniques.
 	//
 	// OCSF: attacks (type []attack, requirement optional)
 	Attacks []objects.Attack `json:"attacks,omitempty"`
@@ -101,10 +114,31 @@ type NetworkActivity struct {
 	ClassUID int `json:"class_uid"`
 
 	// Cloud is the Cloud. Describes details about the Cloud environment
-	// where the event was originally created or logged.
+	// where the event or finding was created.
 	//
 	// OCSF: cloud (type cloud, requirement required)
 	Cloud *objects.Cloud `json:"cloud"`
+
+	// Confidence is the Confidence. The confidence, normalized to the
+	// caption of the confidence_id value. In the case of 'Other', it is
+	// defined by the event source.
+	//
+	// OCSF: confidence (type string_t, requirement optional)
+	Confidence string `json:"confidence,omitempty"`
+
+	// ConfidenceID is the Confidence ID. The normalized confidence refers to
+	// the accuracy of the rule that created the finding. A rule with a low
+	// confidence means that the finding scope is wide and may create finding
+	// reports that may not be malicious in nature.
+	//
+	// OCSF: confidence_id (type integer_t, requirement recommended)
+	ConfidenceID int `json:"confidence_id,omitempty"`
+
+	// ConfidenceScore is the Confidence Score. The confidence score as
+	// reported by the event source.
+	//
+	// OCSF: confidence_score (type integer_t, requirement optional)
+	ConfidenceScore int `json:"confidence_score,omitempty"`
 
 	// ConnectionInfo is the Connection Info. The network connection
 	// information.
@@ -117,6 +151,19 @@ type NetworkActivity struct {
 	//
 	// OCSF: count (type integer_t, requirement optional)
 	Count int `json:"count,omitempty"`
+
+	// CumulativeTraffic is the Cumulative Traffic. The cumulative (running
+	// total) network traffic aggregated from the start of a flow or session.
+	// Use when reporting: (1) total accumulated bytes/packets since flow
+	// initiation, (2) combined aggregation models where both incremental
+	// deltas and running totals are reported together (populate both traffic
+	// for the delta and this attribute for the cumulative total), or (3)
+	// final summary metrics when a long-lived connection closes. This
+	// represents the sum of all activity from flow start to the current
+	// observation, not a delta or point-in-time value.
+	//
+	// OCSF: cumulative_traffic (type network_traffic, requirement optional)
+	CumulativeTraffic *objects.NetworkTraffic `json:"cumulative_traffic,omitempty"`
 
 	// Device is the Device. An addressable device, computer system or host.
 	//
@@ -137,11 +184,12 @@ type NetworkActivity struct {
 	// OCSF: disposition_id (type integer_t, requirement recommended)
 	DispositionID int `json:"disposition_id,omitempty"`
 
-	// DstEndpoint is the Destination Endpoint. The responder (server) in a
-	// network connection.
+	// DstEndpoint is the Destination Endpoint. The responder of the network
+	// connection. In some contexts an event source cannot correctly identify
+	// the responder. Refer to is_src_dst_assignment_known for certainty.
 	//
-	// OCSF: dst_endpoint (type network_endpoint, requirement required)
-	DstEndpoint *objects.NetworkEndpoint `json:"dst_endpoint"`
+	// OCSF: dst_endpoint (type network_endpoint, requirement recommended)
+	DstEndpoint *objects.NetworkEndpoint `json:"dst_endpoint,omitempty"`
 
 	// Duration is the Duration Milliseconds. The event duration or aggregate
 	// time, the amount of time the event covers from start_time to end_time
@@ -167,11 +215,33 @@ type NetworkActivity struct {
 	// OCSF: enrichments (type []enrichment, requirement optional)
 	Enrichments []objects.Enrichment `json:"enrichments,omitempty"`
 
-	// FirewallRule is the Firewall Rule. The firewall rule that triggered
-	// the event.
+	// FirewallRule is the Firewall Rule. The firewall rule that pertains to
+	// the control that triggered the event, if applicable.
 	//
 	// OCSF: firewall_rule (type firewall_rule, requirement optional)
 	FirewallRule *objects.FirewallRule `json:"firewall_rule,omitempty"`
+
+	// IsAlert is the Alert. Indicates that the event is considered to be an
+	// alertable signal. Should be set to true if disposition_id = Alert
+	// among other dispositions, and/or risk_level_id or severity_id of the
+	// event is elevated. Not all control events will be alertable, for
+	// example if disposition_id = Exonerated or disposition_id = Allowed.
+	//
+	// OCSF: is_alert (type boolean_t, requirement recommended)
+	IsAlert bool `json:"is_alert,omitempty"`
+
+	// IsSrcDstAssignmentKnown is the Source/Destination Assignment Known.
+	// true denotes that src_endpoint and dst_endpoint correctly identify the
+	// initiator and responder respectively. false denotes that the event
+	// source has arbitrarily assigned one peer to src_endpoint and the other
+	// to dst_endpoint, in other words that initiator and responder are not
+	// being asserted. This can occur, for example, when the event source is
+	// a network appliance that has not observed the initiation of a given
+	// connection. In the absence of this attribute, interpretation of the
+	// initiator and responder is implementation-specific.
+	//
+	// OCSF: is_src_dst_assignment_known (type boolean_t, requirement recommended)
+	IsSrcDstAssignmentKnown bool `json:"is_src_dst_assignment_known,omitempty"`
 
 	// Ja4FingerprintList is the JA4+ Fingerprints. A list of the JA4+
 	// network fingerprints.
@@ -192,6 +262,12 @@ type NetworkActivity struct {
 	// OCSF: malware (type []malware, requirement optional)
 	Malware []objects.Malware `json:"malware,omitempty"`
 
+	// MalwareScanInfo is the Malware Scan Info. Describes details about the
+	// scan job that identified malware on the target system.
+	//
+	// OCSF: malware_scan_info (type malware_scan_info, requirement optional)
+	MalwareScanInfo *objects.MalwareScanInfo `json:"malware_scan_info,omitempty"`
+
 	// Message is the Message. The description of the event/finding, as
 	// defined by the source.
 	//
@@ -204,11 +280,37 @@ type NetworkActivity struct {
 	// OCSF: metadata (type metadata, requirement required)
 	Metadata *objects.Metadata `json:"metadata"`
 
+	// NetworkObservationPoint is the Network Observation Point. The network
+	// endpoint that observes or inspects network traffic as a third-party
+	// system, used when the observer is neither the source nor the
+	// destination of the communication (when observation_point_id = 3).
+	// Examples include network taps, span ports, inline security devices, or
+	// packet capture systems that monitor traffic between other endpoints.
+	//
+	// OCSF: network_observation_point (type network_endpoint, requirement optional)
+	NetworkObservationPoint *objects.NetworkEndpoint `json:"network_observation_point,omitempty"`
+
 	// Observables is the Observables. The observables associated with the
 	// event or a finding.
 	//
 	// OCSF: observables (type []observable, requirement recommended)
 	Observables []objects.Observable `json:"observables,omitempty"`
+
+	// ObservationPoint is the Observation Point. Indicates whether the
+	// source network endpoint, destination network endpoint, or neither
+	// served as the observation point for the activity. The value is
+	// normalized to the caption of the observation_point_id.
+	//
+	// OCSF: observation_point (type string_t, requirement optional)
+	ObservationPoint string `json:"observation_point,omitempty"`
+
+	// ObservationPointID is the Observation Point ID. The normalized
+	// identifier of the observation point. The observation point identifier
+	// indicates whether the source network endpoint, destination network
+	// endpoint, or neither served as the observation point for the activity.
+	//
+	// OCSF: observation_point_id (type integer_t, requirement optional)
+	ObservationPointID int `json:"observation_point_id,omitempty"`
 
 	// Osint is the OSINT. The OSINT (Open Source Intelligence) object
 	// contains details related to an indicator such as the indicator itself,
@@ -219,6 +321,19 @@ type NetworkActivity struct {
 	//
 	// OCSF: osint (type []osint, requirement required)
 	Osint []objects.Osint `json:"osint"`
+
+	// PacketList is the Packets. The list of packet objects describing
+	// captured network packets.
+	//
+	// OCSF: packet_list (type []packet, requirement optional)
+	PacketList []objects.Packet `json:"packet_list,omitempty"`
+
+	// Policy is the Policy. The policy that pertains to the control that
+	// triggered the event, if applicable. For example the name of an
+	// anti-malware policy or an access control policy.
+	//
+	// OCSF: policy (type policy, requirement optional)
+	Policy *objects.Policy `json:"policy,omitempty"`
 
 	// Proxy is the Proxy. The proxy (server) in a network connection.
 	//
@@ -268,6 +383,41 @@ type NetworkActivity struct {
 	// OCSF: raw_data (type string_t, requirement optional)
 	RawData string `json:"raw_data,omitempty"`
 
+	// RawDataHash is the Raw Data Hash. The hash, which describes the
+	// content of the raw_data field.
+	//
+	// OCSF: raw_data_hash (type fingerprint, requirement optional)
+	RawDataHash *objects.Fingerprint `json:"raw_data_hash,omitempty"`
+
+	// RawDataSize is the Raw Data Size. The size of the raw data which was
+	// transformed into an OCSF event, in bytes.
+	//
+	// OCSF: raw_data_size (type long_t, requirement optional)
+	RawDataSize int64 `json:"raw_data_size,omitempty"`
+
+	// RiskDetails is the Risk Details. Describes the risk associated with
+	// the finding.
+	//
+	// OCSF: risk_details (type string_t, requirement optional)
+	RiskDetails string `json:"risk_details,omitempty"`
+
+	// RiskLevel is the Risk Level. The risk level, normalized to the caption
+	// of the risk_level_id value.
+	//
+	// OCSF: risk_level (type string_t, requirement optional)
+	RiskLevel string `json:"risk_level,omitempty"`
+
+	// RiskLevelID is the Risk Level ID. The normalized risk level id.
+	//
+	// OCSF: risk_level_id (type integer_t, requirement optional)
+	RiskLevelID int `json:"risk_level_id,omitempty"`
+
+	// RiskScore is the Risk Score. The risk score as reported by the event
+	// source.
+	//
+	// OCSF: risk_score (type integer_t, requirement optional)
+	RiskScore int `json:"risk_score,omitempty"`
+
 	// Severity is the Severity. The event/finding severity, normalized to
 	// the caption of the severity_id value. In the case of 'Other', it is
 	// defined by the source.
@@ -284,8 +434,9 @@ type NetworkActivity struct {
 	// OCSF: severity_id (type integer_t, requirement required)
 	SeverityID int `json:"severity_id"`
 
-	// SrcEndpoint is the Source Endpoint. The initiator (client) of the
-	// network connection.
+	// SrcEndpoint is the Source Endpoint. The initiator of the network
+	// connection. In some contexts an event source cannot correctly identify
+	// the initiator. Refer to is_src_dst_assignment_known for certainty.
 	//
 	// OCSF: src_endpoint (type network_endpoint, requirement recommended)
 	SrcEndpoint *objects.NetworkEndpoint `json:"src_endpoint,omitempty"`
@@ -340,9 +491,14 @@ type NetworkActivity struct {
 	// OCSF: tls (type tls, requirement optional)
 	TLS *objects.TLS `json:"tls,omitempty"`
 
-	// Traffic is the Traffic. The network traffic refers to the amount of
-	// data moving across a network at a given point of time. Intended to be
-	// used alongside Network Connection.
+	// Traffic is the Traffic. The network traffic for this observation
+	// period. Use when reporting: (1) delta values (bytes/packets
+	// transferred since the last observation), (2) instantaneous
+	// measurements at a specific point in time, or (3) standalone
+	// single-event metrics. This attribute represents a point-in-time
+	// measurement or incremental change, not a running total. For
+	// accumulated totals across multiple observations or the lifetime of a
+	// flow, use cumulative_traffic instead.
 	//
 	// OCSF: traffic (type network_traffic, requirement recommended)
 	Traffic *objects.NetworkTraffic `json:"traffic,omitempty"`
@@ -392,9 +548,6 @@ func (e NetworkActivity) Validate() error {
 	if e.Cloud == nil {
 		return &ocsf.ValidationError{ClassUID: 4001, Field: "cloud", Rule: "required", Reason: "required field is missing"}
 	}
-	if e.DstEndpoint == nil {
-		return &ocsf.ValidationError{ClassUID: 4001, Field: "dst_endpoint", Rule: "required", Reason: "required field is missing"}
-	}
 	if e.Metadata == nil {
 		return &ocsf.ValidationError{ClassUID: 4001, Field: "metadata", Rule: "required", Reason: "required field is missing"}
 	}
@@ -402,7 +555,7 @@ func (e NetworkActivity) Validate() error {
 		return &ocsf.ValidationError{ClassUID: 4001, Field: "osint", Rule: "required", Reason: "required field is missing"}
 	}
 	switch e.ActionID {
-	case 0, 1, 2, 99:
+	case 0, 1, 2, 3, 4, 99:
 	default:
 		return &ocsf.ValidationError{ClassUID: 4001, Field: "action_id", Rule: "enum", Reason: "value outside the schema's enum range"}
 	}
@@ -418,6 +571,14 @@ func (e NetworkActivity) Validate() error {
 			}
 		case 2:
 			if e.Action != "Denied" {
+				return &ocsf.ValidationError{ClassUID: 4001, Field: "action", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.Action != "Observed" {
+				return &ocsf.ValidationError{ClassUID: 4001, Field: "action", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 4:
+			if e.Action != "Modified" {
 				return &ocsf.ValidationError{ClassUID: 4001, Field: "action", Rule: "enum", Reason: "sibling does not match enum caption"}
 			}
 		}
@@ -466,8 +627,33 @@ func (e NetworkActivity) Validate() error {
 				return &ocsf.ValidationError{ClassUID: 4001, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
 			}
 		case 9:
-			if e.ActivityName != "Expire" {
+			if e.ActivityName != "Patch" {
 				return &ocsf.ValidationError{ClassUID: 4001, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.ConfidenceID {
+	case 0, 1, 2, 3, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 4001, Field: "confidence_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.Confidence != "" {
+		switch e.ConfidenceID {
+		case 0:
+			if e.Confidence != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 4001, Field: "confidence", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.Confidence != "Low" {
+				return &ocsf.ValidationError{ClassUID: 4001, Field: "confidence", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.Confidence != "Medium" {
+				return &ocsf.ValidationError{ClassUID: 4001, Field: "confidence", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.Confidence != "High" {
+				return &ocsf.ValidationError{ClassUID: 4001, Field: "confidence", Rule: "enum", Reason: "sibling does not match enum caption"}
 			}
 		}
 	}
@@ -592,6 +778,64 @@ func (e NetworkActivity) Validate() error {
 			}
 		}
 	}
+	switch e.ObservationPointID {
+	case 0, 1, 2, 3, 4, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 4001, Field: "observation_point_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.ObservationPoint != "" {
+		switch e.ObservationPointID {
+		case 0:
+			if e.ObservationPoint != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 4001, Field: "observation_point", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.ObservationPoint != "Source" {
+				return &ocsf.ValidationError{ClassUID: 4001, Field: "observation_point", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.ObservationPoint != "Destination" {
+				return &ocsf.ValidationError{ClassUID: 4001, Field: "observation_point", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.ObservationPoint != "Neither" {
+				return &ocsf.ValidationError{ClassUID: 4001, Field: "observation_point", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 4:
+			if e.ObservationPoint != "Both" {
+				return &ocsf.ValidationError{ClassUID: 4001, Field: "observation_point", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.RiskLevelID {
+	case 0, 1, 2, 3, 4, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 4001, Field: "risk_level_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.RiskLevel != "" {
+		switch e.RiskLevelID {
+		case 0:
+			if e.RiskLevel != "Info" {
+				return &ocsf.ValidationError{ClassUID: 4001, Field: "risk_level", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.RiskLevel != "Low" {
+				return &ocsf.ValidationError{ClassUID: 4001, Field: "risk_level", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.RiskLevel != "Medium" {
+				return &ocsf.ValidationError{ClassUID: 4001, Field: "risk_level", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.RiskLevel != "High" {
+				return &ocsf.ValidationError{ClassUID: 4001, Field: "risk_level", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 4:
+			if e.RiskLevel != "Critical" {
+				return &ocsf.ValidationError{ClassUID: 4001, Field: "risk_level", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
 	switch e.SeverityID {
 	case 0, 1, 2, 3, 4, 5, 6, 99:
 	default:
@@ -630,7 +874,7 @@ func (e NetworkActivity) Validate() error {
 		}
 	}
 	switch e.StatusID {
-	case 0, 1, 2, 3, 4, 99:
+	case 0, 1, 2, 3, 4, 5, 6, 99:
 	default:
 		return &ocsf.ValidationError{ClassUID: 4001, Field: "status_id", Rule: "enum", Reason: "value outside the schema's enum range"}
 	}
@@ -654,6 +898,14 @@ func (e NetworkActivity) Validate() error {
 			}
 		case 4:
 			if e.Status != "Resolved" {
+				return &ocsf.ValidationError{ClassUID: 4001, Field: "status", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 5:
+			if e.Status != "Archived" {
+				return &ocsf.ValidationError{ClassUID: 4001, Field: "status", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 6:
+			if e.Status != "Deleted" {
 				return &ocsf.ValidationError{ClassUID: 4001, Field: "status", Rule: "enum", Reason: "sibling does not match enum caption"}
 			}
 		}

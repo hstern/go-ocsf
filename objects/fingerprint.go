@@ -6,28 +6,32 @@
 package objects
 
 // Fingerprint describes the OCSF Fingerprint object: The Fingerprint
-// object provides detailed information about a digital fingerprint,
-// which is a compact representation of data used to identify a longer
-// piece of information, such as a public key or file content. It
-// contains the algorithm and value of the fingerprint, enabling
-// efficient and reliable identification of the associated data.
+// object provides detailed information about a fingerprint, which is a
+// compact representation of data used to identify a longer piece of
+// information, such as a public key, file content, or application
+// implementation. It contains the algorithm or scheme and value of the
+// fingerprint, enabling efficient and reliable identification of the
+// associated data.
 //
 // OCSF name: fingerprint.
 type Fingerprint struct {
-	// Algorithm is the Algorithm. The hash algorithm used to create the
-	// digital fingerprint, normalized to the caption of 'algorithm_id'. In
-	// the case of 'Other', it is defined by the event source.
+	// Algorithm is the Algorithm. The algorithm or scheme used to create the
+	// fingerprint, normalized to the caption of algorithm_id. In the case of
+	// Other, it is defined by the event source.
 	//
 	// OCSF: algorithm (type string_t, requirement optional)
 	Algorithm string `json:"algorithm,omitempty"`
 
-	// AlgorithmID is the Algorithm ID. The identifier of the normalized hash
-	// algorithm, which was used to create the digital fingerprint.
+	// AlgorithmID is the Algorithm ID. The identifier of the normalized
+	// algorithm or scheme, which was used to create the fingerprint.
 	//
 	// OCSF: algorithm_id (type integer_t, requirement required)
 	AlgorithmID int `json:"algorithm_id"`
 
-	// Value is the Value. The digital fingerprint value.
+	// Value is the Value. The fingerprint value.Note: This uses type
+	// file_hash_t (&quot;Hash&quot;), which has been generalized for all
+	// fingerprints but retains the same name and caption for backwards
+	// compatibility.
 	//
 	// OCSF: value (type file_hash_t, requirement required)
 	Value string `json:"value"`

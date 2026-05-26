@@ -5,7 +5,7 @@
 
 package objects
 
-// HTTPHeader describes the OCSF HTTP Header object: TThe HTTP Header
+// HTTPHeader describes the OCSF HTTP Header object: The HTTP Header
 // object represents the headers sent in an HTTP request or response.
 // HTTP headers are key-value pairs that convey additional information
 // about the HTTP message, including details about the content, caching,
@@ -13,12 +13,12 @@ package objects
 //
 // OCSF name: http_header.
 type HTTPHeader struct {
-	// Name is the Name. The name of the header
+	// Name is the Name. The name of the HTTP header.
 	//
 	// OCSF: name (type string_t, requirement required)
 	Name string `json:"name"`
 
-	// Value is the Value. The value of the header
+	// Value is the Value. The value of the HTTP header.
 	//
 	// OCSF: value (type string_t, requirement required)
 	Value string `json:"value"`

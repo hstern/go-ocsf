@@ -120,7 +120,7 @@ func Parse(data []byte) (Event, error) {
 // the input without decoding the rest of the payload. Returns
 // the value plus a hadField boolean so callers can distinguish
 // "missing" (route to BaseEvent) from "present and zero"
-// (still route to BaseEvent at v1.3.0 — class_uid=0 is the
+// (still route to BaseEvent at the current schema — class_uid=0 is the
 // base_event marker, and BaseEvent is the right Go-side
 // representation).
 func peekClassUID(data []byte) (classUID int, hadField bool, err error) {

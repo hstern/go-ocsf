@@ -5,6 +5,10 @@
 
 package objects
 
+import (
+	"encoding/json"
+)
+
 // Policy describes the OCSF Policy object: The Policy object describes
 // the policies that are applicable. Policy attributes provide
 // traceability to the operational state of the security product at the
@@ -13,6 +17,12 @@ package objects
 //
 // OCSF name: policy.
 type Policy struct {
+	// Data is the Data. Additional data about the policy such as the
+	// underlying JSON policy itself or other details.
+	//
+	// OCSF: data (type json_t, requirement optional)
+	Data json.RawMessage `json:"data,omitempty"`
+
 	// Desc is the Description. The description of the policy.
 	//
 	// OCSF: desc (type string_t, requirement optional)
@@ -29,10 +39,17 @@ type Policy struct {
 	// OCSF: is_applied (type boolean_t, requirement recommended)
 	IsApplied bool `json:"is_applied,omitempty"`
 
-	// Name is the Name. The policy name. For example: IAM Policy.
+	// Name is the Name. The policy name. For example: AdministratorAccess
+	// Policy.
 	//
 	// OCSF: name (type string_t, requirement recommended)
 	Name string `json:"name,omitempty"`
+
+	// Type is the Type. The policy type. For example: Identity Policy,
+	// Resource Policy, Service Control Policy, etc..
+	//
+	// OCSF: type (type string_t, requirement optional)
+	Type string `json:"type,omitempty"`
 
 	// UID is the Unique ID. A unique identifier of the policy instance.
 	//

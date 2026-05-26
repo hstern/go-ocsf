@@ -7,8 +7,7 @@ package objects
 
 // KernelDriver describes the OCSF Kernel Extension object: The Kernel
 // Extension object describes a kernel driver that has been loaded or
-// unloaded into the operating system (OS) kernel. Defined by D3FEND
-// d3f:KernelModule.
+// unloaded into the operating system (OS) kernel.
 //
 // OCSF name: kernel_driver.
 type KernelDriver struct {

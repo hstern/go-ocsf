@@ -12,7 +12,8 @@ import (
 )
 
 // EmailActivity describes the OCSF Email Activity event class: Email
-// events report activities of emails.
+// Activity events report SMTP protocol and email activities including
+// those with embedded URLs and files. See the Email object for details.
 //
 // OCSF name: email_activity. class_uid: 4009.
 type EmailActivity struct {
@@ -22,20 +23,18 @@ type EmailActivity struct {
 	Action string `json:"action,omitempty"`
 
 	// ActionID is the Action ID. The action taken by a control or other
-	// policy-based system leading to an outcome or disposition. Dispositions
-	// conform to an action of 1 'Allowed' or 2 'Denied' in most cases. Note
-	// that 99 'Other' is not an option. No action would equate to 1
-	// 'Allowed'. An unknown action may still correspond to a known
-	// disposition. Refer to disposition_id for the outcome of the action.
+	// policy-based system leading to an outcome or disposition. An unknown
+	// action may still correspond to a known disposition. Refer to
+	// disposition_id for the outcome of the action.
 	//
-	// OCSF: action_id (type integer_t, requirement required)
-	ActionID int `json:"action_id"`
+	// OCSF: action_id (type integer_t, requirement recommended)
+	ActionID int `json:"action_id,omitempty"`
 
 	// ActivityID is the Activity ID. The normalized identifier of the
 	// activity that triggered the event.
 	//
-	// OCSF: activity_id (type integer_t, requirement optional)
-	ActivityID int `json:"activity_id,omitempty"`
+	// OCSF: activity_id (type integer_t, requirement required)
+	ActivityID int `json:"activity_id"`
 
 	// ActivityName is the Activity. The event activity name, as defined by
 	// the activity_id.
@@ -44,7 +43,8 @@ type EmailActivity struct {
 	ActivityName string `json:"activity_name,omitempty"`
 
 	// Actor is the Actor. The actor object describes details about the
-	// user/role/process that was the source of the activity.
+	// user/role/process that was the source of the activity. Note that this
+	// is not the threat actor of a campaign but may be part of a campaign.
 	//
 	// OCSF: actor (type actor, requirement optional)
 	Actor *objects.Actor `json:"actor,omitempty"`
@@ -55,9 +55,10 @@ type EmailActivity struct {
 	// OCSF: api (type api, requirement optional)
 	API *objects.API `json:"api,omitempty"`
 
-	// Attacks is the MITRE ATT&CK® Details. An array of MITRE ATT&CK®
-	// objects describing the tactics, techniques & sub-techniques identified
-	// by a security control or finding.
+	// Attacks is the MITRE ATT&CK® and ATLAS™ Details. An array of MITRE
+	// ATT&CK® objects describing identified tactics, techniques &
+	// sub-techniques. The objects are compatible with MITRE ATLAS™
+	// tactics, techniques & sub-techniques.
 	//
 	// OCSF: attacks (type []attack, requirement optional)
 	Attacks []objects.Attack `json:"attacks,omitempty"`
@@ -75,8 +76,8 @@ type EmailActivity struct {
 	// OCSF: authorizations (type []authorization, requirement optional)
 	Authorizations []objects.Authorization `json:"authorizations,omitempty"`
 
-	// Banner is the SMTP Banner. The initial SMTP connection response that a
-	// messaging server receives after it connects to a email server.
+	// Banner is the Protocol Banner. The initial connection response that a
+	// messaging server receives after it connects to an email server.
 	//
 	// OCSF: banner (type string_t, requirement optional)
 	Banner string `json:"banner,omitempty"`
@@ -106,10 +107,37 @@ type EmailActivity struct {
 	ClassUID int `json:"class_uid"`
 
 	// Cloud is the Cloud. Describes details about the Cloud environment
-	// where the event was originally created or logged.
+	// where the event or finding was created.
 	//
 	// OCSF: cloud (type cloud, requirement required)
 	Cloud *objects.Cloud `json:"cloud"`
+
+	// Command is the Command. The command issued by the initiator (client),
+	// such as SMTP HELO or EHLO.
+	//
+	// OCSF: command (type string_t, requirement recommended)
+	Command string `json:"command,omitempty"`
+
+	// Confidence is the Confidence. The confidence, normalized to the
+	// caption of the confidence_id value. In the case of 'Other', it is
+	// defined by the event source.
+	//
+	// OCSF: confidence (type string_t, requirement optional)
+	Confidence string `json:"confidence,omitempty"`
+
+	// ConfidenceID is the Confidence ID. The normalized confidence refers to
+	// the accuracy of the rule that created the finding. A rule with a low
+	// confidence means that the finding scope is wide and may create finding
+	// reports that may not be malicious in nature.
+	//
+	// OCSF: confidence_id (type integer_t, requirement recommended)
+	ConfidenceID int `json:"confidence_id,omitempty"`
+
+	// ConfidenceScore is the Confidence Score. The confidence score as
+	// reported by the event source.
+	//
+	// OCSF: confidence_score (type integer_t, requirement optional)
+	ConfidenceScore int `json:"confidence_score,omitempty"`
 
 	// Count is the Count. The number of times that events in the same
 	// logical group occurred during the event Start Time to End Time period.
@@ -193,11 +221,27 @@ type EmailActivity struct {
 	// OCSF: enrichments (type []enrichment, requirement optional)
 	Enrichments []objects.Enrichment `json:"enrichments,omitempty"`
 
-	// FirewallRule is the Firewall Rule. The firewall rule that triggered
-	// the event.
+	// FirewallRule is the Firewall Rule. The firewall rule that pertains to
+	// the control that triggered the event, if applicable.
 	//
 	// OCSF: firewall_rule (type firewall_rule, requirement optional)
 	FirewallRule *objects.FirewallRule `json:"firewall_rule,omitempty"`
+
+	// From is the From. The sender address from the transmission envelope.
+	// This reflects the actual sending party and may differ from the 'From'
+	// header in the message.
+	//
+	// OCSF: from (type email_t, requirement recommended)
+	From string `json:"from,omitempty"`
+
+	// IsAlert is the Alert. Indicates that the event is considered to be an
+	// alertable signal. Should be set to true if disposition_id = Alert
+	// among other dispositions, and/or risk_level_id or severity_id of the
+	// event is elevated. Not all control events will be alertable, for
+	// example if disposition_id = Exonerated or disposition_id = Allowed.
+	//
+	// OCSF: is_alert (type boolean_t, requirement recommended)
+	IsAlert bool `json:"is_alert,omitempty"`
 
 	// Malware is the Malware. A list of Malware objects, describing details
 	// about the identified malware.
@@ -205,11 +249,23 @@ type EmailActivity struct {
 	// OCSF: malware (type []malware, requirement optional)
 	Malware []objects.Malware `json:"malware,omitempty"`
 
+	// MalwareScanInfo is the Malware Scan Info. Describes details about the
+	// scan job that identified malware on the target system.
+	//
+	// OCSF: malware_scan_info (type malware_scan_info, requirement optional)
+	MalwareScanInfo *objects.MalwareScanInfo `json:"malware_scan_info,omitempty"`
+
 	// Message is the Message. The description of the event/finding, as
 	// defined by the source.
 	//
 	// OCSF: message (type string_t, requirement recommended)
 	Message string `json:"message,omitempty"`
+
+	// MessageTraceUID is the Message Trace UID. The identifier that tracks a
+	// message that travels through multiple points of a messaging service.
+	//
+	// OCSF: message_trace_uid (type string_t, requirement recommended)
+	MessageTraceUID string `json:"message_trace_uid,omitempty"`
 
 	// Metadata is the Metadata. The metadata associated with the event or a
 	// finding.
@@ -233,11 +289,59 @@ type EmailActivity struct {
 	// OCSF: osint (type []osint, requirement required)
 	Osint []objects.Osint `json:"osint"`
 
+	// Policy is the Policy. The policy that pertains to the control that
+	// triggered the event, if applicable. For example the name of an
+	// anti-malware policy or an access control policy.
+	//
+	// OCSF: policy (type policy, requirement optional)
+	Policy *objects.Policy `json:"policy,omitempty"`
+
+	// ProtocolName is the Protocol Name. The Protocol Name specifies the
+	// email communication protocol, such as SMTP, IMAP, or POP3.
+	//
+	// OCSF: protocol_name (type string_t, requirement recommended)
+	ProtocolName string `json:"protocol_name,omitempty"`
+
 	// RawData is the Raw Data. The raw event/finding data as received from
 	// the source.
 	//
 	// OCSF: raw_data (type string_t, requirement optional)
 	RawData string `json:"raw_data,omitempty"`
+
+	// RawDataHash is the Raw Data Hash. The hash, which describes the
+	// content of the raw_data field.
+	//
+	// OCSF: raw_data_hash (type fingerprint, requirement optional)
+	RawDataHash *objects.Fingerprint `json:"raw_data_hash,omitempty"`
+
+	// RawDataSize is the Raw Data Size. The size of the raw data which was
+	// transformed into an OCSF event, in bytes.
+	//
+	// OCSF: raw_data_size (type long_t, requirement optional)
+	RawDataSize int64 `json:"raw_data_size,omitempty"`
+
+	// RiskDetails is the Risk Details. Describes the risk associated with
+	// the finding.
+	//
+	// OCSF: risk_details (type string_t, requirement optional)
+	RiskDetails string `json:"risk_details,omitempty"`
+
+	// RiskLevel is the Risk Level. The risk level, normalized to the caption
+	// of the risk_level_id value.
+	//
+	// OCSF: risk_level (type string_t, requirement optional)
+	RiskLevel string `json:"risk_level,omitempty"`
+
+	// RiskLevelID is the Risk Level ID. The normalized risk level id.
+	//
+	// OCSF: risk_level_id (type integer_t, requirement optional)
+	RiskLevelID int `json:"risk_level_id,omitempty"`
+
+	// RiskScore is the Risk Score. The risk score as reported by the event
+	// source.
+	//
+	// OCSF: risk_score (type integer_t, requirement optional)
+	RiskScore int `json:"risk_score,omitempty"`
 
 	// Severity is the Severity. The event/finding severity, normalized to
 	// the caption of the severity_id value. In the case of 'Other', it is
@@ -259,6 +363,8 @@ type EmailActivity struct {
 	// command sent by the initiator (client).
 	//
 	// OCSF: smtp_hello (type string_t, requirement recommended)
+	//
+	// Deprecated: Use the <code>command</code> attribute instead.
 	SMTPHello string `json:"smtp_hello,omitempty"`
 
 	// SrcEndpoint is the Source Endpoint. The initiator (client) sending the
@@ -312,6 +418,13 @@ type EmailActivity struct {
 	// OCSF: timezone_offset (type integer_t, requirement recommended)
 	TimezoneOffset int `json:"timezone_offset,omitempty"`
 
+	// To is the To. The recipient address from the transmission envelope.
+	// This may differ from the 'To' header and represents where the message
+	// was actually delivered.
+	//
+	// OCSF: to (type []email_t, requirement recommended)
+	To []string `json:"to,omitempty"`
+
 	// TypeName is the Type Name. The event/finding type name, as defined by
 	// the type_uid.
 	//
@@ -362,7 +475,7 @@ func (e EmailActivity) Validate() error {
 		return &ocsf.ValidationError{ClassUID: 4009, Field: "osint", Rule: "required", Reason: "required field is missing"}
 	}
 	switch e.ActionID {
-	case 0, 1, 2, 99:
+	case 0, 1, 2, 3, 4, 99:
 	default:
 		return &ocsf.ValidationError{ClassUID: 4009, Field: "action_id", Rule: "enum", Reason: "value outside the schema's enum range"}
 	}
@@ -380,10 +493,18 @@ func (e EmailActivity) Validate() error {
 			if e.Action != "Denied" {
 				return &ocsf.ValidationError{ClassUID: 4009, Field: "action", Rule: "enum", Reason: "sibling does not match enum caption"}
 			}
+		case 3:
+			if e.Action != "Observed" {
+				return &ocsf.ValidationError{ClassUID: 4009, Field: "action", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 4:
+			if e.Action != "Modified" {
+				return &ocsf.ValidationError{ClassUID: 4009, Field: "action", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
 		}
 	}
 	switch e.ActivityID {
-	case 0, 1, 2, 3, 99:
+	case 0, 1, 2, 3, 4, 5, 99:
 	default:
 		return &ocsf.ValidationError{ClassUID: 4009, Field: "activity_id", Rule: "enum", Reason: "value outside the schema's enum range"}
 	}
@@ -405,10 +526,43 @@ func (e EmailActivity) Validate() error {
 			if e.ActivityName != "Scan" {
 				return &ocsf.ValidationError{ClassUID: 4009, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
 			}
+		case 4:
+			if e.ActivityName != "Trace" {
+				return &ocsf.ValidationError{ClassUID: 4009, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 5:
+			if e.ActivityName != "MTA Relay" {
+				return &ocsf.ValidationError{ClassUID: 4009, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.ConfidenceID {
+	case 0, 1, 2, 3, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 4009, Field: "confidence_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.Confidence != "" {
+		switch e.ConfidenceID {
+		case 0:
+			if e.Confidence != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 4009, Field: "confidence", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.Confidence != "Low" {
+				return &ocsf.ValidationError{ClassUID: 4009, Field: "confidence", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.Confidence != "Medium" {
+				return &ocsf.ValidationError{ClassUID: 4009, Field: "confidence", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.Confidence != "High" {
+				return &ocsf.ValidationError{ClassUID: 4009, Field: "confidence", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
 		}
 	}
 	switch e.DirectionID {
-	case 0, 1, 2, 3, 99:
+	case 0, 1, 2, 3, 4, 99:
 	default:
 		return &ocsf.ValidationError{ClassUID: 4009, Field: "direction_id", Rule: "enum", Reason: "value outside the schema's enum range"}
 	}
@@ -428,6 +582,10 @@ func (e EmailActivity) Validate() error {
 			}
 		case 3:
 			if e.Direction != "Internal" {
+				return &ocsf.ValidationError{ClassUID: 4009, Field: "direction", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 4:
+			if e.Direction != "Local" {
 				return &ocsf.ValidationError{ClassUID: 4009, Field: "direction", Rule: "enum", Reason: "sibling does not match enum caption"}
 			}
 		}
@@ -553,6 +711,35 @@ func (e EmailActivity) Validate() error {
 			}
 		}
 	}
+	switch e.RiskLevelID {
+	case 0, 1, 2, 3, 4, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 4009, Field: "risk_level_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.RiskLevel != "" {
+		switch e.RiskLevelID {
+		case 0:
+			if e.RiskLevel != "Info" {
+				return &ocsf.ValidationError{ClassUID: 4009, Field: "risk_level", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.RiskLevel != "Low" {
+				return &ocsf.ValidationError{ClassUID: 4009, Field: "risk_level", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.RiskLevel != "Medium" {
+				return &ocsf.ValidationError{ClassUID: 4009, Field: "risk_level", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.RiskLevel != "High" {
+				return &ocsf.ValidationError{ClassUID: 4009, Field: "risk_level", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 4:
+			if e.RiskLevel != "Critical" {
+				return &ocsf.ValidationError{ClassUID: 4009, Field: "risk_level", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
 	switch e.SeverityID {
 	case 0, 1, 2, 3, 4, 5, 6, 99:
 	default:
@@ -591,7 +778,7 @@ func (e EmailActivity) Validate() error {
 		}
 	}
 	switch e.StatusID {
-	case 0, 1, 2, 3, 4, 99:
+	case 0, 1, 2, 3, 4, 5, 6, 99:
 	default:
 		return &ocsf.ValidationError{ClassUID: 4009, Field: "status_id", Rule: "enum", Reason: "value outside the schema's enum range"}
 	}
@@ -615,6 +802,14 @@ func (e EmailActivity) Validate() error {
 			}
 		case 4:
 			if e.Status != "Resolved" {
+				return &ocsf.ValidationError{ClassUID: 4009, Field: "status", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 5:
+			if e.Status != "Archived" {
+				return &ocsf.ValidationError{ClassUID: 4009, Field: "status", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 6:
+			if e.Status != "Deleted" {
 				return &ocsf.ValidationError{ClassUID: 4009, Field: "status", Rule: "enum", Reason: "sibling does not match enum caption"}
 			}
 		}

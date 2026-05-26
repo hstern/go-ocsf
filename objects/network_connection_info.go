@@ -7,8 +7,8 @@ package objects
 
 // NetworkConnectionInfo describes the OCSF Network Connection
 // Information object: The Network Connection Information object
-// describes characteristics of a network connection. Defined by D3FEND
-// d3f:NetworkSession.
+// describes characteristics of an OSI Transport Layer communication,
+// including TCP and UDP.
 //
 // OCSF name: network_connection_info.
 type NetworkConnectionInfo struct {
@@ -29,6 +29,12 @@ type NetworkConnectionInfo struct {
 	// OCSF: boundary_id (type integer_t, requirement recommended)
 	BoundaryID int `json:"boundary_id,omitempty"`
 
+	// CommunityUID is the Community ID. The Community ID of the network
+	// connection.
+	//
+	// OCSF: community_uid (type string_t, requirement optional)
+	CommunityUID string `json:"community_uid,omitempty"`
+
 	// Direction is the Direction. The direction of the initiated connection,
 	// traffic, or email, normalized to the caption of the direction_id
 	// value. In the case of 'Other', it is defined by the event source.
@@ -42,17 +48,23 @@ type NetworkConnectionInfo struct {
 	// OCSF: direction_id (type integer_t, requirement required)
 	DirectionID int `json:"direction_id"`
 
-	// ProtocolName is the Protocol Name. The TCP/IP protocol name in
-	// lowercase, as defined by the Internet Assigned Numbers Authority
-	// (IANA). See Protocol Numbers. For example: tcp or udp.
+	// FlagHistory is the Connection Flag History. The Connection Flag
+	// History summarizes events in a network connection. For example flags
+	// ShAD representing SYN, SYN/ACK, ACK and Data exchange.
+	//
+	// OCSF: flag_history (type string_t, requirement optional)
+	FlagHistory string `json:"flag_history,omitempty"`
+
+	// ProtocolName is the Protocol Name. The IP protocol name in lowercase,
+	// as defined by the Internet Assigned Numbers Authority (IANA). For
+	// example: tcp or udp.
 	//
 	// OCSF: protocol_name (type string_t, requirement recommended)
 	ProtocolName string `json:"protocol_name,omitempty"`
 
-	// ProtocolNum is the Protocol Number. The TCP/IP protocol number, as
-	// defined by the Internet Assigned Numbers Authority (IANA). Use -1 if
-	// the protocol is not defined by IANA. See Protocol Numbers. For
-	// example: 6 for TCP and 17 for UDP.
+	// ProtocolNum is the Protocol Number. The IP protocol number, as defined
+	// by the Internet Assigned Numbers Authority (IANA). For example: 6 for
+	// TCP and 17 for UDP.
 	//
 	// OCSF: protocol_num (type integer_t, requirement recommended)
 	ProtocolNum int `json:"protocol_num,omitempty"`

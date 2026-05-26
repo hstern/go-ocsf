@@ -5,17 +5,48 @@
 
 package objects
 
-// RelatedEvent describes the OCSF Related Event object: The Related
-// Event object describes an OCSF event related to a finding.
+// RelatedEvent describes the OCSF Related Event/Finding object: The
+// Related Event object describes an event or another finding related to
+// a finding. It may or may not be an OCSF event.
 //
 // OCSF name: related_event.
 type RelatedEvent struct {
-	// Attacks is the MITRE ATT&CK® Details. An array of MITRE ATT&CK®
-	// objects describing the tactics, techniques & sub-techniques identified
-	// by a security control or finding.
+	// Attacks is the MITRE ATT&CK® and ATLAS™ Details. An array of MITRE
+	// ATT&CK® objects describing identified tactics, techniques &
+	// sub-techniques. The objects are compatible with MITRE ATLAS™
+	// tactics, techniques & sub-techniques.
 	//
 	// OCSF: attacks (type []attack, requirement optional)
 	Attacks []Attack `json:"attacks,omitempty"`
+
+	// Count is the Count. The number of times that activity in the same
+	// logical group occurred, as reported by the related Finding.
+	//
+	// OCSF: count (type integer_t, requirement optional)
+	Count int `json:"count,omitempty"`
+
+	// CreatedTime is the Created Time. The time when the related
+	// event/finding was created. If the related event/finding is in OCSF and
+	// is a Finding, then this value should be equal to
+	// finding_info.created_time in the corresponding Finding. If the related
+	// event/finding is in OCSF and is not a Finding, then this value should
+	// be equal to time in the corresponding event.
+	//
+	// OCSF: created_time (type timestamp_t, requirement optional)
+	CreatedTime int64 `json:"created_time,omitempty"`
+
+	// Desc is the Description. A description of the related event/finding.
+	//
+	// OCSF: desc (type string_t, requirement optional)
+	Desc string `json:"desc,omitempty"`
+
+	// FirstSeenTime is the First Seen. The time when the finding was first
+	// observed. e.g. The time when a vulnerability was first observed.It can
+	// differ from the created_time timestamp, which reflects the time this
+	// finding was created.
+	//
+	// OCSF: first_seen_time (type timestamp_t, requirement optional)
+	FirstSeenTime int64 `json:"first_seen_time,omitempty"`
 
 	// KillChain is the Kill Chain. The Cyber Kill Chain® provides a
 	// detailed description of each phase and its associated activities
@@ -24,11 +55,31 @@ type RelatedEvent struct {
 	// OCSF: kill_chain (type []kill_chain_phase, requirement optional)
 	KillChain []KillChainPhase `json:"kill_chain,omitempty"`
 
+	// LastSeenTime is the Last Seen. The time when the finding was most
+	// recently observed. e.g. The time when a vulnerability was most
+	// recently observed.It can differ from the modified_time timestamp,
+	// which reflects the time this finding was last modified.
+	//
+	// OCSF: last_seen_time (type timestamp_t, requirement optional)
+	LastSeenTime int64 `json:"last_seen_time,omitempty"`
+
+	// ModifiedTime is the Modified Time. The time when the related
+	// event/finding was last modified.
+	//
+	// OCSF: modified_time (type timestamp_t, requirement optional)
+	ModifiedTime int64 `json:"modified_time,omitempty"`
+
 	// Observables is the Observables. The observables associated with the
 	// event or a finding.
 	//
 	// OCSF: observables (type []observable, requirement optional)
 	Observables []Observable `json:"observables,omitempty"`
+
+	// Product is the Product. Details about the product that reported the
+	// related event/finding.
+	//
+	// OCSF: product (type product, requirement optional)
+	Product *Product `json:"product,omitempty"`
 
 	// ProductUID is the Product Identifier. The unique identifier of the
 	// product that reported the related event.
@@ -36,29 +87,72 @@ type RelatedEvent struct {
 	// OCSF: product_uid (type string_t, requirement optional)
 	ProductUID string `json:"product_uid,omitempty"`
 
-	// Type is the Type. The type of the related event, as defined by
-	// type_uid. For example: Process Activity: Launch.
+	// Severity is the Severity. The event/finding severity, normalized to
+	// the caption of the severity_id value. In the case of 'Other', it is
+	// defined by the source.
+	//
+	// OCSF: severity (type string_t, requirement optional)
+	Severity string `json:"severity,omitempty"`
+
+	// SeverityID is the Severity ID. The normalized identifier of the
+	// event/finding severity.The normalized severity is a measurement the
+	// effort and expense required to manage and resolve an event or
+	// incident. Smaller numerical values represent lower impact events, and
+	// larger numerical values represent higher impact events.
+	//
+	// OCSF: severity_id (type integer_t, requirement recommended)
+	SeverityID int `json:"severity_id,omitempty"`
+
+	// Status is the Status. The related event status. Should correspond to
+	// the label of the status_id (or 'Other' status value for status_id =
+	// 99) of the related event.
+	//
+	// OCSF: status (type string_t, requirement optional)
+	Status string `json:"status,omitempty"`
+
+	// Tags is the Tags. The list of tags; {key:value} pairs associated with
+	// the related event/finding.
+	//
+	// OCSF: tags (type []key_value_object, requirement optional)
+	Tags []KeyValueObject `json:"tags,omitempty"`
+
+	// Title is the Title. A title or a brief phrase summarizing the related
+	// event/finding.
+	//
+	// OCSF: title (type string_t, requirement optional)
+	Title string `json:"title,omitempty"`
+
+	// Traits is the Traits. The list of key traits or characteristics
+	// extracted from the related event/finding that influenced or
+	// contributed to the overall finding's outcome.
+	//
+	// OCSF: traits (type []trait, requirement optional)
+	Traits []Trait `json:"traits,omitempty"`
+
+	// Type is the Type. The type of the related event/finding.Populate if
+	// the related event/finding is NOT in OCSF. If it is in OCSF, then
+	// utilize type_name, type_uid instead.
 	//
 	// OCSF: type (type string_t, requirement optional)
-	//
-	// Deprecated: Use <code>type_name</code> attribute instead.
 	Type string `json:"type,omitempty"`
 
 	// TypeName is the Type Name. The type of the related OCSF event, as
-	// defined by type_uid. For example: Process Activity: Launch.
+	// defined by type_uid.For example: Process Activity: Launch.Populate if
+	// the related event/finding is in OCSF.
 	//
 	// OCSF: type_name (type string_t, requirement optional)
 	TypeName string `json:"type_name,omitempty"`
 
 	// TypeUID is the Type ID. The unique identifier of the related OCSF
-	// event type. For example: 100701.
+	// event type. For example: 100701.Populate if the related event/finding
+	// is in OCSF.
 	//
 	// OCSF: type_uid (type long_t, requirement recommended)
 	TypeUID int64 `json:"type_uid,omitempty"`
 
-	// UID is the Unique ID. The unique identifier of the related OCSF event.
-	// This value must be equal to metadata.uid in the corresponding related
-	// event.
+	// UID is the Unique ID. The unique identifier of the related
+	// event/finding. If the related event/finding is in OCSF, then this
+	// value must be equal to metadata.uid in the corresponding event.
 	//
 	// OCSF: uid (type string_t, requirement required)
 	UID string `json:"uid"`

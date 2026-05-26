@@ -29,7 +29,8 @@ type Endpoint struct {
 	// OCSF: container (type container, requirement recommended)
 	Container *Container `json:"container,omitempty"`
 
-	// Domain is the Domain. The name of the domain.
+	// Domain is the Domain. The name of the domain that the endpoint belongs
+	// to or that corresponds to the endpoint.
 	//
 	// OCSF: domain (type string_t, requirement optional)
 	Domain string `json:"domain,omitempty"`
@@ -80,6 +81,13 @@ type Endpoint struct {
 	// OCSF: mac (type mac_t, requirement optional)
 	MAC string `json:"mac,omitempty"`
 
+	// MACVendor is the MAC Vendor. The vendor or manufacturer of the
+	// endpoint's network interface controller (NIC), as identified from the
+	// MAC address.
+	//
+	// OCSF: mac_vendor (type string_t, requirement optional)
+	MACVendor string `json:"mac_vendor,omitempty"`
+
 	// Name is the Name. The short name of the endpoint.
 	//
 	// OCSF: name (type string_t, requirement recommended)
@@ -102,6 +110,12 @@ type Endpoint struct {
 	//
 	// OCSF: owner (type user, requirement recommended)
 	Owner *User `json:"owner,omitempty"`
+
+	// Pool is the Pool. The pool of desktops or virtual machines to which
+	// the endpoint belongs.
+	//
+	// OCSF: pool (type group, requirement optional)
+	Pool *Group `json:"pool,omitempty"`
 
 	// SubnetUID is the Subnet UID. The unique identifier of a virtual
 	// subnet.

@@ -38,7 +38,7 @@ const (
 	// Devices [EUDs]).
 	DetectionSystemMobileDeviceManagement DetectionSystem = 3
 	// DetectionSystemDataDiscoveryClassification: A tool that actively
-	// identifies and classifies sensitive data in digitial media and
+	// identifies and classifies sensitive data in digital media and
 	// information stores in accordance with a policy or automated
 	// functionality. E.g, Amazon Macie, Microsoft Purview.
 	DetectionSystemDataDiscoveryClassification DetectionSystem = 4
@@ -55,7 +55,7 @@ const (
 	// DetectionSystemDigitalRightsManagement: A Digital Rights
 	// Management (DRM) or a dedicated Information Rights Management
 	// (IRM) are tools which can detect sensitive data and/or enforce
-	// data security policies on digitial media via policy or user
+	// data security policies on digital media via policy or user
 	// access rights.
 	DetectionSystemDigitalRightsManagement DetectionSystem = 7
 	// DetectionSystemCloudAccessSecurityBroker: A Cloud Access
@@ -76,10 +76,10 @@ const (
 	// sensitive data and/or enforce data security policies.
 	DetectionSystemApplicationLevelDLP DetectionSystem = 10
 	// DetectionSystemDeveloperSecurity: Any Developer Security tool
-	// such as an Infrastrucre-as-Securty (IAC) scanner, Secrets
-	// Detection, or Secure Software Development Lifecycle (SSDLC) tool
-	// that can detect sensitive data and/or enforce data security
-	// policies. E.g., TruffleHog, GitGuardian, Git-Secrets.
+	// such as an Infrastructure-as-Code (IAC) security scanner,
+	// Secrets Detection, or Secure Software Development Lifecycle
+	// (SSDLC) tool that can detect sensitive data and/or enforce data
+	// security policies. E.g., TruffleHog, GitGuardian, Git-Secrets.
 	DetectionSystemDeveloperSecurity DetectionSystem = 11
 	// DetectionSystemDataSecurityPostureManagement: A Data Security
 	// Posture Management (DSPM) tool is a continuous monitoring and

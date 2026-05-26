@@ -617,14 +617,20 @@ func (r *resolver) mergeAttributes(raw map[string]json.RawMessage, attrs map[str
 		if err := json.Unmarshal(raw[k], &body); err != nil {
 			return fmt.Errorf("attribute %q: %w", k, err)
 		}
-		// `profile: null` is the OCSF convention for removing an
-		// inherited attribute that came in via a profile include.
-		// json.Unmarshal won't distinguish "missing" from "null"
-		// without a pointer, so we sniff the raw bytes.
-		if hasJSONFieldNull(raw[k], "profile") {
-			delete(attrs, k)
-			continue
-		}
+		// `profile: null` does NOT mean "remove this attribute".
+		// In OCSF's metaschema, the `profile` field on an attribute
+		// names the profile that gates the attribute's inclusion;
+		// `null` simply means "this attribute is not profile-gated"
+		// (i.e. unconditional). Upstream uses this heavily — every
+		// attribute that's NOT contributed by a profile include
+		// either omits `profile` or sets it to null. Treating null
+		// as erasure mis-handled fields like file_activity.actor
+		// (declared with profile:null in 1.8.0 and erased by an
+		// earlier version of this resolver).
+		//
+		// The actual erasure sentinel is the entire attribute
+		// body being JSON null, handled above by the isJSONNull
+		// check on raw[k].
 		a := body.toClassAttr(k)
 		mergeAttr(attrs, a)
 	}
@@ -836,19 +842,4 @@ func copyIntMap(m map[string]int) map[string]int {
 func isJSONNull(raw json.RawMessage) bool {
 	s := strings.TrimSpace(string(raw))
 	return s == "null"
-}
-
-// hasJSONFieldNull reports whether raw is a JSON object containing
-// field set to the literal `null`. Used to detect upstream's
-// `profile: null` removal sentinel without a struct re-decode.
-func hasJSONFieldNull(raw json.RawMessage, field string) bool {
-	var m map[string]json.RawMessage
-	if err := json.Unmarshal(raw, &m); err != nil {
-		return false
-	}
-	v, ok := m[field]
-	if !ok {
-		return false
-	}
-	return isJSONNull(v)
 }

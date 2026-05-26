@@ -15,13 +15,93 @@ package objects
 //
 // OCSF name: idp.
 type Idp struct {
-	// Name is the Name. The name of the identity provider.
+	// AuthFactors is the Authentication Factors. The Authentication Factors
+	// object describes the different types of Multi-Factor Authentication
+	// (MFA) methods and/or devices supported by the Identity Provider.
+	//
+	// OCSF: auth_factors (type []auth_factor, requirement optional)
+	AuthFactors []AuthFactor `json:"auth_factors,omitempty"`
+
+	// Domain is the Domain. The primary domain associated with the Identity
+	// Provider.
+	//
+	// OCSF: domain (type string_t, requirement optional)
+	Domain string `json:"domain,omitempty"`
+
+	// Fingerprint is the Certificate Fingerprint. The fingerprint of the
+	// X.509 certificate used by the Identity Provider.
+	//
+	// OCSF: fingerprint (type fingerprint, requirement optional)
+	Fingerprint *Fingerprint `json:"fingerprint,omitempty"`
+
+	// HasMFA is the MFA Enforced. The Identity Provider enforces Multi
+	// Factor Authentication (MFA).
+	//
+	// OCSF: has_mfa (type boolean_t, requirement optional)
+	HasMFA bool `json:"has_mfa,omitempty"`
+
+	// Issuer is the Issuer Details. The unique identifier (often a URL) used
+	// by the Identity Provider as its issuer.
+	//
+	// OCSF: issuer (type string_t, requirement optional)
+	Issuer string `json:"issuer,omitempty"`
+
+	// Name is the Name. The name of the Identity Provider.
 	//
 	// OCSF: name (type string_t, requirement recommended)
 	Name string `json:"name,omitempty"`
 
-	// UID is the Unique ID. The unique identifier of the identity provider.
+	// ProtocolName is the Supported Protocol. The supported protocol of the
+	// Identity Provider. E.g., SAML, OIDC, or OAuth2.
+	//
+	// OCSF: protocol_name (type string_t, requirement optional)
+	ProtocolName string `json:"protocol_name,omitempty"`
+
+	// Scim is the SCIM. The System for Cross-domain Identity Management
+	// (SCIM) resource object provides a structured set of attributes related
+	// to SCIM protocols used for identity provisioning and management across
+	// cloud-based platforms. It standardizes user and group provisioning
+	// details, enabling identity synchronization and lifecycle management
+	// with compatible Identity Providers (IdPs) and applications. SCIM is
+	// defined in RFC-7634
+	//
+	// OCSF: scim (type scim, requirement optional)
+	Scim *Scim `json:"scim,omitempty"`
+
+	// SSO is the SSO. The Single Sign-On (SSO) object provides a structure
+	// for normalizing SSO attributes, configuration, and/or settings from
+	// Identity Providers.
+	//
+	// OCSF: sso (type sso, requirement optional)
+	SSO *SSO `json:"sso,omitempty"`
+
+	// State is the State. The configuration state of the Identity Provider,
+	// normalized to the caption of the state_id value. In the case of Other,
+	// it is defined by the event source.
+	//
+	// OCSF: state (type string_t, requirement optional)
+	State string `json:"state,omitempty"`
+
+	// StateID is the State ID. The normalized state ID of the Identity
+	// Provider to reflect its configuration or activation status.
+	//
+	// OCSF: state_id (type integer_t, requirement optional)
+	StateID int `json:"state_id,omitempty"`
+
+	// TenantUID is the Tenant UID. The tenant ID associated with the
+	// Identity Provider.
+	//
+	// OCSF: tenant_uid (type string_t, requirement optional)
+	TenantUID string `json:"tenant_uid,omitempty"`
+
+	// UID is the Unique ID. The unique identifier of the Identity Provider.
 	//
 	// OCSF: uid (type string_t, requirement recommended)
 	UID string `json:"uid,omitempty"`
+
+	// URLString is the Configuration URL. The URL for accessing the
+	// configuration or metadata of the Identity Provider.
+	//
+	// OCSF: url_string (type url_t, requirement optional)
+	URLString string `json:"url_string,omitempty"`
 }

@@ -16,18 +16,22 @@ type Direction int
 const (
 	// DirectionUnknown: The connection direction is unknown.
 	DirectionUnknown Direction = 0
-	// DirectionInbound: Inbound network connection. The connection was
+	// DirectionInbound: Inbound network connection. The connection
 	// originated from the Internet or outside network, destined for
 	// services on the inside network.
 	DirectionInbound Direction = 1
 	// DirectionOutbound: Outbound network connection. The connection
-	// was originated from inside the network, destined for services on
-	// the Internet or outside network.
+	// originated from inside the network, destined for services on the
+	// Internet or outside network.
 	DirectionOutbound Direction = 2
-	// DirectionLateral: Lateral network connection. The connection was
+	// DirectionLateral: Lateral network connection. The connection
 	// originated from inside the network, destined for services on the
 	// inside network.
 	DirectionLateral Direction = 3
+	// DirectionLocal: Local network connection (localhost). The
+	// connection is intra-device, originating from and destined for
+	// services running on the same device.
+	DirectionLocal Direction = 4
 	// DirectionOther: The direction is not mapped. See the direction
 	// attribute, which contains a data source specific value.
 	DirectionOther Direction = 99
@@ -45,6 +49,8 @@ func (v Direction) String() string {
 		return "Outbound"
 	case DirectionLateral:
 		return "Lateral"
+	case DirectionLocal:
+		return "Local"
 	case DirectionOther:
 		return "Other"
 	}

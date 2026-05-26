@@ -157,7 +157,7 @@ func writeEnumHeader(w io.Writer, pkg string, needsStrconv bool) {
 //
 // The underlying Go type follows the attribute's dictionary
 // type: numeric (integer_t/long_t) attributes get `type T int`;
-// string-typed enums (only `depth` at v1.3.0) get `type T
+// string-typed enums (only `depth` at v1.x) get `type T
 // string`. Both share the same value-doc and String() shape;
 // the const values are written as numeric literals or quoted
 // strings accordingly.
@@ -231,7 +231,7 @@ func writeEnumType(w io.Writer, attr schema.DictAttr) error {
 }
 
 // isStringEnumType reports whether the attribute's dictionary
-// type denotes a string-valued enum (only `depth` at v1.3.0).
+// type denotes a string-valued enum (only `depth` at v1.x).
 // Numeric primitives (integer_t, long_t) and untyped attributes
 // default to int.
 func isStringEnumType(ocsfType string) bool {

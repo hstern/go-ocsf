@@ -69,8 +69,8 @@ import (
 // IS byte-identical because BaseEvent preserves the raw
 // bytes verbatim.
 func TestRoundTrip_NoFieldLost(t *testing.T) {
-	fixtures := specfixtures.V130()
-	walkErr := fs.WalkDir(fixtures, "v1.3.0", func(path string, d fs.DirEntry, err error) error {
+	fixtures := specfixtures.V180()
+	walkErr := fs.WalkDir(fixtures, "v1.8.0", func(path string, d fs.DirEntry, err error) error {
 		if err != nil || d.IsDir() || !strings.HasSuffix(path, ".json") {
 			return err
 		}

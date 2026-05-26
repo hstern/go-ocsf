@@ -17,8 +17,21 @@ import (
 //
 // OCSF name: security_finding. class_uid: 2001.
 //
-// Deprecated: Use the new specific classes according to the use-case: <code>Vulnerability Finding, Compliance Finding, Detection Finding, Incident Finding.</code>
+// Deprecated: Use the new specific classes according to the use-case: <code>Vulnerability Finding, Compliance Finding, Detection Finding, Incident Finding, Data Security Finding.</code>
 type SecurityFinding struct {
+	// Action is the Action. The normalized caption of action_id.
+	//
+	// OCSF: action (type string_t, requirement optional)
+	Action string `json:"action,omitempty"`
+
+	// ActionID is the Action ID. The action taken by a control or other
+	// policy-based system leading to an outcome or disposition. An unknown
+	// action may still correspond to a known disposition. Refer to
+	// disposition_id for the outcome of the action.
+	//
+	// OCSF: action_id (type integer_t, requirement recommended)
+	ActionID int `json:"action_id,omitempty"`
+
 	// ActivityID is the Activity ID. The normalized identifier of the
 	// activity that triggered the event.
 	//
@@ -30,6 +43,13 @@ type SecurityFinding struct {
 	//
 	// OCSF: activity_name (type string_t, requirement optional)
 	ActivityName string `json:"activity_name,omitempty"`
+
+	// Actor is the Actor. The actor object describes details about the
+	// user/role/process that was the source of the activity. Note that this
+	// is not the threat actor of a campaign but may be part of a campaign.
+	//
+	// OCSF: actor (type actor, requirement optional)
+	Actor *objects.Actor `json:"actor,omitempty"`
 
 	// Analytic is the Analytic. The analytic technique used to analyze and
 	// derive insights from the data or information that led to the finding
@@ -44,11 +64,19 @@ type SecurityFinding struct {
 	// OCSF: api (type api, requirement optional)
 	API *objects.API `json:"api,omitempty"`
 
-	// Attacks is the MITRE ATT&CK® Details. The attack object describes the
-	// technique and associated tactics as defined by ATT&CK MatrixTM.
+	// Attacks is the MITRE ATT&CK® and ATLAS™ Details. An array of MITRE
+	// ATT&CK® objects describing the tactics, techniques & sub-techniques
+	// associated to the Finding.
 	//
 	// OCSF: attacks (type []attack, requirement optional)
 	Attacks []objects.Attack `json:"attacks,omitempty"`
+
+	// Authorizations is the Authorization Information. Provides details
+	// about an authorization, such as authorization outcome, and any
+	// associated policies related to the activity/event.
+	//
+	// OCSF: authorizations (type []authorization, requirement optional)
+	Authorizations []objects.Authorization `json:"authorizations,omitempty"`
 
 	// CategoryName is the Category. The event category name, as defined by
 	// category_uid value.
@@ -83,7 +111,7 @@ type SecurityFinding struct {
 	ClassUID int `json:"class_uid"`
 
 	// Cloud is the Cloud. Describes details about the Cloud environment
-	// where the event was originally created or logged.
+	// where the event or finding was created.
 	//
 	// OCSF: cloud (type cloud, requirement required)
 	Cloud *objects.Cloud `json:"cloud"`
@@ -103,7 +131,7 @@ type SecurityFinding struct {
 	// OCSF: confidence (type string_t, requirement recommended)
 	Confidence string `json:"confidence,omitempty"`
 
-	// ConfidenceID is the Confidence Id. The normalized confidence refers to
+	// ConfidenceID is the Confidence ID. The normalized confidence refers to
 	// the accuracy of the rule that created the finding. A rule with a low
 	// confidence means that the finding scope is wide and may create finding
 	// reports that may not be malicious in nature.
@@ -128,6 +156,25 @@ type SecurityFinding struct {
 	//
 	// OCSF: data_sources (type []string_t, requirement optional)
 	DataSources []string `json:"data_sources,omitempty"`
+
+	// Device is the Device. An addressable device, computer system or host.
+	//
+	// OCSF: device (type device, requirement recommended)
+	Device *objects.Device `json:"device,omitempty"`
+
+	// Disposition is the Disposition. The disposition name, normalized to
+	// the caption of the disposition_id value. In the case of 'Other', it is
+	// defined by the event source.
+	//
+	// OCSF: disposition (type string_t, requirement optional)
+	Disposition string `json:"disposition,omitempty"`
+
+	// DispositionID is the Disposition ID. Describes the outcome or action
+	// taken by a security control, such as access control checks, malware
+	// detections or various types of policy violations.
+	//
+	// OCSF: disposition_id (type integer_t, requirement recommended)
+	DispositionID int `json:"disposition_id,omitempty"`
 
 	// Duration is the Duration Milliseconds. The event duration or aggregate
 	// time, the amount of time the event covers from start_time to end_time
@@ -164,6 +211,12 @@ type SecurityFinding struct {
 	// OCSF: finding (type finding, requirement required)
 	Finding *objects.Finding `json:"finding"`
 
+	// FirewallRule is the Firewall Rule. The firewall rule that pertains to
+	// the control that triggered the event, if applicable.
+	//
+	// OCSF: firewall_rule (type firewall_rule, requirement optional)
+	FirewallRule *objects.FirewallRule `json:"firewall_rule,omitempty"`
+
 	// Impact is the Impact. The impact , normalized to the caption of the
 	// impact_id value. In the case of 'Other', it is defined by the event
 	// source.
@@ -171,16 +224,29 @@ type SecurityFinding struct {
 	// OCSF: impact (type string_t, requirement recommended)
 	Impact string `json:"impact,omitempty"`
 
-	// ImpactID is the Impact ID. The normalized impact of the finding.
+	// ImpactID is the Impact ID. The normalized impact of the incident or
+	// finding. Per NIST, this is the magnitude of harm that can be expected
+	// to result from the consequences of unauthorized disclosure,
+	// modification, destruction, or loss of information or information
+	// system availability.
 	//
 	// OCSF: impact_id (type integer_t, requirement recommended)
 	ImpactID int `json:"impact_id,omitempty"`
 
-	// ImpactScore is the Impact. The impact of the finding, valid range
-	// 0-100.
+	// ImpactScore is the Impact Score. The impact as an integer value of the
+	// finding, valid range 0-100.
 	//
 	// OCSF: impact_score (type integer_t, requirement recommended)
 	ImpactScore int `json:"impact_score,omitempty"`
+
+	// IsAlert is the Alert. Indicates that the event is considered to be an
+	// alertable signal. Should be set to true if disposition_id = Alert
+	// among other dispositions, and/or risk_level_id or severity_id of the
+	// event is elevated. Not all control events will be alertable, for
+	// example if disposition_id = Exonerated or disposition_id = Allowed.
+	//
+	// OCSF: is_alert (type boolean_t, requirement recommended)
+	IsAlert bool `json:"is_alert,omitempty"`
 
 	// KillChain is the Kill Chain. The Cyber Kill Chain® provides a
 	// detailed description of each phase and its associated activities
@@ -194,6 +260,12 @@ type SecurityFinding struct {
 	//
 	// OCSF: malware (type []malware, requirement optional)
 	Malware []objects.Malware `json:"malware,omitempty"`
+
+	// MalwareScanInfo is the Malware Scan Info. Describes details about the
+	// scan job that identified malware on the target system.
+	//
+	// OCSF: malware_scan_info (type malware_scan_info, requirement optional)
+	MalwareScanInfo *objects.MalwareScanInfo `json:"malware_scan_info,omitempty"`
 
 	// Message is the Message. The description of the event/finding, as
 	// defined by the source.
@@ -229,6 +301,13 @@ type SecurityFinding struct {
 	// OCSF: osint (type []osint, requirement required)
 	Osint []objects.Osint `json:"osint"`
 
+	// Policy is the Policy. The policy that pertains to the control that
+	// triggered the event, if applicable. For example the name of an
+	// anti-malware policy or an access control policy.
+	//
+	// OCSF: policy (type policy, requirement optional)
+	Policy *objects.Policy `json:"policy,omitempty"`
+
 	// Process is the Process. The process object.
 	//
 	// OCSF: process (type process, requirement optional)
@@ -240,11 +319,29 @@ type SecurityFinding struct {
 	// OCSF: raw_data (type string_t, requirement optional)
 	RawData string `json:"raw_data,omitempty"`
 
+	// RawDataHash is the Raw Data Hash. The hash, which describes the
+	// content of the raw_data field.
+	//
+	// OCSF: raw_data_hash (type fingerprint, requirement optional)
+	RawDataHash *objects.Fingerprint `json:"raw_data_hash,omitempty"`
+
+	// RawDataSize is the Raw Data Size. The size of the raw data which was
+	// transformed into an OCSF event, in bytes.
+	//
+	// OCSF: raw_data_size (type long_t, requirement optional)
+	RawDataSize int64 `json:"raw_data_size,omitempty"`
+
 	// Resources is the Resources Array. Describes details about resources
 	// that were affected by the activity/event.
 	//
 	// OCSF: resources (type []resource_details, requirement recommended)
 	Resources []objects.ResourceDetails `json:"resources,omitempty"`
+
+	// RiskDetails is the Risk Details. Describes the risk associated with
+	// the finding.
+	//
+	// OCSF: risk_details (type string_t, requirement optional)
+	RiskDetails string `json:"risk_details,omitempty"`
 
 	// RiskLevel is the Risk Level. The risk level, normalized to the caption
 	// of the risk_level_id value.
@@ -390,8 +487,37 @@ func (e SecurityFinding) Validate() error {
 	if len(e.Osint) == 0 {
 		return &ocsf.ValidationError{ClassUID: 2001, Field: "osint", Rule: "required", Reason: "required field is missing"}
 	}
+	switch e.ActionID {
+	case 0, 1, 2, 3, 4, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 2001, Field: "action_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.Action != "" {
+		switch e.ActionID {
+		case 0:
+			if e.Action != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "action", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.Action != "Allowed" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "action", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.Action != "Denied" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "action", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.Action != "Observed" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "action", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 4:
+			if e.Action != "Modified" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "action", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
 	switch e.ActivityID {
-	case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 99:
+	case 0, 1, 2, 3, 4, 5, 99:
 	default:
 		return &ocsf.ValidationError{ClassUID: 2001, Field: "activity_id", Rule: "enum", Reason: "value outside the schema's enum range"}
 	}
@@ -414,31 +540,11 @@ func (e SecurityFinding) Validate() error {
 				return &ocsf.ValidationError{ClassUID: 2001, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
 			}
 		case 4:
-			if e.ActivityName != "Duration Violation" {
+			if e.ActivityName != "Harden" {
 				return &ocsf.ValidationError{ClassUID: 2001, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
 			}
 		case 5:
-			if e.ActivityName != "Pause Violation" {
-				return &ocsf.ValidationError{ClassUID: 2001, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
-			}
-		case 6:
-			if e.ActivityName != "Error" {
-				return &ocsf.ValidationError{ClassUID: 2001, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
-			}
-		case 7:
-			if e.ActivityName != "Paused" {
-				return &ocsf.ValidationError{ClassUID: 2001, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
-			}
-		case 8:
-			if e.ActivityName != "Resumed" {
-				return &ocsf.ValidationError{ClassUID: 2001, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
-			}
-		case 9:
-			if e.ActivityName != "Restarted" {
-				return &ocsf.ValidationError{ClassUID: 2001, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
-			}
-		case 10:
-			if e.ActivityName != "Delayed" {
+			if e.ActivityName != "Detect" {
 				return &ocsf.ValidationError{ClassUID: 2001, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
 			}
 		}
@@ -465,6 +571,127 @@ func (e SecurityFinding) Validate() error {
 		case 3:
 			if e.Confidence != "High" {
 				return &ocsf.ValidationError{ClassUID: 2001, Field: "confidence", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.DispositionID {
+	case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 2001, Field: "disposition_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.Disposition != "" {
+		switch e.DispositionID {
+		case 0:
+			if e.Disposition != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.Disposition != "Allowed" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.Disposition != "Blocked" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.Disposition != "Quarantined" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 4:
+			if e.Disposition != "Isolated" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 5:
+			if e.Disposition != "Deleted" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 6:
+			if e.Disposition != "Dropped" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 7:
+			if e.Disposition != "Custom Action" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 8:
+			if e.Disposition != "Approved" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 9:
+			if e.Disposition != "Restored" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 10:
+			if e.Disposition != "Exonerated" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 11:
+			if e.Disposition != "Corrected" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 12:
+			if e.Disposition != "Partially Corrected" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 13:
+			if e.Disposition != "Uncorrected" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 14:
+			if e.Disposition != "Delayed" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 15:
+			if e.Disposition != "Detected" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 16:
+			if e.Disposition != "No Action" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 17:
+			if e.Disposition != "Logged" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 18:
+			if e.Disposition != "Tagged" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 19:
+			if e.Disposition != "Alert" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 20:
+			if e.Disposition != "Count" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 21:
+			if e.Disposition != "Reset" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 22:
+			if e.Disposition != "Captcha" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 23:
+			if e.Disposition != "Challenge" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 24:
+			if e.Disposition != "Access Revoked" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 25:
+			if e.Disposition != "Rejected" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 26:
+			if e.Disposition != "Unauthorized" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 27:
+			if e.Disposition != "Error" {
+				return &ocsf.ValidationError{ClassUID: 2001, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
 			}
 		}
 	}

@@ -1,53 +1,115 @@
-# OCSF schema — vendored
+# OCSF schema — submodule
 
-Each `v<major>.<minor>.<patch>/` subdirectory holds a verbatim
-copy of the upstream [OCSF schema][upstream] at the matching
-release tag. The codegen pipeline in `internal/gen/` consumes
-exactly one of these directories per library release; the
-`ocsf.SchemaVersion` constant in the root package is the single
-source of truth for which one.
+The `upstream/` subdirectory is a git submodule pointing at
+the canonical [`ocsf/ocsf-schema`][upstream] repository, with
+its HEAD pinned to the commit corresponding to the upstream
+tag named in `ocsf.SchemaVersion` (currently `1.8.0`). The
+codegen pipeline in `internal/gen/` consumes this submodule
+directly.
 
 [upstream]: https://github.com/ocsf/ocsf-schema
 
-## Vendoring policy
+## Why a submodule and not a vendored copy?
 
-- **Schema is vendored, not fetched at build time.** Reproducible
-  builds beat freshness. A schema-version bump is an explicit
-  pull request that updates the vendored copy and re-runs codegen
-  in the same commit (or commit pair, when the codegen volume
-  warrants it).
-- **One directory per schema version.** New schema versions land
-  as a new sibling directory (`v1.4.0/` next to `v1.3.0/`), and the
-  package-level `ocsf.SchemaVersion` constant switches to the new
-  one. Old directories may be retained for one release cycle to
-  ease consumer migration, then removed.
-- **Each vendored directory carries an `UPSTREAM` file** recording
-  the upstream tag and commit SHA, plus a short note of which
-  non-schema artifacts (READMEs, CI configs, image assets) were
-  dropped. The verification recipe in `UPSTREAM` lets a reviewer
-  diff the vendored tree against the upstream tag in one command.
-- **No local edits to vendored content.** If a workaround is
-  needed (e.g. the upstream JSON has a typo blocking codegen),
-  fix it in the codegen tool rather than patching the vendored
-  schema. Patches to vendored content are reviewed by a reviewer
-  in a separate PR with the patch's rationale spelled out in the
-  body.
-- **License attribution stays with the vendored content.** The
-  upstream `LICENSE` and `NOTICE` files travel with each vendored
-  directory; the library's own root-level `LICENSE` covers the
-  hand-written code and the codegen output, not the schema JSON
-  it consumes.
+Until OCSF-29 the schema was a verbatim copy of the upstream
+tree under `internal/schema/v1.3.0/`. A submodule pinned to a
+tagged commit gives the same reproducibility guarantee as
+that vendored copy without maintaining a parallel duplicate
+of the upstream JSON every time a schema version ships. The
+pin is the submodule's commit SHA, which is itself an
+ironclad reference that can't drift the way a copied
+directory could.
 
-## Why this is `internal/`
+The trade-off:
 
-Consumers of `go-ocsf` use the generated types in `events/` and
-`objects/` plus the hand-written core in the root `ocsf` package.
-The schema JSON itself is a codegen input, not a consumer-visible
-artifact, so the `internal/` placement prevents external code from
-taking a load-bearing dependency on the schema's on-disk layout
+- **Submodule (this approach)** — clone takes a moment longer
+  (`git submodule update --init` once per checkout), but the
+  upstream tree is the single source of truth and a schema
+  bump is a one-line change to `.gitmodules`'s effective
+  commit pin (plus codegen output, plus `ocsf.SchemaVersion`).
+- **Vendored copy (the previous approach)** — every schema
+  bump duplicates every upstream JSON file into the
+  repository's working tree, doubling the disk footprint and
+  adding a diff to review against an upstream that already
+  carries an immutable tag.
+
+## Working with the submodule
+
+A fresh clone needs the submodule initialized once:
+
+```
+git clone https://github.com/hstern/go-ocsf
+cd go-ocsf
+git submodule update --init --recursive
+```
+
+CI (GitHub Actions) checks out submodules automatically via
+`actions/checkout@v5`'s `submodules: recursive` option on all
+four jobs (`static`, `test`, `lint`, `codegen-diff`) plus the
+daily `vuln` workflow.
+
+## Schema-version bumps
+
+A library-minor release that tracks a new upstream schema
+version (e.g. `1.8.0` → `1.9.0`) is one PR that:
+
+1. Advances the submodule to the new upstream commit:
+   ```
+   cd internal/schema/upstream
+   git fetch
+   git checkout <upstream-tag>
+   cd -
+   git add internal/schema/upstream
+   ```
+2. Updates `ocsf.SchemaVersion` in the root package's
+   `ocsf.go` to match.
+3. Re-runs `go generate ./...` and commits the resulting
+   diffs in `events/`, `objects/`, `enums/`.
+4. Updates `internal/specfixtures/v<old>/` to
+   `internal/specfixtures/v<new>/`, adjusting hand-curated
+   fixtures for any class / attribute / required-field
+   changes upstream made.
+5. Verifies `go test ./internal/conformance/...` stays green.
+
+The `codegen-diff` CI gate enforces step 3: any drift between
+the submodule's contents and the committed
+`events/`/`objects/`/`enums/` output fails CI with a one-line
+fix message.
+
+## Local-edit policy
+
+No local edits to the submodule. If the upstream schema has
+a defect that blocks codegen, the fix lives in either:
+
+- The codegen tool (`internal/gen/`), if the defect is
+  representable as a special-case in the reader/emitter.
+- An upstream PR to `ocsf/ocsf-schema`, after which the
+  submodule advances to a commit containing the fix.
+
+Patching the submodule directly leaves the local commit SHA
+diverging from any upstream tag — no longer reproducible.
+
+## Why `internal/`
+
+The schema content is a codegen input, not a consumer-visible
+artifact. Consumers of `go-ocsf` use the generated types in
+`events/<category>/`, `objects/`, and `enums/`, plus the
+hand-written core in the root `ocsf` package. The submodule
+sits under `internal/` so external code can't take a
+load-bearing dependency on the upstream's on-disk layout
 (which is the upstream project's to change, not ours).
 
-Code that needs the schema at runtime — for example, a future
-runtime-validation feature that consults the dictionary — would
-embed the relevant pieces via `//go:embed` in the package that
-needs them, rather than re-exposing the `internal/schema/` tree.
+Code that needs the schema at runtime — for example, a
+future runtime-validation feature that consults the
+dictionary — would embed the relevant pieces via `//go:embed`
+in the package that needs them, rather than re-exposing the
+submodule path.
+
+## License
+
+The upstream OCSF schema is Apache-2.0, with attribution
+preserved in `internal/schema/upstream/LICENSE` and
+`internal/schema/upstream/NOTICE`. The library's own
+root-level `LICENSE` covers the hand-written Go code and the
+codegen output; the upstream license covers the JSON schema
+content the codegen consumes.

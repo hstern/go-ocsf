@@ -8,17 +8,25 @@ package enums
 import "strconv"
 
 // Impact is the OCSF Impact ID enum. The normalized impact of the
-// finding.
+// incident or finding. Per NIST, this is the magnitude of harm that can
+// be expected to result from the consequences of unauthorized
+// disclosure, modification, destruction, or loss of information or
+// information system availability.
 //
 // OCSF attribute: impact_id.
 type Impact int
 
 const (
 	// ImpactUnknown: The normalized impact is unknown.
-	ImpactUnknown  Impact = 0
-	ImpactLow      Impact = 1
-	ImpactMedium   Impact = 2
-	ImpactHigh     Impact = 3
+	ImpactUnknown Impact = 0
+	// ImpactLow: The magnitude of harm is low.
+	ImpactLow Impact = 1
+	// ImpactMedium: The magnitude of harm is moderate.
+	ImpactMedium Impact = 2
+	// ImpactHigh: The magnitude of harm is high.
+	ImpactHigh Impact = 3
+	// ImpactCritical: The magnitude of harm is high and the scope is
+	// widespread.
 	ImpactCritical Impact = 4
 	// ImpactOther: The impact is not mapped. See the impact attribute,
 	// which contains a data source specific value.

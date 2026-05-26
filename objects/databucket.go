@@ -5,39 +5,128 @@
 
 package objects
 
+import (
+	"encoding/json"
+)
+
 // Databucket describes the OCSF Databucket object: The databucket object
 // is a basic container that holds data, typically organized through the
 // use of data partitions.
 //
 // OCSF name: databucket.
 type Databucket struct {
+	// AgentList is the Agent List. A list of agent objects associated with a
+	// device, endpoint, or resource.
+	//
+	// OCSF: agent_list (type []agent, requirement optional)
+	AgentList []Agent `json:"agent_list,omitempty"`
+
+	// CloudPartition is the Cloud Partition. The logical grouping or
+	// isolated segment within a cloud provider's infrastructure where the
+	// databucket is located.
+	//
+	// OCSF: cloud_partition (type string_t, requirement optional)
+	CloudPartition string `json:"cloud_partition,omitempty"`
+
 	// CreatedTime is the Created Time. The time when the databucket was
 	// known to have been created.
 	//
 	// OCSF: created_time (type timestamp_t, requirement optional)
 	CreatedTime int64 `json:"created_time,omitempty"`
 
+	// Criticality is the Criticality. The criticality of the databucket as
+	// defined by the event source.
+	//
+	// OCSF: criticality (type string_t, requirement optional)
+	Criticality string `json:"criticality,omitempty"`
+
+	// Data is the Data. Additional data describing the resource.
+	//
+	// OCSF: data (type json_t, requirement optional)
+	Data json.RawMessage `json:"data,omitempty"`
+
 	// DataClassification is the Data Classification. The Data Classification
 	// object includes information about data classification levels and data
 	// category types.
 	//
 	// OCSF: data_classification (type data_classification, requirement recommended)
+	//
+	// Deprecated: Use the attribute <code>data_classifications</code> instead
 	DataClassification *DataClassification `json:"data_classification,omitempty"`
+
+	// DataClassifications is the Data Classification. A list of Data
+	// Classification objects, that include information about data
+	// classification levels and data category types, identified by a
+	// classifier.
+	//
+	// OCSF: data_classifications (type []data_classification, requirement recommended)
+	DataClassifications []DataClassification `json:"data_classifications,omitempty"`
 
 	// Desc is the Description. The description of the databucket.
 	//
 	// OCSF: desc (type string_t, requirement optional)
 	Desc string `json:"desc,omitempty"`
 
-	// File is the File. A file within a databucket.
+	// EncryptionDetails is the Encryption Details. The encryption details of
+	// the databucket. Should be populated if the databucket is encrypted.
+	//
+	// OCSF: encryption_details (type encryption_details, requirement optional)
+	EncryptionDetails *EncryptionDetails `json:"encryption_details,omitempty"`
+
+	// File is the File. Details about the file/object within a databucket.
 	//
 	// OCSF: file (type file, requirement optional)
 	File *File `json:"file,omitempty"`
+
+	// Group is the Group. The name of the related resource group.
+	//
+	// OCSF: group (type group, requirement optional)
+	//
+	// Deprecated: Use the <code>groups</code> attribute instead.
+	Group *Group `json:"group,omitempty"`
 
 	// Groups is the Groups. The group names to which the databucket belongs.
 	//
 	// OCSF: groups (type []group, requirement optional)
 	Groups []Group `json:"groups,omitempty"`
+
+	// Hostname is the Hostname. The fully qualified hostname of the
+	// databucket.
+	//
+	// OCSF: hostname (type hostname_t, requirement recommended)
+	Hostname string `json:"hostname,omitempty"`
+
+	// IP is the IP Address. The IP address of the resource, in either IPv4
+	// or IPv6 format.
+	//
+	// OCSF: ip (type ip_t, requirement recommended)
+	IP string `json:"ip,omitempty"`
+
+	// IsBackedUp is the Back Ups Configured. Indicates whether the device or
+	// resource has a backup enabled, such as an automated snapshot or a
+	// cloud backup. For example, this is indicated by the cloudBackupEnabled
+	// value within JAMF Pro mobile devices or the registration of an AWS ARN
+	// with the AWS Backup service.
+	//
+	// OCSF: is_backed_up (type boolean_t, requirement optional)
+	IsBackedUp bool `json:"is_backed_up,omitempty"`
+
+	// IsEncrypted is the Encrypted. Indicates if the databucket is
+	// encrypted.
+	//
+	// OCSF: is_encrypted (type boolean_t, requirement optional)
+	IsEncrypted bool `json:"is_encrypted,omitempty"`
+
+	// IsPublic is the Public. Indicates if the databucket is publicly
+	// accessible.
+	//
+	// OCSF: is_public (type boolean_t, requirement recommended)
+	IsPublic bool `json:"is_public,omitempty"`
+
+	// Labels is the Labels. The list of labels associated to the resource.
+	//
+	// OCSF: labels (type []string_t, requirement optional)
+	Labels []string `json:"labels,omitempty"`
 
 	// ModifiedTime is the Modified Time. The most recent time when any
 	// changes, updates, or modifications were made within the databucket.
@@ -50,10 +139,41 @@ type Databucket struct {
 	// OCSF: name (type string_t, requirement recommended)
 	Name string `json:"name,omitempty"`
 
+	// Namespace is the Namespace. The namespace is useful when similar
+	// entities exist that you need to keep separate.
+	//
+	// OCSF: namespace (type string_t, requirement optional)
+	Namespace string `json:"namespace,omitempty"`
+
+	// Owner is the Owner. The identity of the service or user account that
+	// owns the databucket.
+	//
+	// OCSF: owner (type user, requirement recommended)
+	Owner *User `json:"owner,omitempty"`
+
+	// Region is the Region. The cloud region of the databucket.
+	//
+	// OCSF: region (type string_t, requirement optional)
+	Region string `json:"region,omitempty"`
+
+	// ResourceRelationship is the Resource Relationship. A graph
+	// representation showing how this databucket relates to and interacts
+	// with other entities in the environment. This can include parent/child
+	// relationships, dependencies, or other connections.
+	//
+	// OCSF: resource_relationship (type graph, requirement optional)
+	ResourceRelationship *Graph `json:"resource_relationship,omitempty"`
+
 	// Size is the Size. The size of the databucket in bytes.
 	//
 	// OCSF: size (type long_t, requirement optional)
 	Size int64 `json:"size,omitempty"`
+
+	// Tags is the Tags. The list of tags; {key:value} pairs associated to
+	// the resource.
+	//
+	// OCSF: tags (type []key_value_object, requirement optional)
+	Tags []KeyValueObject `json:"tags,omitempty"`
 
 	// Type is the Type. The databucket type.
 	//
@@ -68,6 +188,24 @@ type Databucket struct {
 
 	// UID is the Unique ID. The unique identifier of the databucket.
 	//
-	// OCSF: uid (type string_t, requirement recommended)
+	// OCSF: uid (type resource_uid_t, requirement recommended)
 	UID string `json:"uid,omitempty"`
+
+	// UIDAlt is the Alternate ID. The alternative unique identifier of the
+	// resource.
+	//
+	// OCSF: uid_alt (type resource_uid_t, requirement optional)
+	UIDAlt string `json:"uid_alt,omitempty"`
+
+	// Version is the Version. The version of the resource. For example
+	// 1.2.3.
+	//
+	// OCSF: version (type string_t, requirement optional)
+	Version string `json:"version,omitempty"`
+
+	// Zone is the Cloud Availability Zone. The specific availability zone
+	// within a cloud region where the databucket is located.
+	//
+	// OCSF: zone (type string_t, requirement optional)
+	Zone string `json:"zone,omitempty"`
 }

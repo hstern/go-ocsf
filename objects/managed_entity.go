@@ -13,8 +13,9 @@ import (
 // Entity object describes the type and version of an entity, such as a
 // user, device, or policy. For types in the type_id enum list, an
 // associated attribute should be populated. If the type of entity is not
-// in the type_id list, information can be put into the data attribute
-// and the type attribute should identify the entity.
+// in the type_id list, information can be put into the data attribute,
+// type_id should be 'Other' and the type attribute should label the
+// entity type.
 //
 // OCSF name: managed_entity.
 type ManagedEntity struct {
@@ -39,13 +40,24 @@ type ManagedEntity struct {
 	// OCSF: group (type group, requirement recommended)
 	Group *Group `json:"group,omitempty"`
 
-	// Name is the Name. The name of the managed entity.
+	// Location is the Geo Location. The detailed geographical location
+	// usually associated with an IP address.
+	//
+	// OCSF: location (type location, requirement optional)
+	Location *Location `json:"location,omitempty"`
+
+	// Name is the Name. The name of the managed entity. It should match the
+	// name of the specific entity object's name if populated, or the name of
+	// the managed entity if the type_id is 'Other'.
 	//
 	// OCSF: name (type string_t, requirement recommended)
 	Name string `json:"name,omitempty"`
 
-	// Org is the Organization. Organization and org unit relevant to the
-	// event or object.
+	// Org is the Organization. The Organization object containing details
+	// about the managed organizational entity. This object includes
+	// properties such as the organization name, unique identifier, type, and
+	// other organizational metadata. This attribute should be populated when
+	// type_id is 4 (Organization).
 	//
 	// OCSF: org (type organization, requirement recommended)
 	Org *Organization `json:"org,omitempty"`
@@ -55,8 +67,8 @@ type ManagedEntity struct {
 	// OCSF: policy (type policy, requirement recommended)
 	Policy *Policy `json:"policy,omitempty"`
 
-	// Type is the Type. The managed entity type. For example: policy, user,
-	// organizational unit, device.
+	// Type is the Type. The managed entity type. For example: Policy, User,
+	// Organization, Device.
 	//
 	// OCSF: type (type string_t, requirement recommended)
 	Type string `json:"type,omitempty"`
@@ -68,7 +80,9 @@ type ManagedEntity struct {
 	// OCSF: type_id (type integer_t, requirement recommended)
 	TypeID int `json:"type_id,omitempty"`
 
-	// UID is the Unique ID. The identifier of the managed entity.
+	// UID is the Unique ID. The identifier of the managed entity. It should
+	// match the uid of the specific entity's object UID if populated, or the
+	// source specific ID if the type_id is 'Other'.
 	//
 	// OCSF: uid (type string_t, requirement recommended)
 	UID string `json:"uid,omitempty"`

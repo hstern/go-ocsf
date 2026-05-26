@@ -5,28 +5,27 @@
 
 package objects
 
-// D3fTechnique describes the OCSF MITRE DEFEND™ Technique object: The
-// MITRE DEFEND™ Technique object describes the leaf defensive
-// technique ID and/or name associated to a countermeasure, as defined by
-// D3FENDTM Matrix.
+// D3fTechnique describes the OCSF MITRE D3FEND™ Technique object: The
+// MITRE D3FEND™ Technique object describes the leaf defensive
+// technique ID and/or name associated to a countermeasure.
 //
 // OCSF name: d3f_technique.
 type D3fTechnique struct {
-	// Name is the Name. The name of the defensive technique, as defined by
-	// D3FENDTM Matrix. For example: IO Port Restriction.
+	// Name is the Name. The name of the defensive technique. For example: IO
+	// Port Restriction.
 	//
 	// OCSF: name (type string_t, requirement recommended)
 	Name string `json:"name,omitempty"`
 
 	// SrcURL is the Source URL. The versioned permalink of the defensive
-	// technique, as defined by D3FENDTM Matrix. For example:
+	// technique. For example:
 	// https://d3fend.mitre.org/technique/d3f:IOPortRestriction/.
 	//
 	// OCSF: src_url (type url_t, requirement optional)
 	SrcURL string `json:"src_url,omitempty"`
 
 	// UID is the Unique ID. The unique identifier of the defensive
-	// technique, as defined by D3FENDTM Matrix. For example: D3-IOPR.
+	// technique. For example: D3-IOPR.
 	//
 	// OCSF: uid (type string_t, requirement recommended)
 	UID string `json:"uid,omitempty"`

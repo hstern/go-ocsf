@@ -17,6 +17,7 @@ func TestCategory_String(t *testing.T) {
 		{CategoryDiscovery, "Discovery"},
 		{CategoryApplicationActivity, "Application Activity"},
 		{CategoryRemediation, "Remediation"},
+		{CategoryUnmannedSystems, "Unmanned Systems"},
 		{Category(0), "0"},
 		{Category(99), "99"},
 	}
@@ -39,6 +40,7 @@ func TestCategory_Name(t *testing.T) {
 		{CategoryDiscovery, "discovery"},
 		{CategoryApplicationActivity, "application"},
 		{CategoryRemediation, "remediation"},
+		{CategoryUnmannedSystems, "unmanned_systems"},
 		{Category(0), ""},
 		{Category(42), ""},
 	}
@@ -66,6 +68,7 @@ func TestCategoryConstantsMatchUpstream(t *testing.T) {
 		{CategoryDiscovery, 5},
 		{CategoryApplicationActivity, 6},
 		{CategoryRemediation, 7},
+		{CategoryUnmannedSystems, 8},
 	}
 	for _, c := range cases {
 		if int(c.c) != c.wantUID {

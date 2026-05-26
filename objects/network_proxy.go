@@ -8,7 +8,7 @@ package objects
 // NetworkProxy describes the OCSF Network Proxy Endpoint object: The
 // network proxy endpoint object describes a proxy server, which acts as
 // an intermediary between a client requesting a resource and the server
-// providing that resource. Defined by D3FEND d3f:ProxyServer.
+// providing that resource.
 //
 // OCSF name: network_proxy.
 type NetworkProxy struct {
@@ -32,10 +32,18 @@ type NetworkProxy struct {
 	// OCSF: container (type container, requirement recommended)
 	Container *Container `json:"container,omitempty"`
 
-	// Domain is the Domain. The name of the domain.
+	// Domain is the Domain. The name of the domain that the endpoint belongs
+	// to or that corresponds to the endpoint.
 	//
 	// OCSF: domain (type string_t, requirement optional)
 	Domain string `json:"domain,omitempty"`
+
+	// Fingerprints is the Fingerprints. Fingerprints that identify the
+	// specific application implementation on this endpoint, such as Cisco
+	// NPF or HASSH.
+	//
+	// OCSF: fingerprints (type []fingerprint, requirement optional)
+	Fingerprints []Fingerprint `json:"fingerprints,omitempty"`
 
 	// Hostname is the Hostname. The fully qualified name of the endpoint.
 	//
@@ -78,6 +86,21 @@ type NetworkProxy struct {
 	// OCSF: ip (type ip_t, requirement recommended)
 	IP string `json:"ip,omitempty"`
 
+	// Isp is the ISP Name. The name of the Internet Service Provider (ISP).
+	//
+	// OCSF: isp (type string_t, requirement optional)
+	Isp string `json:"isp,omitempty"`
+
+	// IspOrg is the ISP Org. The organization name of the Internet Service
+	// Provider (ISP). This represents the parent organization or company
+	// that owns/operates the ISP. For example, Comcast Corporation would be
+	// the ISP org for Xfinity internet service. This attribute helps
+	// identify the ultimate provider when ISPs operate under different brand
+	// names.
+	//
+	// OCSF: isp_org (type string_t, requirement optional)
+	IspOrg string `json:"isp_org,omitempty"`
+
 	// Location is the Geo Location. The geographical location of the
 	// endpoint.
 	//
@@ -89,6 +112,13 @@ type NetworkProxy struct {
 	//
 	// OCSF: mac (type mac_t, requirement optional)
 	MAC string `json:"mac,omitempty"`
+
+	// MACVendor is the MAC Vendor. The vendor or manufacturer of the
+	// endpoint's network interface controller (NIC), as identified from the
+	// MAC address.
+	//
+	// OCSF: mac_vendor (type string_t, requirement optional)
+	MACVendor string `json:"mac_vendor,omitempty"`
 
 	// Name is the Name. The short name of the endpoint.
 	//
@@ -102,6 +132,24 @@ type NetworkProxy struct {
 	// OCSF: namespace_pid (type integer_t, requirement recommended)
 	NamespacePID int `json:"namespace_pid,omitempty"`
 
+	// NetworkScope is the Network Scope. Indicates whether the endpoint
+	// resides inside the customer’s network, outside on the Internet, or
+	// if its location relative to the customer’s network cannot be
+	// determined. The value is normalized to the caption of the
+	// network_scope_id.
+	//
+	// OCSF: network_scope (type string_t, requirement optional)
+	NetworkScope string `json:"network_scope,omitempty"`
+
+	// NetworkScopeID is the Network Scope ID. The normalized identifier of
+	// the endpoint’s network scope. The normalized network scope
+	// identifier indicates whether the endpoint resides inside the
+	// customer’s network, outside on the Internet, or if its location
+	// relative to the customer’s network cannot be determined.
+	//
+	// OCSF: network_scope_id (type integer_t, requirement optional)
+	NetworkScopeID int `json:"network_scope_id,omitempty"`
+
 	// OS is the OS. The endpoint operating system.
 	//
 	// OCSF: os (type os, requirement optional)
@@ -112,6 +160,12 @@ type NetworkProxy struct {
 	//
 	// OCSF: owner (type user, requirement recommended)
 	Owner *User `json:"owner,omitempty"`
+
+	// Pool is the Pool. The pool of desktops or virtual machines to which
+	// the endpoint belongs.
+	//
+	// OCSF: pool (type group, requirement optional)
+	Pool *Group `json:"pool,omitempty"`
 
 	// Port is the Port. The port used for communication within the network
 	// connection.

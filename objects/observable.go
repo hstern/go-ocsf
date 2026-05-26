@@ -11,12 +11,22 @@ package objects
 //
 // OCSF name: observable.
 type Observable struct {
-	// Name is the Name. The full name of the observable attribute. The name
-	// is a pointer/reference to an attribute within the event data. For
-	// example: file.name.
+	// EventUID is the Event UID. The unique identifier (metadata.uid) of the
+	// source OCSF event from which this observable was extracted. This field
+	// enables linking observables back to their originating event data when
+	// observables are stored in a separate location or system.
 	//
-	// OCSF: name (type string_t, requirement required)
-	Name string `json:"name"`
+	// OCSF: event_uid (type string_t, requirement optional)
+	EventUID string `json:"event_uid,omitempty"`
+
+	// Name is the Name. The full name of the observable attribute. The name
+	// is a pointer/reference to an attribute within the OCSF event data. For
+	// example: file.name. Array attributes may be represented in one of
+	// three ways. For example: resources.uid, resources[].uid,
+	// resources[0].uid.
+	//
+	// OCSF: name (type string_t, requirement recommended)
+	Name string `json:"name,omitempty"`
 
 	// Reputation is the Reputation Scores. Contains the original and
 	// normalized reputation scores.
@@ -33,6 +43,15 @@ type Observable struct {
 	//
 	// OCSF: type_id (type integer_t, requirement required)
 	TypeID int `json:"type_id"`
+
+	// TypeUID is the Type ID. The OCSF event type UID (type_uid) of the
+	// source event that this observable was extracted from. This field
+	// enables filtering and categorizing observables by their originating
+	// event type. For example: 300101 for Network Activity (class_uid 3001)
+	// with activity_id 1.
+	//
+	// OCSF: type_uid (type long_t, requirement optional)
+	TypeUID int64 `json:"type_uid,omitempty"`
 
 	// Value is the Value. The value associated with the observable
 	// attribute. The meaning of the value depends on the observable type.If

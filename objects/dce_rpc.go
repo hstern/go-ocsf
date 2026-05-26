@@ -8,7 +8,6 @@ package objects
 // DceRPC describes the OCSF DCE/RPC object: The DCE/RPC, or Distributed
 // Computing Environment/Remote Procedure Call, object describes the
 // remote procedure call system for distributed computing environments.
-// Defined by D3FEND d3f:RemoteProcedureCall.
 //
 // OCSF name: dce_rpc.
 type DceRPC struct {

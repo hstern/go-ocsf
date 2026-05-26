@@ -16,17 +16,19 @@ type AuthProtocol int
 
 const (
 	// AuthProtocolUnknown: The authentication protocol is unknown.
-	AuthProtocolUnknown  AuthProtocol = 0
-	AuthProtocolNTLM     AuthProtocol = 1
-	AuthProtocolKerberos AuthProtocol = 2
-	AuthProtocolDigest   AuthProtocol = 3
-	AuthProtocolOpenID   AuthProtocol = 4
-	AuthProtocolSAML     AuthProtocol = 5
-	AuthProtocolOAUTH20  AuthProtocol = 6
-	AuthProtocolPAP      AuthProtocol = 7
-	AuthProtocolCHAP     AuthProtocol = 8
-	AuthProtocolEAP      AuthProtocol = 9
-	AuthProtocolRADIUS   AuthProtocol = 10
+	AuthProtocolUnknown             AuthProtocol = 0
+	AuthProtocolNTLM                AuthProtocol = 1
+	AuthProtocolKerberos            AuthProtocol = 2
+	AuthProtocolDigest              AuthProtocol = 3
+	AuthProtocolOpenID              AuthProtocol = 4
+	AuthProtocolSAML                AuthProtocol = 5
+	AuthProtocolOAUTH20             AuthProtocol = 6
+	AuthProtocolPAP                 AuthProtocol = 7
+	AuthProtocolCHAP                AuthProtocol = 8
+	AuthProtocolEAP                 AuthProtocol = 9
+	AuthProtocolRADIUS              AuthProtocol = 10
+	AuthProtocolBasicAuthentication AuthProtocol = 11
+	AuthProtocolLDAP                AuthProtocol = 12
 	// AuthProtocolOther: The authentication protocol is not mapped.
 	// See the auth_protocol attribute, which contains a data source
 	// specific value.
@@ -59,6 +61,10 @@ func (v AuthProtocol) String() string {
 		return "EAP"
 	case AuthProtocolRADIUS:
 		return "RADIUS"
+	case AuthProtocolBasicAuthentication:
+		return "Basic Authentication"
+	case AuthProtocolLDAP:
+		return "LDAP"
 	case AuthProtocolOther:
 		return "Other"
 	}

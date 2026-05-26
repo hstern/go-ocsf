@@ -38,6 +38,21 @@ type API struct {
 	// OCSF: service (type service, requirement optional)
 	Service *Service `json:"service,omitempty"`
 
+	// Token is the Token. The API or client token used to authenticate or
+	// authorize the API request. This attribute contains the base token
+	// object that represents: (1) IdP-issued client tokens (type_id: 6) such
+	// as Okta API tokens or Microsoft Entra ID Application Registration
+	// client secrets, or (2) generic API tokens/keys (type_id: 7) used for
+	// SaaS application authentication. Use this attribute when the API
+	// request was authenticated using a token that should be tracked as part
+	// of the API activity event. Note: Protocol-specific authentication
+	// tokens (Kerberos, OIDC, SAML) should be represented using
+	// authentication_token in authentication events, not in API activity
+	// events.
+	//
+	// OCSF: token (type token, requirement optional)
+	Token *Token `json:"token,omitempty"`
+
 	// Version is the Version. The version of the API service.
 	//
 	// OCSF: version (type string_t, requirement optional)

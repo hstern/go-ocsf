@@ -19,16 +19,24 @@
 package ocsf
 
 // Regenerate the events/, objects/, and enums/ packages from the
-// vendored OCSF schema. The schema-version directory passed via
-// -schema must match SchemaVersion below; when the version bumps
-// the path in this directive bumps with it. The `codegen-diff` CI
-// job runs this directive and fails on any diff against the
-// committed output, catching silent drift between the schema
-// version we pin and the generated types we ship.
+// upstream OCSF schema checked out under internal/schema/upstream/
+// (a git submodule pinned to the upstream tag matching
+// SchemaVersion below). When the version bumps, the submodule
+// commit advances and SchemaVersion updates in the same PR; the
+// codegen-diff CI job runs this directive and fails on any diff
+// against the committed output, catching silent drift between the
+// schema version we pin and the generated types we ship.
 //
-//go:generate go run ./internal/gen -schema internal/schema/v1.3.0 -emit -out .
+// The submodule must be checked out before running go generate.
+// CI does this via actions/checkout's submodules: recursive
+// option; local invocations need `git submodule update --init`
+// at least once after clone.
+//
+//go:generate go run ./internal/gen -schema internal/schema/upstream -emit -out .
 
-// SchemaVersion is the OCSF schema version this package's generated
-// types track on the wire. It is the single source of truth for the
-// schema version pinned by this library release.
-const SchemaVersion = "1.3.0"
+// SchemaVersion is the OCSF schema version this package's
+// generated types track on the wire. It is the single source of
+// truth for the schema version pinned by this library release
+// and must match the upstream tag the internal/schema/upstream
+// submodule is checked out at.
+const SchemaVersion = "1.8.0"

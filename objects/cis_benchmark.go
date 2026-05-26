@@ -12,6 +12,8 @@ package objects
 // Benchmarks.
 //
 // OCSF name: cis_benchmark.
+//
+// Deprecated: Use the Compliance object with Checks object instead.
 type CisBenchmark struct {
 	// CisControls is the CIS Controls. The CIS Critical Security Controls is
 	// a prioritized set of actions to protect your organization and data

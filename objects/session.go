@@ -7,7 +7,7 @@ package objects
 
 // Session describes the OCSF Session object: The Session object
 // describes details about an authenticated session. e.g. Session
-// Creation Time, Session Issuer. Defined by D3FEND d3f:Session.
+// Creation Time, Session Issuer.
 //
 // OCSF name: session.
 type Session struct {

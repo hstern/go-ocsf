@@ -47,6 +47,12 @@ type CVSS struct {
 	// OCSF: severity (type string_t, requirement optional)
 	Severity string `json:"severity,omitempty"`
 
+	// SrcURL is the Source URL. The source URL for the CVSS score. For
+	// example: https://nvd.nist.gov/vuln/detail/CVE-2021-44228
+	//
+	// OCSF: src_url (type url_t, requirement optional)
+	SrcURL string `json:"src_url,omitempty"`
+
 	// VectorString is the Vector String. The CVSS vector string is a text
 	// representation of a set of CVSS metrics. It is commonly used to record
 	// or transfer CVSS metric information in a concise form. For example:
@@ -54,6 +60,12 @@ type CVSS struct {
 	//
 	// OCSF: vector_string (type string_t, requirement optional)
 	VectorString string `json:"vector_string,omitempty"`
+
+	// VendorName is the Vendor Name. The vendor that provided the CVSS
+	// score. For example: NVD, REDHAT etc.
+	//
+	// OCSF: vendor_name (type string_t, requirement recommended)
+	VendorName string `json:"vendor_name,omitempty"`
 
 	// Version is the Version. The CVSS version. For example: 3.1.
 	//

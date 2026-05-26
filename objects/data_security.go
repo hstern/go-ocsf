@@ -25,6 +25,12 @@ type DataSecurity struct {
 	// OCSF: category_id (type integer_t, requirement recommended)
 	CategoryID int `json:"category_id,omitempty"`
 
+	// ClassifierDetails is the Classifier Details. Describes details about
+	// the classifier used for data classification.
+	//
+	// OCSF: classifier_details (type classifier_details, requirement recommended)
+	ClassifierDetails *ClassifierDetails `json:"classifier_details,omitempty"`
+
 	// Confidentiality is the Confidentiality. The file content
 	// confidentiality, normalized to the confidentiality_id value. In the
 	// case of 'Other', it is defined by the event source.
@@ -53,7 +59,7 @@ type DataSecurity struct {
 	DataLifecycleStateID int `json:"data_lifecycle_state_id,omitempty"`
 
 	// DetectionPattern is the Detection Pattern. Specific pattern,
-	// algorithm, fingerpint, or model used for detection.
+	// algorithm, fingerprint, or model used for detection.
 	//
 	// OCSF: detection_pattern (type string_t, requirement recommended)
 	DetectionPattern string `json:"detection_pattern,omitempty"`
@@ -72,6 +78,12 @@ type DataSecurity struct {
 	// OCSF: detection_system_id (type integer_t, requirement recommended)
 	DetectionSystemID int `json:"detection_system_id,omitempty"`
 
+	// DiscoveryDetails is the Discovery Details. Details about the data
+	// discovered by classification job.
+	//
+	// OCSF: discovery_details (type []discovery_details, requirement optional)
+	DiscoveryDetails []DiscoveryDetails `json:"discovery_details,omitempty"`
+
 	// PatternMatch is the Pattern Match. A text, binary, file name, or
 	// datastore that matched against a detection rule.
 	//
@@ -83,4 +95,45 @@ type DataSecurity struct {
 	//
 	// OCSF: policy (type policy, requirement recommended)
 	Policy *Policy `json:"policy,omitempty"`
+
+	// Size is the Size. Size of the data classified.
+	//
+	// OCSF: size (type long_t, requirement optional)
+	Size int64 `json:"size,omitempty"`
+
+	// SrcURL is the Source URL. The source URL pointing towards the full
+	// classification job details.
+	//
+	// OCSF: src_url (type url_t, requirement optional)
+	SrcURL string `json:"src_url,omitempty"`
+
+	// Status is the Status. The resultant status of the classification job
+	// normalized to the caption of the status_id value. In the case of
+	// 'Other', it is defined by the event source.
+	//
+	// OCSF: status (type string_t, requirement recommended)
+	Status string `json:"status,omitempty"`
+
+	// StatusDetails is the Status Details. The contextual description of the
+	// status, status_id value.
+	//
+	// OCSF: status_details (type []string_t, requirement optional)
+	StatusDetails []string `json:"status_details,omitempty"`
+
+	// StatusID is the Status ID. The normalized status identifier of the
+	// classification job.
+	//
+	// OCSF: status_id (type integer_t, requirement recommended)
+	StatusID int `json:"status_id,omitempty"`
+
+	// Total is the Total. The total count of discovered entities, by the
+	// classification job.
+	//
+	// OCSF: total (type integer_t, requirement optional)
+	Total int `json:"total,omitempty"`
+
+	// UID is the Unique ID. The unique identifier of the classification job.
+	//
+	// OCSF: uid (type string_t, requirement optional)
+	UID string `json:"uid,omitempty"`
 }

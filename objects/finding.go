@@ -46,14 +46,21 @@ type Finding struct {
 	// OCSF: modified_time (type timestamp_t, requirement optional)
 	ModifiedTime int64 `json:"modified_time,omitempty"`
 
+	// Product is the Product. Details about the product that reported the
+	// finding.
+	//
+	// OCSF: product (type product, requirement optional)
+	Product *Product `json:"product,omitempty"`
+
 	// ProductUID is the Product Identifier. The unique identifier of the
 	// product that reported the finding.
 	//
 	// OCSF: product_uid (type string_t, requirement optional)
 	ProductUID string `json:"product_uid,omitempty"`
 
-	// RelatedEvents is the Related Events. Describes events and/or other
-	// findings related to the finding as identified by the security product.
+	// RelatedEvents is the Related Events/Findings. Describes events and/or
+	// other findings related to the finding as identified by the security
+	// product. Note that these events may or may not be in OCSF.
 	//
 	// OCSF: related_events (type []related_event, requirement optional)
 	RelatedEvents []RelatedEvent `json:"related_events,omitempty"`

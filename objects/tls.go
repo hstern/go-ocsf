@@ -73,6 +73,8 @@ type TLS struct {
 	// names that are secured by a specific certificate.
 	//
 	// OCSF: sans (type []san, requirement optional)
+	//
+	// Deprecated: Use <code>tls.certificate.sans</code> attribute instead.
 	Sans []San `json:"sans,omitempty"`
 
 	// ServerCiphers is the Server Cipher Suites. The server cipher suites

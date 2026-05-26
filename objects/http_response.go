@@ -13,6 +13,13 @@ package objects
 //
 // OCSF name: http_response.
 type HTTPResponse struct {
+	// BodyLength is the Response Body Length. The actual length of the HTTP
+	// response body, in number of bytes, independent of a potentially
+	// existing Content-Length header.
+	//
+	// OCSF: body_length (type integer_t, requirement optional)
+	BodyLength int `json:"body_length,omitempty"`
+
 	// Code is the Response Code. The Hypertext Transfer Protocol (HTTP)
 	// status code returned from the web server to the client. For example,
 	// 200.
@@ -39,8 +46,8 @@ type HTTPResponse struct {
 	// OCSF: latency (type integer_t, requirement optional)
 	Latency int `json:"latency,omitempty"`
 
-	// Length is the Response Length. The HTTP response length, in number of
-	// bytes.
+	// Length is the Response Length. The length of the entire HTTP response,
+	// in number of bytes.
 	//
 	// OCSF: length (type integer_t, requirement optional)
 	Length int `json:"length,omitempty"`

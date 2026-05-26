@@ -15,7 +15,8 @@ package objects
 //
 // OCSF name: http_cookie.
 type HTTPCookie struct {
-	// Domain is the Domain. The name of the domain.
+	// Domain is the Domain. The domain name for the server from which the
+	// http_cookie is served.
 	//
 	// OCSF: domain (type string_t, requirement optional)
 	Domain string `json:"domain,omitempty"`

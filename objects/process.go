@@ -10,11 +10,21 @@ import (
 )
 
 // Process describes the OCSF Process object: The Process object
-// describes a running instance of a launched program. Defined by D3FEND
-// d3f:Process.
+// describes a running instance of a launched program.
 //
 // OCSF name: process.
 type Process struct {
+	// Ancestry is the Ancestry. An array of Process Entities describing the
+	// extended parentage of this process object. Direct parent information
+	// should be expressed through the parent_process attribute. The first
+	// array element is the direct parent of this process object. Subsequent
+	// list elements go up the process parentage hierarchy. That is, the
+	// array is sorted from newest to oldest process. It is recommended to
+	// only populate this field for the top-level process object.
+	//
+	// OCSF: ancestry (type []process_entity, requirement optional)
+	Ancestry []ProcessEntity `json:"ancestry,omitempty"`
+
 	// CmdLine is the Command Line. The full command line used to launch an
 	// application, service, process, or job. For example: ssh
 	// user@10.0.0.10. If the command line is unavailable or missing, the
@@ -31,11 +41,24 @@ type Process struct {
 	// OCSF: container (type container, requirement recommended)
 	Container *Container `json:"container,omitempty"`
 
+	// Cpid is the Common Process Identifier. A unique process identifier
+	// that can be assigned deterministically by multiple system data
+	// producers.
+	//
+	// OCSF: cpid (type uuid_t, requirement recommended)
+	Cpid string `json:"cpid,omitempty"`
+
 	// CreatedTime is the Created Time. The time when the process was
 	// created/started.
 	//
 	// OCSF: created_time (type timestamp_t, requirement recommended)
 	CreatedTime int64 `json:"created_time,omitempty"`
+
+	// EnvironmentVariables is the Environment Variables. Environment
+	// variables associated with the process.
+	//
+	// OCSF: environment_variables (type []environment_variable, requirement optional)
+	EnvironmentVariables []EnvironmentVariable `json:"environment_variables,omitempty"`
 
 	// File is the File. The process file object.
 	//
@@ -59,7 +82,9 @@ type Process struct {
 	// list of paths for each ancestor process. For example:
 	// ['/usr/sbin/sshd', '/usr/bin/bash', '/usr/bin/whoami'].
 	//
-	// OCSF: lineage (type []string_t, requirement optional)
+	// OCSF: lineage (type []file_path_t, requirement optional)
+	//
+	// Deprecated: Use the <code>ancestry</code> attribute.
 	Lineage []string `json:"lineage,omitempty"`
 
 	// LoadedModules is the Loaded Modules. The list of loaded module names.
@@ -82,10 +107,16 @@ type Process struct {
 
 	// ParentProcess is the Parent Process. The parent process of this
 	// process object. It is recommended to only populate this field for the
-	// first process object, to prevent deep nesting.
+	// top-level process object, to prevent deep nesting. Additional ancestry
+	// information can be supplied in the ancestry attribute.
 	//
 	// OCSF: parent_process (type process, requirement recommended)
 	ParentProcess *Process `json:"parent_process,omitempty"`
+
+	// Path is the Path. The process file path.
+	//
+	// OCSF: path (type string_t, requirement optional)
+	Path string `json:"path,omitempty"`
 
 	// PID is the Process ID. The process identifier, as reported by the
 	// operating system. Process ID (PID) is a number used by the operating
@@ -93,6 +124,12 @@ type Process struct {
 	//
 	// OCSF: pid (type integer_t, requirement recommended)
 	PID int `json:"pid,omitempty"`
+
+	// Ptid is the Process Thread ID. The identifier of the process thread
+	// associated with the event, as returned by the operating system.
+	//
+	// OCSF: ptid (type long_t, requirement optional)
+	Ptid int64 `json:"ptid,omitempty"`
 
 	// Sandbox is the Sandbox. The name of the containment jail (i.e.,
 	// sandbox). For example, hardened_ps, high_security_ps, oracle_ps,
@@ -113,7 +150,7 @@ type Process struct {
 	// OCSF: terminated_time (type timestamp_t, requirement optional)
 	TerminatedTime int64 `json:"terminated_time,omitempty"`
 
-	// TID is the Thread ID. The Identifier of the thread associated with the
+	// TID is the Thread ID. The identifier of the thread associated with the
 	// event, as returned by the operating system.
 	//
 	// OCSF: tid (type integer_t, requirement optional)
@@ -130,6 +167,12 @@ type Process struct {
 	//
 	// OCSF: user (type user, requirement recommended)
 	User *User `json:"user,omitempty"`
+
+	// WorkingDirectory is the Working Directory. The working directory of a
+	// process.
+	//
+	// OCSF: working_directory (type string_t, requirement optional)
+	WorkingDirectory string `json:"working_directory,omitempty"`
 
 	// Xattributes is the Extended Attributes. An unordered collection of
 	// zero or more name/value pairs that represent a process extended

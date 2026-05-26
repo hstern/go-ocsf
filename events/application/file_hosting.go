@@ -14,10 +14,41 @@ import (
 // FileHosting describes the OCSF File Hosting Activity event class: File
 // Hosting Activity events report the actions taken by file management
 // applications, including file sharing servers like Sharepoint and
-// services such as Box, MS OneDrive, or Google Drive.
+// services such as Box, MS OneDrive, Google Drive, or network file share
+// services.
 //
 // OCSF name: file_hosting. class_uid: 6006.
 type FileHosting struct {
+	// AccessList is the Access List. The list of requested access rights.
+	//
+	// OCSF: access_list (type []string_t, requirement optional)
+	AccessList []string `json:"access_list,omitempty"`
+
+	// AccessMask is the Access Mask. The sum of hexadecimal values of
+	// requested access rights.
+	//
+	// OCSF: access_mask (type integer_t, requirement optional)
+	AccessMask int `json:"access_mask,omitempty"`
+
+	// AccessResult is the Access Check Result. The list of access check
+	// results.
+	//
+	// OCSF: access_result (type json_t, requirement optional)
+	AccessResult json.RawMessage `json:"access_result,omitempty"`
+
+	// Action is the Action. The normalized caption of action_id.
+	//
+	// OCSF: action (type string_t, requirement optional)
+	Action string `json:"action,omitempty"`
+
+	// ActionID is the Action ID. The action taken by a control or other
+	// policy-based system leading to an outcome or disposition. An unknown
+	// action may still correspond to a known disposition. Refer to
+	// disposition_id for the outcome of the action.
+	//
+	// OCSF: action_id (type integer_t, requirement recommended)
+	ActionID int `json:"action_id,omitempty"`
+
 	// ActivityID is the Activity ID. The normalized identifier of the
 	// activity that triggered the event.
 	//
@@ -41,6 +72,21 @@ type FileHosting struct {
 	//
 	// OCSF: api (type api, requirement optional)
 	API *objects.API `json:"api,omitempty"`
+
+	// Attacks is the MITRE ATT&CK® and ATLAS™ Details. An array of MITRE
+	// ATT&CK® objects describing identified tactics, techniques &
+	// sub-techniques. The objects are compatible with MITRE ATLAS™
+	// tactics, techniques & sub-techniques.
+	//
+	// OCSF: attacks (type []attack, requirement optional)
+	Attacks []objects.Attack `json:"attacks,omitempty"`
+
+	// Authorizations is the Authorization Information. Provides details
+	// about an authorization, such as authorization outcome, and any
+	// associated policies related to the activity/event.
+	//
+	// OCSF: authorizations (type []authorization, requirement optional)
+	Authorizations []objects.Authorization `json:"authorizations,omitempty"`
 
 	// CategoryName is the Category. The event category name, as defined by
 	// category_uid value.
@@ -67,10 +113,31 @@ type FileHosting struct {
 	ClassUID int `json:"class_uid"`
 
 	// Cloud is the Cloud. Describes details about the Cloud environment
-	// where the event was originally created or logged.
+	// where the event or finding was created.
 	//
 	// OCSF: cloud (type cloud, requirement required)
 	Cloud *objects.Cloud `json:"cloud"`
+
+	// Confidence is the Confidence. The confidence, normalized to the
+	// caption of the confidence_id value. In the case of 'Other', it is
+	// defined by the event source.
+	//
+	// OCSF: confidence (type string_t, requirement optional)
+	Confidence string `json:"confidence,omitempty"`
+
+	// ConfidenceID is the Confidence ID. The normalized confidence refers to
+	// the accuracy of the rule that created the finding. A rule with a low
+	// confidence means that the finding scope is wide and may create finding
+	// reports that may not be malicious in nature.
+	//
+	// OCSF: confidence_id (type integer_t, requirement recommended)
+	ConfidenceID int `json:"confidence_id,omitempty"`
+
+	// ConfidenceScore is the Confidence Score. The confidence score as
+	// reported by the event source.
+	//
+	// OCSF: confidence_score (type integer_t, requirement optional)
+	ConfidenceScore int `json:"confidence_score,omitempty"`
 
 	// ConnectionInfo is the Connection Info. The network connection
 	// information.
@@ -83,6 +150,25 @@ type FileHosting struct {
 	//
 	// OCSF: count (type integer_t, requirement optional)
 	Count int `json:"count,omitempty"`
+
+	// Device is the Device. An addressable device, computer system or host.
+	//
+	// OCSF: device (type device, requirement recommended)
+	Device *objects.Device `json:"device,omitempty"`
+
+	// Disposition is the Disposition. The disposition name, normalized to
+	// the caption of the disposition_id value. In the case of 'Other', it is
+	// defined by the event source.
+	//
+	// OCSF: disposition (type string_t, requirement optional)
+	Disposition string `json:"disposition,omitempty"`
+
+	// DispositionID is the Disposition ID. Describes the outcome or action
+	// taken by a security control, such as access control checks, malware
+	// detections or various types of policy violations.
+	//
+	// OCSF: disposition_id (type integer_t, requirement recommended)
+	DispositionID int `json:"disposition_id,omitempty"`
 
 	// DstEndpoint is the Destination Endpoint. The endpoint that received
 	// the activity on the target file.
@@ -130,6 +216,45 @@ type FileHosting struct {
 	// OCSF: file_result (type file, requirement optional)
 	FileResult *objects.File `json:"file_result,omitempty"`
 
+	// FirewallRule is the Firewall Rule. The firewall rule that pertains to
+	// the control that triggered the event, if applicable.
+	//
+	// OCSF: firewall_rule (type firewall_rule, requirement optional)
+	FirewallRule *objects.FirewallRule `json:"firewall_rule,omitempty"`
+
+	// HTTPRequest is the HTTP Request. Details about the underlying HTTP
+	// request.
+	//
+	// OCSF: http_request (type http_request, requirement recommended)
+	HTTPRequest *objects.HTTPRequest `json:"http_request,omitempty"`
+
+	// HTTPResponse is the HTTP Response. Details about the HTTP response, if
+	// available.
+	//
+	// OCSF: http_response (type http_response, requirement optional)
+	HTTPResponse *objects.HTTPResponse `json:"http_response,omitempty"`
+
+	// IsAlert is the Alert. Indicates that the event is considered to be an
+	// alertable signal. Should be set to true if disposition_id = Alert
+	// among other dispositions, and/or risk_level_id or severity_id of the
+	// event is elevated. Not all control events will be alertable, for
+	// example if disposition_id = Exonerated or disposition_id = Allowed.
+	//
+	// OCSF: is_alert (type boolean_t, requirement recommended)
+	IsAlert bool `json:"is_alert,omitempty"`
+
+	// Malware is the Malware. A list of Malware objects, describing details
+	// about the identified malware.
+	//
+	// OCSF: malware (type []malware, requirement optional)
+	Malware []objects.Malware `json:"malware,omitempty"`
+
+	// MalwareScanInfo is the Malware Scan Info. Describes details about the
+	// scan job that identified malware on the target system.
+	//
+	// OCSF: malware_scan_info (type malware_scan_info, requirement optional)
+	MalwareScanInfo *objects.MalwareScanInfo `json:"malware_scan_info,omitempty"`
+
 	// Message is the Message. The description of the event/finding, as
 	// defined by the source.
 	//
@@ -158,11 +283,53 @@ type FileHosting struct {
 	// OCSF: osint (type []osint, requirement required)
 	Osint []objects.Osint `json:"osint"`
 
+	// Policy is the Policy. The policy that pertains to the control that
+	// triggered the event, if applicable. For example the name of an
+	// anti-malware policy or an access control policy.
+	//
+	// OCSF: policy (type policy, requirement optional)
+	Policy *objects.Policy `json:"policy,omitempty"`
+
 	// RawData is the Raw Data. The raw event/finding data as received from
 	// the source.
 	//
 	// OCSF: raw_data (type string_t, requirement optional)
 	RawData string `json:"raw_data,omitempty"`
+
+	// RawDataHash is the Raw Data Hash. The hash, which describes the
+	// content of the raw_data field.
+	//
+	// OCSF: raw_data_hash (type fingerprint, requirement optional)
+	RawDataHash *objects.Fingerprint `json:"raw_data_hash,omitempty"`
+
+	// RawDataSize is the Raw Data Size. The size of the raw data which was
+	// transformed into an OCSF event, in bytes.
+	//
+	// OCSF: raw_data_size (type long_t, requirement optional)
+	RawDataSize int64 `json:"raw_data_size,omitempty"`
+
+	// RiskDetails is the Risk Details. Describes the risk associated with
+	// the finding.
+	//
+	// OCSF: risk_details (type string_t, requirement optional)
+	RiskDetails string `json:"risk_details,omitempty"`
+
+	// RiskLevel is the Risk Level. The risk level, normalized to the caption
+	// of the risk_level_id value.
+	//
+	// OCSF: risk_level (type string_t, requirement optional)
+	RiskLevel string `json:"risk_level,omitempty"`
+
+	// RiskLevelID is the Risk Level ID. The normalized risk level id.
+	//
+	// OCSF: risk_level_id (type integer_t, requirement optional)
+	RiskLevelID int `json:"risk_level_id,omitempty"`
+
+	// RiskScore is the Risk Score. The risk score as reported by the event
+	// source.
+	//
+	// OCSF: risk_score (type integer_t, requirement optional)
+	RiskScore int `json:"risk_score,omitempty"`
 
 	// Severity is the Severity. The event/finding severity, normalized to
 	// the caption of the severity_id value. In the case of 'Other', it is
@@ -179,6 +346,24 @@ type FileHosting struct {
 	//
 	// OCSF: severity_id (type integer_t, requirement required)
 	SeverityID int `json:"severity_id"`
+
+	// Share is the Share. The share name.
+	//
+	// OCSF: share (type string_t, requirement optional)
+	Share string `json:"share,omitempty"`
+
+	// ShareType is the Share Type. The share type, normalized to the caption
+	// of the share_type_id value. In the case of 'Other', it is defined by
+	// the event source.
+	//
+	// OCSF: share_type (type string_t, requirement optional)
+	ShareType string `json:"share_type,omitempty"`
+
+	// ShareTypeID is the Share Type ID. The normalized identifier of the
+	// share type.
+	//
+	// OCSF: share_type_id (type integer_t, requirement optional)
+	ShareTypeID int `json:"share_type_id,omitempty"`
 
 	// SrcEndpoint is the Source Endpoint. The endpoint that performed the
 	// activity on the target file.
@@ -286,8 +471,37 @@ func (e FileHosting) Validate() error {
 	if e.SrcEndpoint == nil {
 		return &ocsf.ValidationError{ClassUID: 6006, Field: "src_endpoint", Rule: "required", Reason: "required field is missing"}
 	}
+	switch e.ActionID {
+	case 0, 1, 2, 3, 4, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 6006, Field: "action_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.Action != "" {
+		switch e.ActionID {
+		case 0:
+			if e.Action != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "action", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.Action != "Allowed" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "action", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.Action != "Denied" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "action", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.Action != "Observed" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "action", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 4:
+			if e.Action != "Modified" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "action", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
 	switch e.ActivityID {
-	case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 99:
+	case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 99:
 	default:
 		return &ocsf.ValidationError{ClassUID: 6006, Field: "activity_id", Rule: "enum", Reason: "value outside the schema's enum range"}
 	}
@@ -361,6 +575,185 @@ func (e FileHosting) Validate() error {
 			if e.ActivityName != "Unsync" {
 				return &ocsf.ValidationError{ClassUID: 6006, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
 			}
+		case 17:
+			if e.ActivityName != "Access Check" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "activity_name", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.ConfidenceID {
+	case 0, 1, 2, 3, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 6006, Field: "confidence_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.Confidence != "" {
+		switch e.ConfidenceID {
+		case 0:
+			if e.Confidence != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "confidence", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.Confidence != "Low" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "confidence", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.Confidence != "Medium" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "confidence", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.Confidence != "High" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "confidence", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.DispositionID {
+	case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 6006, Field: "disposition_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.Disposition != "" {
+		switch e.DispositionID {
+		case 0:
+			if e.Disposition != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.Disposition != "Allowed" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.Disposition != "Blocked" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.Disposition != "Quarantined" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 4:
+			if e.Disposition != "Isolated" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 5:
+			if e.Disposition != "Deleted" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 6:
+			if e.Disposition != "Dropped" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 7:
+			if e.Disposition != "Custom Action" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 8:
+			if e.Disposition != "Approved" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 9:
+			if e.Disposition != "Restored" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 10:
+			if e.Disposition != "Exonerated" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 11:
+			if e.Disposition != "Corrected" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 12:
+			if e.Disposition != "Partially Corrected" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 13:
+			if e.Disposition != "Uncorrected" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 14:
+			if e.Disposition != "Delayed" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 15:
+			if e.Disposition != "Detected" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 16:
+			if e.Disposition != "No Action" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 17:
+			if e.Disposition != "Logged" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 18:
+			if e.Disposition != "Tagged" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 19:
+			if e.Disposition != "Alert" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 20:
+			if e.Disposition != "Count" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 21:
+			if e.Disposition != "Reset" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 22:
+			if e.Disposition != "Captcha" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 23:
+			if e.Disposition != "Challenge" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 24:
+			if e.Disposition != "Access Revoked" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 25:
+			if e.Disposition != "Rejected" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 26:
+			if e.Disposition != "Unauthorized" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 27:
+			if e.Disposition != "Error" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.RiskLevelID {
+	case 0, 1, 2, 3, 4, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 6006, Field: "risk_level_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.RiskLevel != "" {
+		switch e.RiskLevelID {
+		case 0:
+			if e.RiskLevel != "Info" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "risk_level", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.RiskLevel != "Low" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "risk_level", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.RiskLevel != "Medium" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "risk_level", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.RiskLevel != "High" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "risk_level", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 4:
+			if e.RiskLevel != "Critical" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "risk_level", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
 		}
 	}
 	switch e.SeverityID {
@@ -397,6 +790,31 @@ func (e FileHosting) Validate() error {
 		case 6:
 			if e.Severity != "Fatal" {
 				return &ocsf.ValidationError{ClassUID: 6006, Field: "severity", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		}
+	}
+	switch e.ShareTypeID {
+	case 0, 1, 2, 3, 99:
+	default:
+		return &ocsf.ValidationError{ClassUID: 6006, Field: "share_type_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	}
+	if e.ShareType != "" {
+		switch e.ShareTypeID {
+		case 0:
+			if e.ShareType != "Unknown" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "share_type", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 1:
+			if e.ShareType != "File" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "share_type", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 2:
+			if e.ShareType != "Pipe" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "share_type", Rule: "enum", Reason: "sibling does not match enum caption"}
+			}
+		case 3:
+			if e.ShareType != "Print" {
+				return &ocsf.ValidationError{ClassUID: 6006, Field: "share_type", Rule: "enum", Reason: "sibling does not match enum caption"}
 			}
 		}
 	}
