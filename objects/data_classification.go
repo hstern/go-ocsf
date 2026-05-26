@@ -21,7 +21,7 @@ type DataClassification struct {
 	// classification category.
 	//
 	// OCSF: category_id (type integer_t, requirement recommended)
-	CategoryID int `json:"category_id,omitempty"`
+	CategoryID *int `json:"category_id,omitempty"`
 
 	// ClassifierDetails is the Classifier Details. Describes details about
 	// the classifier used for data classification.
@@ -40,7 +40,7 @@ type DataClassification struct {
 	// of the file content confidentiality indicator.
 	//
 	// OCSF: confidentiality_id (type integer_t, requirement recommended)
-	ConfidentialityID int `json:"confidentiality_id,omitempty"`
+	ConfidentialityID *int `json:"confidentiality_id,omitempty"`
 
 	// DiscoveryDetails is the Discovery Details. Details about the data
 	// discovered by classification job.
@@ -57,7 +57,7 @@ type DataClassification struct {
 	// Size is the Size. Size of the data classified.
 	//
 	// OCSF: size (type long_t, requirement optional)
-	Size int64 `json:"size,omitempty"`
+	Size *int64 `json:"size,omitempty"`
 
 	// SrcURL is the Source URL. The source URL pointing towards the full
 	// classification job details.
@@ -82,13 +82,13 @@ type DataClassification struct {
 	// classification job.
 	//
 	// OCSF: status_id (type integer_t, requirement recommended)
-	StatusID int `json:"status_id,omitempty"`
+	StatusID *int `json:"status_id,omitempty"`
 
 	// Total is the Total. The total count of discovered entities, by the
 	// classification job.
 	//
 	// OCSF: total (type integer_t, requirement optional)
-	Total int `json:"total,omitempty"`
+	Total *int `json:"total,omitempty"`
 
 	// UID is the Unique ID. The unique identifier of the classification job.
 	//

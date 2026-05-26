@@ -17,20 +17,20 @@ type Account struct {
 	// IsDisabled is the Disabled. Indicates if the account is disabled.
 	//
 	// OCSF: is_disabled (type boolean_t, requirement optional)
-	IsDisabled bool `json:"is_disabled,omitempty"`
+	IsDisabled *bool `json:"is_disabled,omitempty"`
 
 	// IsLocked is the Locked. Indicates if the account is locked. For
 	// example, due to the amount of failed logins.
 	//
 	// OCSF: is_locked (type boolean_t, requirement optional)
-	IsLocked bool `json:"is_locked,omitempty"`
+	IsLocked *bool `json:"is_locked,omitempty"`
 
 	// IsOnPremisesSyncEnabled is the On-Premises Sync Enabled. Indicates
 	// whether synchronization with an on-premises directory service is
 	// enabled. For example, Microsoft Entra Connect.
 	//
 	// OCSF: is_on_premises_sync_enabled (type boolean_t, requirement optional)
-	IsOnPremisesSyncEnabled bool `json:"is_on_premises_sync_enabled,omitempty"`
+	IsOnPremisesSyncEnabled *bool `json:"is_on_premises_sync_enabled,omitempty"`
 
 	// Labels is the Labels. The list of labels associated to the account.
 	//
@@ -59,7 +59,7 @@ type Account struct {
 	// TypeID is the Type ID. The normalized account type identifier.
 	//
 	// OCSF: type_id (type integer_t, requirement recommended)
-	TypeID int `json:"type_id,omitempty"`
+	TypeID *int `json:"type_id,omitempty"`
 
 	// UID is the Unique ID. The unique identifier of the account (e.g. AWS
 	// Account ID , OCID , GCP Project ID , Azure Subscription ID , Google

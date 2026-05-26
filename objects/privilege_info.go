@@ -16,13 +16,13 @@ type PrivilegeInfo struct {
 	// within the analysis timeframe.
 	//
 	// OCSF: is_unused (type boolean_t, requirement optional)
-	IsUnused bool `json:"is_unused,omitempty"`
+	IsUnused *bool `json:"is_unused,omitempty"`
 
 	// LastUsedTime is the Last Used Time. The most recent time this
 	// privilege was used.
 	//
 	// OCSF: last_used_time (type timestamp_t, requirement optional)
-	LastUsedTime int64 `json:"last_used_time,omitempty"`
+	LastUsedTime *int64 `json:"last_used_time,omitempty"`
 
 	// Name is the Name. The name of the privilege, action, or permission.
 	// Examples: GetObject, CreateStoreImageTask (AWS);
@@ -42,5 +42,5 @@ type PrivilegeInfo struct {
 	// TypeID is the Type ID. The normalized type of the privilege.
 	//
 	// OCSF: type_id (type integer_t, requirement optional)
-	TypeID int `json:"type_id,omitempty"`
+	TypeID *int `json:"type_id,omitempty"`
 }

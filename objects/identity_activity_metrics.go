@@ -19,7 +19,7 @@ type IdentityActivityMetrics struct {
 	// identity's age and lifecycle stage for risk assessment.
 	//
 	// OCSF: first_seen_time (type timestamp_t, requirement optional)
-	FirstSeenTime int64 `json:"first_seen_time,omitempty"`
+	FirstSeenTime *int64 `json:"first_seen_time,omitempty"`
 
 	// LastAuthenticationTime is the Last Authentication Time. The timestamp
 	// when this identity last successfully authenticated to any system or
@@ -27,7 +27,7 @@ type IdentityActivityMetrics struct {
 	// authentication events rather than all activities.
 	//
 	// OCSF: last_authentication_time (type timestamp_t, requirement optional)
-	LastAuthenticationTime int64 `json:"last_authentication_time,omitempty"`
+	LastAuthenticationTime *int64 `json:"last_authentication_time,omitempty"`
 
 	// LastSeenTime is the Last Seen. The timestamp of the most recent
 	// activity performed by this identity, including authentication,
@@ -35,7 +35,7 @@ type IdentityActivityMetrics struct {
 	// indicator of identity usage recency.
 	//
 	// OCSF: last_seen_time (type timestamp_t, requirement recommended)
-	LastSeenTime int64 `json:"last_seen_time,omitempty"`
+	LastSeenTime *int64 `json:"last_seen_time,omitempty"`
 
 	// PasswordLastUsedTime is the Password Last Used Time. The timestamp
 	// when password-based authentication was last used by this identity.
@@ -44,7 +44,7 @@ type IdentityActivityMetrics struct {
 	// patterns.
 	//
 	// OCSF: password_last_used_time (type timestamp_t, requirement optional)
-	PasswordLastUsedTime int64 `json:"password_last_used_time,omitempty"`
+	PasswordLastUsedTime *int64 `json:"password_last_used_time,omitempty"`
 
 	// ProgrammaticCredentials is the Programmatic Credentials. Details about
 	// the programmatic credentials associated with this identity, such as

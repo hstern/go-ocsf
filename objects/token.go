@@ -26,25 +26,25 @@ type Token struct {
 	// CreatedTime is the Created Time. The time that the token was created.
 	//
 	// OCSF: created_time (type timestamp_t, requirement recommended)
-	CreatedTime int64 `json:"created_time,omitempty"`
+	CreatedTime *int64 `json:"created_time,omitempty"`
 
 	// ExpirationTime is the Expiration Time. The expiration time of the
 	// token.
 	//
 	// OCSF: expiration_time (type timestamp_t, requirement optional)
-	ExpirationTime int64 `json:"expiration_time,omitempty"`
+	ExpirationTime *int64 `json:"expiration_time,omitempty"`
 
 	// IsRenewable is the Renewable. Indicates whether the token is
 	// renewable.
 	//
 	// OCSF: is_renewable (type boolean_t, requirement optional)
-	IsRenewable bool `json:"is_renewable,omitempty"`
+	IsRenewable *bool `json:"is_renewable,omitempty"`
 
 	// ModifiedTime is the Modified Time. The last time the token was
 	// updated.
 	//
 	// OCSF: modified_time (type timestamp_t, requirement optional)
-	ModifiedTime int64 `json:"modified_time,omitempty"`
+	ModifiedTime *int64 `json:"modified_time,omitempty"`
 
 	// Name is the Name. The human-friendly name of a token or key, if
 	// available, such as the name from the Okta API Token API.
@@ -75,7 +75,7 @@ type Token struct {
 	// - generic API keys), 99 (Other).
 	//
 	// OCSF: type_id (type integer_t, requirement recommended)
-	TypeID int `json:"type_id,omitempty"`
+	TypeID *int `json:"type_id,omitempty"`
 
 	// UID is the Unique ID. The unique ID of a token or key, if available,
 	// such as the Secret ID of Entra ID Application Registration Client

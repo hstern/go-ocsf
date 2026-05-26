@@ -22,7 +22,7 @@ type DNS struct {
 	// response.
 	//
 	// OCSF: packet_uid (type integer_t, requirement recommended)
-	PacketUID int `json:"packet_uid,omitempty"`
+	PacketUID *int `json:"packet_uid,omitempty"`
 
 	// Type is the Resource Record Type. The type of resource records being
 	// queried. See RFC1035. For example: A, AAAA, CNAME, MX, and NS.

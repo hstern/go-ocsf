@@ -371,8 +371,16 @@ func constraintPresentExpr(a schema.ClassAttr, fieldRef string) (string, bool) {
 		case "json.RawMessage":
 			return "len(" + fieldRef + ") != 0", true
 		}
-		// int / int64 / float64 / bool — zero indistinguishable
-		// from absent, skip.
+		// int / int64 / float64 / bool. Post-OCSF-31, the
+		// non-required form of these is *T; the non-nil check
+		// is the present test. Required (plain T) numeric/bool
+		// have no defensible zero-vs-absent check and are
+		// skipped (this matches the pre-OCSF-31 behavior on the
+		// rare class where a required numeric appears in a
+		// constraint group).
+		if shouldPointerWrap(a, p) {
+			return fieldRef + " != nil", true
+		}
 		return "", false
 	}
 	// Object reference (non-primitive type) — pointer.
@@ -486,13 +494,27 @@ func isPlaceholderClassificationEnum(attrName string) bool {
 // cover every value present in the resolved Enum (dictionary +
 // any per-class additions); the default arm returns
 // ValidationError{Rule:"enum"}.
+//
+// Non-required scalar numerics emit as *int (post-OCSF-31), so
+// the check guards on non-nil and dereferences before
+// switching. Required scalars stay plain and switch directly.
 func writeEnumMembershipCheck(w io.Writer, a schema.ClassAttr, classUID int) error {
 	ids := sortedEnumIDsInt(a.Enum)
 	fieldName := goFieldName(a.Name)
-	if _, err := fmt.Fprintf(w, "\tswitch e.%s {\n", fieldName); err != nil {
+	pointer := shouldPointerWrapEnum(a)
+	access := "e." + fieldName
+	indent := "\t"
+	if pointer {
+		if _, err := fmt.Fprintf(w, "\tif e.%s != nil {\n", fieldName); err != nil {
+			return err
+		}
+		access = "*e." + fieldName
+		indent = "\t\t"
+	}
+	if _, err := fmt.Fprintf(w, "%sswitch %s {\n", indent, access); err != nil {
 		return err
 	}
-	if _, err := fmt.Fprint(w, "\tcase "); err != nil {
+	if _, err := fmt.Fprintf(w, "%scase ", indent); err != nil {
 		return err
 	}
 	for i, id := range ids {
@@ -508,16 +530,38 @@ func writeEnumMembershipCheck(w io.Writer, a schema.ClassAttr, classUID int) err
 	if _, err := fmt.Fprintln(w, ":"); err != nil {
 		return err
 	}
-	if _, err := fmt.Fprintln(w, "\tdefault:"); err != nil {
+	if _, err := fmt.Fprintf(w, "%sdefault:\n", indent); err != nil {
 		return err
 	}
-	if _, err := fmt.Fprintf(w, "\t\treturn &ocsf.ValidationError{ClassUID: %d, Field: %q, Rule: \"enum\", Reason: \"value outside the schema's enum range\"}\n", classUID, a.Name); err != nil {
+	if _, err := fmt.Fprintf(w, "%s\treturn &ocsf.ValidationError{ClassUID: %d, Field: %q, Rule: \"enum\", Reason: \"value outside the schema's enum range\"}\n", indent, classUID, a.Name); err != nil {
 		return err
 	}
-	if _, err := fmt.Fprintln(w, "\t}"); err != nil {
+	if _, err := fmt.Fprintf(w, "%s}\n", indent); err != nil {
 		return err
+	}
+	if pointer {
+		if _, err := fmt.Fprintln(w, "\t}"); err != nil {
+			return err
+		}
 	}
 	return nil
+}
+
+// shouldPointerWrapEnum reports whether an enum attribute on a
+// generated event class is emitted as *int (post-OCSF-31).
+// Mirrors the shouldPointerWrap rule from types.go: scalar
+// non-array, non-required, integer-typed → pointer.
+func shouldPointerWrapEnum(a schema.ClassAttr) bool {
+	if a.IsArray {
+		return false
+	}
+	if a.Requirement == "required" {
+		return false
+	}
+	if a.Type != "integer_t" && a.Type != "long_t" {
+		return false
+	}
+	return true
 }
 
 // writeSiblingCorrespondenceCheck emits the per-value
@@ -537,10 +581,24 @@ func writeSiblingCorrespondenceCheck(w io.Writer, a, sib schema.ClassAttr, class
 	sibField := goFieldName(sib.Name)
 	otherID := otherEnumID(a.Enum)
 	ids := sortedEnumIDsInt(a.Enum)
-	if _, err := fmt.Fprintf(w, "\tif e.%s != \"\" {\n", sibField); err != nil {
-		return err
+	pointer := shouldPointerWrapEnum(a)
+	idAccess := "e." + idField
+	if pointer {
+		idAccess = "*e." + idField
 	}
-	if _, err := fmt.Fprintf(w, "\t\tswitch e.%s {\n", idField); err != nil {
+	// Outer guard: sibling string non-empty (so the comparison
+	// has something to assert against) AND, when the id field
+	// is a pointer, also non-nil (so the deref is safe).
+	if pointer {
+		if _, err := fmt.Fprintf(w, "\tif e.%s != \"\" && e.%s != nil {\n", sibField, idField); err != nil {
+			return err
+		}
+	} else {
+		if _, err := fmt.Fprintf(w, "\tif e.%s != \"\" {\n", sibField); err != nil {
+			return err
+		}
+	}
+	if _, err := fmt.Fprintf(w, "\t\tswitch %s {\n", idAccess); err != nil {
 		return err
 	}
 	for _, id := range ids {

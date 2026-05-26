@@ -15,13 +15,13 @@ type AffectedCode struct {
 	// assessed code identified as vulnerable.
 	//
 	// OCSF: end_column (type integer_t, requirement recommended)
-	EndColumn int `json:"end_column,omitempty"`
+	EndColumn *int `json:"end_column,omitempty"`
 
 	// EndLine is the End Line. The line number of the last line of code
 	// block identified as vulnerable.
 	//
 	// OCSF: end_line (type integer_t, requirement recommended)
-	EndLine int `json:"end_line,omitempty"`
+	EndLine *int `json:"end_line,omitempty"`
 
 	// File is the File. Details about the file that contains the affected
 	// code block.
@@ -51,11 +51,11 @@ type AffectedCode struct {
 	// of the assessed code identified as vulnerable.
 	//
 	// OCSF: start_column (type integer_t, requirement recommended)
-	StartColumn int `json:"start_column,omitempty"`
+	StartColumn *int `json:"start_column,omitempty"`
 
 	// StartLine is the Start Line. The line number of the first line of code
 	// block identified as vulnerable.
 	//
 	// OCSF: start_line (type integer_t, requirement recommended)
-	StartLine int `json:"start_line,omitempty"`
+	StartLine *int `json:"start_line,omitempty"`
 }

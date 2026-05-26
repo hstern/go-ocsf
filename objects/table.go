@@ -16,7 +16,7 @@ type Table struct {
 	// have been created.
 	//
 	// OCSF: created_time (type timestamp_t, requirement optional)
-	CreatedTime int64 `json:"created_time,omitempty"`
+	CreatedTime *int64 `json:"created_time,omitempty"`
 
 	// Desc is the Description. The description of the table.
 	//
@@ -32,7 +32,7 @@ type Table struct {
 	// changes, updates, or modifications were made within the table.
 	//
 	// OCSF: modified_time (type timestamp_t, requirement optional)
-	ModifiedTime int64 `json:"modified_time,omitempty"`
+	ModifiedTime *int64 `json:"modified_time,omitempty"`
 
 	// Name is the Name. The table name, ordinarily as assigned by a database
 	// administrator.
@@ -43,7 +43,7 @@ type Table struct {
 	// Size is the Size. The size of the data table in bytes.
 	//
 	// OCSF: size (type long_t, requirement optional)
-	Size int64 `json:"size,omitempty"`
+	Size *int64 `json:"size,omitempty"`
 
 	// UID is the Unique ID. The unique identifier of the table.
 	//

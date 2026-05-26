@@ -130,7 +130,7 @@ type NetworkProxy struct {
 	// process namespace.
 	//
 	// OCSF: namespace_pid (type integer_t, requirement recommended)
-	NamespacePID int `json:"namespace_pid,omitempty"`
+	NamespacePID *int `json:"namespace_pid,omitempty"`
 
 	// NetworkScope is the Network Scope. Indicates whether the endpoint
 	// resides inside the customer’s network, outside on the Internet, or
@@ -148,7 +148,7 @@ type NetworkProxy struct {
 	// relative to the customer’s network cannot be determined.
 	//
 	// OCSF: network_scope_id (type integer_t, requirement optional)
-	NetworkScopeID int `json:"network_scope_id,omitempty"`
+	NetworkScopeID *int `json:"network_scope_id,omitempty"`
 
 	// OS is the OS. The endpoint operating system.
 	//
@@ -171,7 +171,7 @@ type NetworkProxy struct {
 	// connection.
 	//
 	// OCSF: port (type port_t, requirement recommended)
-	Port int `json:"port,omitempty"`
+	Port *int `json:"port,omitempty"`
 
 	// ProxyEndpoint is the Proxy Endpoint. The network proxy information
 	// pertaining to a specific endpoint. This can be used to describe
@@ -203,7 +203,7 @@ type NetworkProxy struct {
 	// TypeID is the Type ID. The network endpoint type ID.
 	//
 	// OCSF: type_id (type integer_t, requirement recommended)
-	TypeID int `json:"type_id,omitempty"`
+	TypeID *int `json:"type_id,omitempty"`
 
 	// UID is the Unique ID. The unique identifier of the endpoint.
 	//

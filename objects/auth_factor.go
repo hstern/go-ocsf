@@ -39,13 +39,13 @@ type AuthFactor struct {
 	// authentication factor is an HMAC-based One-time Password (HOTP).
 	//
 	// OCSF: is_hotp (type boolean_t, requirement recommended)
-	IsHotp bool `json:"is_hotp,omitempty"`
+	IsHotp *bool `json:"is_hotp,omitempty"`
 
 	// IsTotp is the Time-based One-time Password (TOTP). Whether the
 	// authentication factor is a Time-based One-time Password (TOTP).
 	//
 	// OCSF: is_totp (type boolean_t, requirement recommended)
-	IsTotp bool `json:"is_totp,omitempty"`
+	IsTotp *bool `json:"is_totp,omitempty"`
 
 	// PhoneNumber is the Phone Number. The phone number used for a
 	// telephony-based authentication request.

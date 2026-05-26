@@ -55,7 +55,7 @@ type StartupItem struct {
 	// RunStateID is the Run State ID. The run state ID of the startup item.
 	//
 	// OCSF: run_state_id (type integer_t, requirement recommended)
-	RunStateID int `json:"run_state_id,omitempty"`
+	RunStateID *int `json:"run_state_id,omitempty"`
 
 	// StartType is the Start Type. The start type of the startup item.
 	//
@@ -76,5 +76,5 @@ type StartupItem struct {
 	// TypeID is the Type ID. The startup item type identifier.
 	//
 	// OCSF: type_id (type integer_t, requirement recommended)
-	TypeID int `json:"type_id,omitempty"`
+	TypeID *int `json:"type_id,omitempty"`
 }

@@ -21,5 +21,5 @@ type AutonomousSystem struct {
 	// Number is the Number. Unique number that the AS is identified by.
 	//
 	// OCSF: number (type integer_t, requirement recommended)
-	Number int `json:"number,omitempty"`
+	Number *int `json:"number,omitempty"`
 }

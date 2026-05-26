@@ -27,7 +27,7 @@ type Device struct {
 	// BootTime is the Boot Time. The time the system was booted.
 	//
 	// OCSF: boot_time (type timestamp_t, requirement optional)
-	BootTime int64 `json:"boot_time,omitempty"`
+	BootTime *int64 `json:"boot_time,omitempty"`
 
 	// BootUID is the Boot UID. A unique identifier of the device that
 	// changes after every reboot. For example, the value of
@@ -48,7 +48,7 @@ type Device struct {
 	// have been created.
 	//
 	// OCSF: created_time (type timestamp_t, requirement optional)
-	CreatedTime int64 `json:"created_time,omitempty"`
+	CreatedTime *int64 `json:"created_time,omitempty"`
 
 	// Desc is the Description. The description of the device, ordinarily as
 	// reported by the operating system.
@@ -72,7 +72,7 @@ type Device struct {
 	// device.
 	//
 	// OCSF: first_seen_time (type timestamp_t, requirement optional)
-	FirstSeenTime int64 `json:"first_seen_time,omitempty"`
+	FirstSeenTime *int64 `json:"first_seen_time,omitempty"`
 
 	// Groups is the Groups. The group names to which the device belongs. For
 	// example: ["Windows Laptops", "Engineering"].
@@ -152,19 +152,19 @@ type Device struct {
 	// with the AWS Backup service.
 	//
 	// OCSF: is_backed_up (type boolean_t, requirement optional)
-	IsBackedUp bool `json:"is_backed_up,omitempty"`
+	IsBackedUp *bool `json:"is_backed_up,omitempty"`
 
 	// IsCompliant is the Compliant Device. The event occurred on a compliant
 	// device.
 	//
 	// OCSF: is_compliant (type boolean_t, requirement optional)
-	IsCompliant bool `json:"is_compliant,omitempty"`
+	IsCompliant *bool `json:"is_compliant,omitempty"`
 
 	// IsManaged is the Managed Device. The event occurred on a managed
 	// device.
 	//
 	// OCSF: is_managed (type boolean_t, requirement optional)
-	IsManaged bool `json:"is_managed,omitempty"`
+	IsManaged *bool `json:"is_managed,omitempty"`
 
 	// IsMobileAccountActive is the Mobile Account Active. Indicates whether
 	// the device has an active mobile account. For example, this is
@@ -172,18 +172,18 @@ type Device struct {
 	// devices.
 	//
 	// OCSF: is_mobile_account_active (type boolean_t, requirement optional)
-	IsMobileAccountActive bool `json:"is_mobile_account_active,omitempty"`
+	IsMobileAccountActive *bool `json:"is_mobile_account_active,omitempty"`
 
 	// IsPersonal is the Personal Device. The event occurred on a personal
 	// device.
 	//
 	// OCSF: is_personal (type boolean_t, requirement optional)
-	IsPersonal bool `json:"is_personal,omitempty"`
+	IsPersonal *bool `json:"is_personal,omitempty"`
 
 	// IsShared is the Shared Device. The event occurred on a shared device.
 	//
 	// OCSF: is_shared (type boolean_t, requirement optional)
-	IsShared bool `json:"is_shared,omitempty"`
+	IsShared *bool `json:"is_shared,omitempty"`
 
 	// IsSupervised is the Supervised Device. The event occurred on a
 	// supervised device. Devices that are supervised are typically mobile
@@ -191,19 +191,19 @@ type Device struct {
 	// restricted from specific behaviors such as Apple AirDrop.
 	//
 	// OCSF: is_supervised (type boolean_t, requirement optional)
-	IsSupervised bool `json:"is_supervised,omitempty"`
+	IsSupervised *bool `json:"is_supervised,omitempty"`
 
 	// IsTrusted is the Trusted Device. The event occurred on a trusted
 	// device.
 	//
 	// OCSF: is_trusted (type boolean_t, requirement optional)
-	IsTrusted bool `json:"is_trusted,omitempty"`
+	IsTrusted *bool `json:"is_trusted,omitempty"`
 
 	// LastSeenTime is the Last Seen. The most recent discovery time of the
 	// device.
 	//
 	// OCSF: last_seen_time (type timestamp_t, requirement optional)
-	LastSeenTime int64 `json:"last_seen_time,omitempty"`
+	LastSeenTime *int64 `json:"last_seen_time,omitempty"`
 
 	// Location is the Geo Location. The geographical location of the device.
 	//
@@ -240,7 +240,7 @@ type Device struct {
 	// known to have been modified.
 	//
 	// OCSF: modified_time (type timestamp_t, requirement optional)
-	ModifiedTime int64 `json:"modified_time,omitempty"`
+	ModifiedTime *int64 `json:"modified_time,omitempty"`
 
 	// Name is the Name. The alternate device name, ordinarily as assigned by
 	// an administrator. Note: The Name could be any other string that helps
@@ -255,7 +255,7 @@ type Device struct {
 	// process namespace.
 	//
 	// OCSF: namespace_pid (type integer_t, requirement recommended)
-	NamespacePID int `json:"namespace_pid,omitempty"`
+	NamespacePID *int `json:"namespace_pid,omitempty"`
 
 	// NetworkInterfaces is the Network Interfaces. The physical or virtual
 	// network interfaces that are associated with the device, one for each
@@ -312,13 +312,13 @@ type Device struct {
 	// RiskLevelID is the Risk Level ID. The normalized risk level id.
 	//
 	// OCSF: risk_level_id (type integer_t, requirement optional)
-	RiskLevelID int `json:"risk_level_id,omitempty"`
+	RiskLevelID *int `json:"risk_level_id,omitempty"`
 
 	// RiskScore is the Risk Score. The risk score as reported by the event
 	// source.
 	//
 	// OCSF: risk_score (type integer_t, requirement optional)
-	RiskScore int `json:"risk_score,omitempty"`
+	RiskScore *int `json:"risk_score,omitempty"`
 
 	// Subnet is the Subnet. The subnet mask.
 	//

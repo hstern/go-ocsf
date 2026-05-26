@@ -16,13 +16,13 @@ type Session struct {
 	// seen over a period of time.
 	//
 	// OCSF: count (type integer_t, requirement optional)
-	Count int `json:"count,omitempty"`
+	Count *int `json:"count,omitempty"`
 
 	// CreatedTime is the Created Time. The time when the session was
 	// created.
 	//
 	// OCSF: created_time (type timestamp_t, requirement recommended)
-	CreatedTime int64 `json:"created_time,omitempty"`
+	CreatedTime *int64 `json:"created_time,omitempty"`
 
 	// CredentialUID is the User Credential ID. The unique identifier of the
 	// user's credential. For example, AWS Access Key ID.
@@ -39,25 +39,25 @@ type Session struct {
 	// ExpirationTime is the Expiration Time. The session expiration time.
 	//
 	// OCSF: expiration_time (type timestamp_t, requirement optional)
-	ExpirationTime int64 `json:"expiration_time,omitempty"`
+	ExpirationTime *int64 `json:"expiration_time,omitempty"`
 
 	// IsMFA is the Multi Factor Authentication. Indicates whether Multi
 	// Factor Authentication was used during authentication.
 	//
 	// OCSF: is_mfa (type boolean_t, requirement optional)
-	IsMFA bool `json:"is_mfa,omitempty"`
+	IsMFA *bool `json:"is_mfa,omitempty"`
 
 	// IsRemote is the Remote. The indication of whether the session is
 	// remote.
 	//
 	// OCSF: is_remote (type boolean_t, requirement recommended)
-	IsRemote bool `json:"is_remote,omitempty"`
+	IsRemote *bool `json:"is_remote,omitempty"`
 
 	// IsVPN is the VPN Session. The indication of whether the session is a
 	// VPN session.
 	//
 	// OCSF: is_vpn (type boolean_t, requirement optional)
-	IsVPN bool `json:"is_vpn,omitempty"`
+	IsVPN *bool `json:"is_vpn,omitempty"`
 
 	// Issuer is the Issuer Details. The identifier of the session issuer.
 	//

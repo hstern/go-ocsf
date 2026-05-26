@@ -22,7 +22,7 @@ type SSO struct {
 	// the authentication protocol used by the SSO resource.
 	//
 	// OCSF: auth_protocol_id (type integer_t, requirement optional)
-	AuthProtocolID int `json:"auth_protocol_id,omitempty"`
+	AuthProtocolID *int `json:"auth_protocol_id,omitempty"`
 
 	// Certificate is the SAML Certificate. Digital Signature associated with
 	// the SSO resource, e.g., SAML X.509 certificate details.
@@ -33,19 +33,19 @@ type SSO struct {
 	// CreatedTime is the Created Time. When the SSO resource was created.
 	//
 	// OCSF: created_time (type timestamp_t, requirement optional)
-	CreatedTime int64 `json:"created_time,omitempty"`
+	CreatedTime *int64 `json:"created_time,omitempty"`
 
 	// DurationMins is the SSO Session Duration. The duration (in minutes)
 	// for an SSO session, after which re-authentication is required.
 	//
 	// OCSF: duration_mins (type integer_t, requirement optional)
-	DurationMins int `json:"duration_mins,omitempty"`
+	DurationMins *int `json:"duration_mins,omitempty"`
 
 	// IdleTimeout is the SSO Idle Timeout. Duration (in minutes) of allowed
 	// inactivity before Single Sign-On (SSO) session expiration.
 	//
 	// OCSF: idle_timeout (type integer_t, requirement optional)
-	IdleTimeout int `json:"idle_timeout,omitempty"`
+	IdleTimeout *int `json:"idle_timeout,omitempty"`
 
 	// LoginEndpoint is the SSO Login Endpoint. URL for initiating an SSO
 	// login request.
@@ -71,7 +71,7 @@ type SSO struct {
 	// resource was updated.
 	//
 	// OCSF: modified_time (type timestamp_t, requirement optional)
-	ModifiedTime int64 `json:"modified_time,omitempty"`
+	ModifiedTime *int64 `json:"modified_time,omitempty"`
 
 	// Name is the Name. The name of the SSO resource.
 	//

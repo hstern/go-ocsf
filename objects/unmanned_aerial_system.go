@@ -73,7 +73,7 @@ type UnmannedAerialSystem struct {
 	// TypeID is the Type ID. The UAS type identifier.
 	//
 	// OCSF: type_id (type integer_t, requirement recommended)
-	TypeID int `json:"type_id,omitempty"`
+	TypeID *int `json:"type_id,omitempty"`
 
 	// UID is the UAS ID. The primary identification identifier for an
 	// unmanned system. This can be a Serial Number (in CTA-2063-A format,

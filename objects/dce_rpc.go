@@ -31,7 +31,7 @@ type DceRPC struct {
 	// remote procedure call (RPC) method or a method in an interface.
 	//
 	// OCSF: opnum (type integer_t, requirement recommended)
-	Opnum int `json:"opnum,omitempty"`
+	Opnum *int `json:"opnum,omitempty"`
 
 	// RPCInterface is the Remote Procedure Call Interface. The RPC Interface
 	// object describes the details pertaining to the remote procedure call

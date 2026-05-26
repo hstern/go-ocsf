@@ -17,13 +17,13 @@ type Certificate struct {
 	// created.
 	//
 	// OCSF: created_time (type timestamp_t, requirement recommended)
-	CreatedTime int64 `json:"created_time,omitempty"`
+	CreatedTime *int64 `json:"created_time,omitempty"`
 
 	// ExpirationTime is the Expiration Time. The expiration time of the
 	// certificate.
 	//
 	// OCSF: expiration_time (type timestamp_t, requirement recommended)
-	ExpirationTime int64 `json:"expiration_time,omitempty"`
+	ExpirationTime *int64 `json:"expiration_time,omitempty"`
 
 	// Fingerprints is the Fingerprints. The fingerprint list of the
 	// certificate.
@@ -36,7 +36,7 @@ type Certificate struct {
 	// (CA).
 	//
 	// OCSF: is_self_signed (type boolean_t, requirement recommended)
-	IsSelfSigned bool `json:"is_self_signed,omitempty"`
+	IsSelfSigned *bool `json:"is_self_signed,omitempty"`
 
 	// Issuer is the Issuer Distinguished Name. The certificate issuer
 	// distinguished name.

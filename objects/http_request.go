@@ -24,7 +24,7 @@ type HTTPRequest struct {
 	// existing Content-Length header.
 	//
 	// OCSF: body_length (type integer_t, requirement optional)
-	BodyLength int `json:"body_length,omitempty"`
+	BodyLength *int `json:"body_length,omitempty"`
 
 	// HTTPHeaders is the HTTP Headers. Additional HTTP headers of an HTTP
 	// request or response.
@@ -42,7 +42,7 @@ type HTTPRequest struct {
 	// in number of bytes.
 	//
 	// OCSF: length (type integer_t, requirement optional)
-	Length int `json:"length,omitempty"`
+	Length *int `json:"length,omitempty"`
 
 	// Referrer is the HTTP Referrer. The request header that identifies the
 	// address of the previous web page, which is linked to the current web

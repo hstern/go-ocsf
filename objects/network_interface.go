@@ -52,7 +52,7 @@ type NetworkInterface struct {
 	// individual hosts within that subnet.
 	//
 	// OCSF: subnet_prefix (type integer_t, requirement optional)
-	SubnetPrefix int `json:"subnet_prefix,omitempty"`
+	SubnetPrefix *int `json:"subnet_prefix,omitempty"`
 
 	// Type is the Type. The type of network interface.
 	//
@@ -62,7 +62,7 @@ type NetworkInterface struct {
 	// TypeID is the Type ID. The network interface type identifier.
 	//
 	// OCSF: type_id (type integer_t, requirement recommended)
-	TypeID int `json:"type_id,omitempty"`
+	TypeID *int `json:"type_id,omitempty"`
 
 	// UID is the Unique ID. The unique identifier for the network interface.
 	//

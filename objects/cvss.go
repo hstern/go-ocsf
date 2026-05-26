@@ -36,7 +36,7 @@ type CVSS struct {
 	// base, temporal, and environmental metrics. For example: 9.1.
 	//
 	// OCSF: overall_score (type float_t, requirement recommended)
-	OverallScore float64 `json:"overall_score,omitempty"`
+	OverallScore *float64 `json:"overall_score,omitempty"`
 
 	// Severity is the Severity. The Common Vulnerability Scoring System
 	// (CVSS) Qualitative Severity Rating. A textual representation of the

@@ -20,7 +20,7 @@ type CVE struct {
 	// or updated in CVE.
 	//
 	// OCSF: created_time (type timestamp_t, requirement recommended)
-	CreatedTime int64 `json:"created_time,omitempty"`
+	CreatedTime *int64 `json:"created_time,omitempty"`
 
 	// CVSS is the CVSS Score. The CVSS object details Common Vulnerability
 	// Scoring System (CVSS) scores from the advisory that are related to the
@@ -69,7 +69,7 @@ type CVE struct {
 	// when the CVE record was last updated.
 	//
 	// OCSF: modified_time (type timestamp_t, requirement optional)
-	ModifiedTime int64 `json:"modified_time,omitempty"`
+	ModifiedTime *int64 `json:"modified_time,omitempty"`
 
 	// Product is the Product. The product where the vulnerability was
 	// discovered.

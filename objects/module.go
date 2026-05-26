@@ -46,7 +46,7 @@ type Module struct {
 	// module was loaded in memory.
 	//
 	// OCSF: load_type_id (type integer_t, requirement recommended)
-	LoadTypeID int `json:"load_type_id,omitempty"`
+	LoadTypeID *int `json:"load_type_id,omitempty"`
 
 	// StartAddress is the Start Address. The start address of the execution.
 	//

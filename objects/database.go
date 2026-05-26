@@ -16,7 +16,7 @@ type Database struct {
 	// to have been created.
 	//
 	// OCSF: created_time (type timestamp_t, requirement optional)
-	CreatedTime int64 `json:"created_time,omitempty"`
+	CreatedTime *int64 `json:"created_time,omitempty"`
 
 	// DataClassification is the Data Classification. The Data Classification
 	// object includes information about data classification levels and data
@@ -56,7 +56,7 @@ type Database struct {
 	// changes, updates, or modifications were made within the database.
 	//
 	// OCSF: modified_time (type timestamp_t, requirement optional)
-	ModifiedTime int64 `json:"modified_time,omitempty"`
+	ModifiedTime *int64 `json:"modified_time,omitempty"`
 
 	// Name is the Name. The database name, ordinarily as assigned by a
 	// database administrator.
@@ -67,7 +67,7 @@ type Database struct {
 	// Size is the Size. The size of the database in bytes.
 	//
 	// OCSF: size (type long_t, requirement optional)
-	Size int64 `json:"size,omitempty"`
+	Size *int64 `json:"size,omitempty"`
 
 	// Type is the Type. The database type.
 	//

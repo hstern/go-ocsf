@@ -188,5 +188,5 @@ type Evidences struct {
 	// to the finding.
 	//
 	// OCSF: verdict_id (type integer_t, requirement optional)
-	VerdictID int `json:"verdict_id,omitempty"`
+	VerdictID *int `json:"verdict_id,omitempty"`
 }

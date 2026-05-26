@@ -51,7 +51,7 @@ type Observable struct {
 	// with activity_id 1.
 	//
 	// OCSF: type_uid (type long_t, requirement optional)
-	TypeUID int64 `json:"type_uid,omitempty"`
+	TypeUID *int64 `json:"type_uid,omitempty"`
 
 	// Value is the Value. The value associated with the observable
 	// attribute. The meaning of the value depends on the observable type.If

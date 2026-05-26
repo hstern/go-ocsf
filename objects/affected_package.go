@@ -29,7 +29,7 @@ type AffectedPackage struct {
 	// define weighted dependencies based on version numbers.
 	//
 	// OCSF: epoch (type integer_t, requirement optional)
-	Epoch int `json:"epoch,omitempty"`
+	Epoch *int `json:"epoch,omitempty"`
 
 	// FixedInVersion is the Fixed In Version. The software package version
 	// in which a reported vulnerability was patched/fixed.
@@ -117,7 +117,7 @@ type AffectedPackage struct {
 	// TypeID is the Type ID. The type of software package.
 	//
 	// OCSF: type_id (type integer_t, requirement recommended)
-	TypeID int `json:"type_id,omitempty"`
+	TypeID *int `json:"type_id,omitempty"`
 
 	// UID is the Package UID. A unique identifier for the package or library
 	// reported by the source tool. E.g., the libId within the sbom field of

@@ -55,7 +55,7 @@ type UnmannedSystemOperatingArea struct {
 	// Count is the Count. Indicates the number of UAS in the operating area.
 	//
 	// OCSF: count (type integer_t, requirement recommended)
-	Count int `json:"count,omitempty"`
+	Count *int `json:"count,omitempty"`
 
 	// Country is the Country. The ISO 3166-1 Alpha-2 country code.Note: The
 	// two letter country code should be capitalized. For example: US or CA.
@@ -73,7 +73,7 @@ type UnmannedSystemOperatingArea struct {
 	// applicable to Network Remote ID.)
 	//
 	// OCSF: end_time (type timestamp_t, requirement optional)
-	EndTime int64 `json:"end_time,omitempty"`
+	EndTime *int64 `json:"end_time,omitempty"`
 
 	// GeodeticAltitude is the Geodetic Altitude. The aircraft distance above
 	// or below the ellipsoid as measured along a line that passes through
@@ -109,7 +109,7 @@ type UnmannedSystemOperatingArea struct {
 	// on-premises.
 	//
 	// OCSF: is_on_premises (type boolean_t, requirement optional)
-	IsOnPremises bool `json:"is_on_premises,omitempty"`
+	IsOnPremises *bool `json:"is_on_premises,omitempty"`
 
 	// Isp is the ISP Name. The name of the Internet Service Provider (ISP).
 	//
@@ -122,7 +122,7 @@ type UnmannedSystemOperatingArea struct {
 	// in Decimal Degrees (DD). For example: 42.361145.
 	//
 	// OCSF: lat (type float_t, requirement optional)
-	Lat float64 `json:"lat,omitempty"`
+	Lat *float64 `json:"lat,omitempty"`
 
 	// Locations is the Operating Polygon. A list of Position Location
 	// Information (PLI) (latitude/longitude pairs) defining the area where a
@@ -136,7 +136,7 @@ type UnmannedSystemOperatingArea struct {
 	// represented in Decimal Degrees (DD). For example: -71.057083.
 	//
 	// OCSF: long (type float_t, requirement optional)
-	Long float64 `json:"long,omitempty"`
+	Long *float64 `json:"long,omitempty"`
 
 	// PostalCode is the Postal Code. The postal code of the location.
 	//
@@ -179,7 +179,7 @@ type UnmannedSystemOperatingArea struct {
 	// applicable to Network Remote ID.)
 	//
 	// OCSF: start_time (type timestamp_t, requirement optional)
-	StartTime int64 `json:"start_time,omitempty"`
+	StartTime *int64 `json:"start_time,omitempty"`
 
 	// Type is the Type. The type of operating area. For example, Takeoff
 	// Location, Fixed Location, Dynamic Location.
@@ -190,5 +190,5 @@ type UnmannedSystemOperatingArea struct {
 	// TypeID is the Type ID. The operating area type identifier.
 	//
 	// OCSF: type_id (type integer_t, requirement recommended)
-	TypeID int `json:"type_id,omitempty"`
+	TypeID *int `json:"type_id,omitempty"`
 }

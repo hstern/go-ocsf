@@ -98,7 +98,7 @@ type Endpoint struct {
 	// process namespace.
 	//
 	// OCSF: namespace_pid (type integer_t, requirement recommended)
-	NamespacePID int `json:"namespace_pid,omitempty"`
+	NamespacePID *int `json:"namespace_pid,omitempty"`
 
 	// OS is the OS. The endpoint operating system.
 	//
@@ -132,7 +132,7 @@ type Endpoint struct {
 	// TypeID is the Type ID. The endpoint type ID.
 	//
 	// OCSF: type_id (type integer_t, requirement recommended)
-	TypeID int `json:"type_id,omitempty"`
+	TypeID *int `json:"type_id,omitempty"`
 
 	// UID is the Unique ID. The unique identifier of the endpoint.
 	//

@@ -14,7 +14,7 @@ type DiscoveryDetails struct {
 	// type.
 	//
 	// OCSF: count (type integer_t, requirement recommended)
-	Count int `json:"count,omitempty"`
+	Count *int `json:"count,omitempty"`
 
 	// OccurrenceDetails is the Occurrence Details. Details about where in
 	// the target entity, specified information was discovered. Only the

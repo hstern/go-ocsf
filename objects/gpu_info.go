@@ -21,13 +21,13 @@ type GPUInfo struct {
 	// attachment bus or interface standard.
 	//
 	// OCSF: bus_type_id (type integer_t, requirement optional)
-	BusTypeID int `json:"bus_type_id,omitempty"`
+	BusTypeID *int `json:"bus_type_id,omitempty"`
 
 	// Cores is the Cores. The number of processing cores or compute units
 	// for the component.
 	//
 	// OCSF: cores (type integer_t, requirement optional)
-	Cores int `json:"cores,omitempty"`
+	Cores *int `json:"cores,omitempty"`
 
 	// Model is the Model. The model name of the GPU. For example: GeForce
 	// RTX A6000, Radeon PRO W7900, or Intel Data Center GPU Max 1550.
@@ -54,10 +54,10 @@ type GPUInfo struct {
 	// memory attachment mode.
 	//
 	// OCSF: vram_mode_id (type integer_t, requirement recommended)
-	VramModeID int `json:"vram_mode_id,omitempty"`
+	VramModeID *int `json:"vram_mode_id,omitempty"`
 
 	// VramSize is the VRAM Size. The total amount of installed video RAM.
 	//
 	// OCSF: vram_size (type integer_t, requirement recommended)
-	VramSize int `json:"vram_size,omitempty"`
+	VramSize *int `json:"vram_size,omitempty"`
 }

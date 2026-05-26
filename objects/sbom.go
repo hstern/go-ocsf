@@ -14,7 +14,7 @@ type Sbom struct {
 	// CreatedTime is the Created Time. The time when the SBOM was created.
 	//
 	// OCSF: created_time (type timestamp_t, requirement recommended)
-	CreatedTime int64 `json:"created_time,omitempty"`
+	CreatedTime *int64 `json:"created_time,omitempty"`
 
 	// Package is the Software Package. The software package or library that
 	// is being discovered or inventoried by an SBOM.
@@ -43,7 +43,7 @@ type Sbom struct {
 	// TypeID is the Type ID. The type of SBOM.
 	//
 	// OCSF: type_id (type integer_t, requirement recommended)
-	TypeID int `json:"type_id,omitempty"`
+	TypeID *int `json:"type_id,omitempty"`
 
 	// UID is the SBOM ID. A unique identifier for the SBOM or the SBOM
 	// generation by a source tool, such as the SPDX

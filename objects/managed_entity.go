@@ -78,7 +78,7 @@ type ManagedEntity struct {
 	// label, or the source specific name if Other.
 	//
 	// OCSF: type_id (type integer_t, requirement recommended)
-	TypeID int `json:"type_id,omitempty"`
+	TypeID *int `json:"type_id,omitempty"`
 
 	// UID is the Unique ID. The identifier of the managed entity. It should
 	// match the uid of the specific entity's object UID if populated, or the

@@ -15,7 +15,7 @@ type EndpointConnection struct {
 	// details about the connection.
 	//
 	// OCSF: code (type integer_t, requirement recommended)
-	Code int `json:"code,omitempty"`
+	Code *int `json:"code,omitempty"`
 
 	// NetworkEndpoint is the Network Endpoint. Provides characteristics of
 	// the network endpoint.

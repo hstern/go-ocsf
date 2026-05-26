@@ -23,7 +23,7 @@ type RelatedEvent struct {
 	// logical group occurred, as reported by the related Finding.
 	//
 	// OCSF: count (type integer_t, requirement optional)
-	Count int `json:"count,omitempty"`
+	Count *int `json:"count,omitempty"`
 
 	// CreatedTime is the Created Time. The time when the related
 	// event/finding was created. If the related event/finding is in OCSF and
@@ -33,7 +33,7 @@ type RelatedEvent struct {
 	// be equal to time in the corresponding event.
 	//
 	// OCSF: created_time (type timestamp_t, requirement optional)
-	CreatedTime int64 `json:"created_time,omitempty"`
+	CreatedTime *int64 `json:"created_time,omitempty"`
 
 	// Desc is the Description. A description of the related event/finding.
 	//
@@ -46,7 +46,7 @@ type RelatedEvent struct {
 	// finding was created.
 	//
 	// OCSF: first_seen_time (type timestamp_t, requirement optional)
-	FirstSeenTime int64 `json:"first_seen_time,omitempty"`
+	FirstSeenTime *int64 `json:"first_seen_time,omitempty"`
 
 	// KillChain is the Kill Chain. The Cyber Kill Chain® provides a
 	// detailed description of each phase and its associated activities
@@ -61,13 +61,13 @@ type RelatedEvent struct {
 	// which reflects the time this finding was last modified.
 	//
 	// OCSF: last_seen_time (type timestamp_t, requirement optional)
-	LastSeenTime int64 `json:"last_seen_time,omitempty"`
+	LastSeenTime *int64 `json:"last_seen_time,omitempty"`
 
 	// ModifiedTime is the Modified Time. The time when the related
 	// event/finding was last modified.
 	//
 	// OCSF: modified_time (type timestamp_t, requirement optional)
-	ModifiedTime int64 `json:"modified_time,omitempty"`
+	ModifiedTime *int64 `json:"modified_time,omitempty"`
 
 	// Observables is the Observables. The observables associated with the
 	// event or a finding.
@@ -101,7 +101,7 @@ type RelatedEvent struct {
 	// larger numerical values represent higher impact events.
 	//
 	// OCSF: severity_id (type integer_t, requirement recommended)
-	SeverityID int `json:"severity_id,omitempty"`
+	SeverityID *int `json:"severity_id,omitempty"`
 
 	// Status is the Status. The related event status. Should correspond to
 	// the label of the status_id (or 'Other' status value for status_id =
@@ -148,7 +148,7 @@ type RelatedEvent struct {
 	// is in OCSF.
 	//
 	// OCSF: type_uid (type long_t, requirement recommended)
-	TypeUID int64 `json:"type_uid,omitempty"`
+	TypeUID *int64 `json:"type_uid,omitempty"`
 
 	// UID is the Unique ID. The unique identifier of the related
 	// event/finding. If the related event/finding is in OCSF, then this

@@ -114,14 +114,22 @@ func fieldImports(a schema.ClassAttr, currentPkg string) []string {
 // any package other than `objects` are qualified with
 // `objects.`.
 //
-// Pointer-ness reflects the attribute's repeated-ness:
+// Pointer-ness reflects two concerns: distinguishing absence
+// from a wire-meaningful zero, and pairing with the
+// `omitempty` JSON tag so optional-on-the-wire fields drop
+// cleanly.
 //
 //   - object refs that are NOT array fields use *T so JSON
-//     omitempty can drop the field when absent. Array refs use
+//     omitempty drops the field when absent. Array refs use
 //     []T (slice nullability is the slice itself).
-//   - primitive scalars use their Go type directly; omitempty
-//     handling falls out of Go's zero-value semantics on the
-//     marshal side.
+//   - non-required bool / int / int64 / float64 scalars use
+//     *T so `false` and 0 round-trip as wire-meaningful values
+//     rather than being squashed by omitempty. Required
+//     numerics stay plain (always-present semantics; omitempty
+//     irrelevant).
+//   - string fields stay plain regardless of requirement: OCSF
+//     practice treats empty-string as absence, so there's no
+//     wire-meaningful "" to preserve.
 //   - json.RawMessage stays a value (not pointer); a nil
 //     RawMessage already omits.
 func fieldGoType(s *schema.Schema, a schema.ClassAttr, currentPkg string) (string, error) {
@@ -138,6 +146,9 @@ func fieldGoType(s *schema.Schema, a schema.ClassAttr, currentPkg string) (strin
 	if p := primitiveGoType(a.Type); p != "" {
 		if a.IsArray {
 			return "[]" + p, nil
+		}
+		if shouldPointerWrap(a, p) {
+			return "*" + p, nil
 		}
 		return p, nil
 	}
@@ -158,6 +169,36 @@ func fieldGoType(s *schema.Schema, a schema.ClassAttr, currentPkg string) (strin
 	// round-trips correctly: a nil pointer omits, a non-nil
 	// pointer marshals the embedded struct.
 	return "*" + tn, nil
+}
+
+// shouldPointerWrap reports whether a non-array primitive
+// attribute should be emitted as *T rather than T. The two
+// gates:
+//
+//   - The Go zero value must be wire-meaningful for the
+//     attribute's type. true for bool (false is a real
+//     answer), int / int64 / float64 (0 is a real
+//     measurement, port, score, or id), and so on. false for
+//     string (empty-string == absence in OCSF practice) and
+//     json.RawMessage (nil-vs-empty already distinguishes).
+//   - The attribute must NOT be required. Required attributes
+//     always carry a value on the wire, so the absent-vs-zero
+//     distinction is meaningless and the indirection
+//     ergonomic cost is unjustified.
+//
+// goType is the resolved primitive Go type from
+// primitiveGoType (e.g. "int", "bool", "string",
+// "json.RawMessage"); pass it in rather than re-resolving so
+// the caller's switch on type can stay simple.
+func shouldPointerWrap(a schema.ClassAttr, goType string) bool {
+	if a.Requirement == "required" {
+		return false
+	}
+	switch goType {
+	case "bool", "int", "int64", "float64":
+		return true
+	}
+	return false
 }
 
 // jsonTagOpts returns the contents of the `json:"..."` struct tag

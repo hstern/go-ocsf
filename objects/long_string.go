@@ -15,14 +15,14 @@ type LongString struct {
 	// truncated. May be omitted if truncation has not occurred.
 	//
 	// OCSF: is_truncated (type boolean_t, requirement optional)
-	IsTruncated bool `json:"is_truncated,omitempty"`
+	IsTruncated *bool `json:"is_truncated,omitempty"`
 
 	// UntruncatedSize is the Untruncated Size. The size in bytes of the
 	// string represented by value before truncation. Should be omitted if
 	// truncation has not occurred.
 	//
 	// OCSF: untruncated_size (type integer_t, requirement optional)
-	UntruncatedSize int `json:"untruncated_size,omitempty"`
+	UntruncatedSize *int `json:"untruncated_size,omitempty"`
 
 	// Value is the Value. The string value, truncated if is_truncated is
 	// true.

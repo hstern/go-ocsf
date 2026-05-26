@@ -30,7 +30,7 @@ type IncidentFinding struct {
 	// disposition_id for the outcome of the action.
 	//
 	// OCSF: action_id (type integer_t, requirement recommended)
-	ActionID int `json:"action_id,omitempty"`
+	ActionID *int `json:"action_id,omitempty"`
 
 	// ActivityID is the Activity ID. The normalized identifier of the
 	// Incident activity.
@@ -132,19 +132,19 @@ type IncidentFinding struct {
 	// reports that may not be malicious in nature.
 	//
 	// OCSF: confidence_id (type integer_t, requirement recommended)
-	ConfidenceID int `json:"confidence_id,omitempty"`
+	ConfidenceID *int `json:"confidence_id,omitempty"`
 
 	// ConfidenceScore is the Confidence Score. The confidence score as
 	// reported by the event source.
 	//
 	// OCSF: confidence_score (type integer_t, requirement optional)
-	ConfidenceScore int `json:"confidence_score,omitempty"`
+	ConfidenceScore *int `json:"confidence_score,omitempty"`
 
 	// Count is the Count. The number of times that events in the same
 	// logical group occurred during the event Start Time to End Time period.
 	//
 	// OCSF: count (type integer_t, requirement optional)
-	Count int `json:"count,omitempty"`
+	Count *int `json:"count,omitempty"`
 
 	// Desc is the Description. The short description of the Incident.
 	//
@@ -168,20 +168,20 @@ type IncidentFinding struct {
 	// detections or various types of policy violations.
 	//
 	// OCSF: disposition_id (type integer_t, requirement recommended)
-	DispositionID int `json:"disposition_id,omitempty"`
+	DispositionID *int `json:"disposition_id,omitempty"`
 
 	// Duration is the Duration Milliseconds. The event duration or aggregate
 	// time, the amount of time the event covers from start_time to end_time
 	// in milliseconds.
 	//
 	// OCSF: duration (type long_t, requirement optional)
-	Duration int64 `json:"duration,omitempty"`
+	Duration *int64 `json:"duration,omitempty"`
 
 	// EndTime is the End Time. The time of the most recent event included in
 	// the incident.
 	//
 	// OCSF: end_time (type timestamp_t, requirement optional)
-	EndTime int64 `json:"end_time,omitempty"`
+	EndTime *int64 `json:"end_time,omitempty"`
 
 	// Enrichments is the Enrichments. The additional information from an
 	// external data source, which is associated with the event or a finding.
@@ -220,13 +220,13 @@ type IncidentFinding struct {
 	// system availability.
 	//
 	// OCSF: impact_id (type integer_t, requirement recommended)
-	ImpactID int `json:"impact_id,omitempty"`
+	ImpactID *int `json:"impact_id,omitempty"`
 
 	// ImpactScore is the Impact Score. The impact as an integer value of the
 	// finding, valid range 0-100.
 	//
 	// OCSF: impact_score (type integer_t, requirement recommended)
-	ImpactScore int `json:"impact_score,omitempty"`
+	ImpactScore *int `json:"impact_score,omitempty"`
 
 	// IsAlert is the Alert. Indicates that the event is considered to be an
 	// alertable signal. Should be set to true if disposition_id = Alert
@@ -235,13 +235,13 @@ type IncidentFinding struct {
 	// example if disposition_id = Exonerated or disposition_id = Allowed.
 	//
 	// OCSF: is_alert (type boolean_t, requirement recommended)
-	IsAlert bool `json:"is_alert,omitempty"`
+	IsAlert *bool `json:"is_alert,omitempty"`
 
 	// IsSuspectedBreach is the Suspected Breach. A determination based on
 	// analytics as to whether a potential breach was found.
 	//
 	// OCSF: is_suspected_breach (type boolean_t, requirement optional)
-	IsSuspectedBreach bool `json:"is_suspected_breach,omitempty"`
+	IsSuspectedBreach *bool `json:"is_suspected_breach,omitempty"`
 
 	// Malware is the Malware. A list of Malware objects, describing details
 	// about the identified malware.
@@ -302,7 +302,7 @@ type IncidentFinding struct {
 	// measurement of urgency.
 	//
 	// OCSF: priority_id (type integer_t, requirement recommended)
-	PriorityID int `json:"priority_id,omitempty"`
+	PriorityID *int `json:"priority_id,omitempty"`
 
 	// RawData is the Raw Data. The raw event/finding data as received from
 	// the source.
@@ -320,7 +320,7 @@ type IncidentFinding struct {
 	// transformed into an OCSF event, in bytes.
 	//
 	// OCSF: raw_data_size (type long_t, requirement optional)
-	RawDataSize int64 `json:"raw_data_size,omitempty"`
+	RawDataSize *int64 `json:"raw_data_size,omitempty"`
 
 	// RiskDetails is the Risk Details. Describes the risk associated with
 	// the finding.
@@ -337,13 +337,13 @@ type IncidentFinding struct {
 	// RiskLevelID is the Risk Level ID. The normalized risk level id.
 	//
 	// OCSF: risk_level_id (type integer_t, requirement optional)
-	RiskLevelID int `json:"risk_level_id,omitempty"`
+	RiskLevelID *int `json:"risk_level_id,omitempty"`
 
 	// RiskScore is the Risk Score. The risk score as reported by the event
 	// source.
 	//
 	// OCSF: risk_score (type integer_t, requirement optional)
-	RiskScore int `json:"risk_score,omitempty"`
+	RiskScore *int `json:"risk_score,omitempty"`
 
 	// Severity is the Severity. The event/finding severity, normalized to
 	// the caption of the severity_id value. In the case of 'Other', it is
@@ -371,7 +371,7 @@ type IncidentFinding struct {
 	// included in the incident.
 	//
 	// OCSF: start_time (type timestamp_t, requirement optional)
-	StartTime int64 `json:"start_time,omitempty"`
+	StartTime *int64 `json:"start_time,omitempty"`
 
 	// Status is the Status. The normalized status of the Incident normalized
 	// to the caption of the status_id value. In the case of 'Other', it is
@@ -423,7 +423,7 @@ type IncidentFinding struct {
 	// +1,080.
 	//
 	// OCSF: timezone_offset (type integer_t, requirement recommended)
-	TimezoneOffset int `json:"timezone_offset,omitempty"`
+	TimezoneOffset *int `json:"timezone_offset,omitempty"`
 
 	// TypeName is the Type Name. The event/finding type name, as defined by
 	// the type_uid.
@@ -464,7 +464,7 @@ type IncidentFinding struct {
 	// VerdictID is the Verdict ID. The normalized verdict of an Incident.
 	//
 	// OCSF: verdict_id (type integer_t, requirement recommended)
-	VerdictID int `json:"verdict_id,omitempty"`
+	VerdictID *int `json:"verdict_id,omitempty"`
 }
 
 // OCSFClassUID returns the OCSF class_uid for Incident Finding (2005).
@@ -495,13 +495,15 @@ func (e IncidentFinding) Validate() error {
 	if len(e.Osint) == 0 {
 		return &ocsf.ValidationError{ClassUID: 2005, Field: "osint", Rule: "required", Reason: "required field is missing"}
 	}
-	switch e.ActionID {
-	case 0, 1, 2, 3, 4, 99:
-	default:
-		return &ocsf.ValidationError{ClassUID: 2005, Field: "action_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	if e.ActionID != nil {
+		switch *e.ActionID {
+		case 0, 1, 2, 3, 4, 99:
+		default:
+			return &ocsf.ValidationError{ClassUID: 2005, Field: "action_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+		}
 	}
-	if e.Action != "" {
-		switch e.ActionID {
+	if e.Action != "" && e.ActionID != nil {
+		switch *e.ActionID {
 		case 0:
 			if e.Action != "Unknown" {
 				return &ocsf.ValidationError{ClassUID: 2005, Field: "action", Rule: "enum", Reason: "sibling does not match enum caption"}
@@ -557,13 +559,15 @@ func (e IncidentFinding) Validate() error {
 			}
 		}
 	}
-	switch e.ConfidenceID {
-	case 0, 1, 2, 3, 99:
-	default:
-		return &ocsf.ValidationError{ClassUID: 2005, Field: "confidence_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	if e.ConfidenceID != nil {
+		switch *e.ConfidenceID {
+		case 0, 1, 2, 3, 99:
+		default:
+			return &ocsf.ValidationError{ClassUID: 2005, Field: "confidence_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+		}
 	}
-	if e.Confidence != "" {
-		switch e.ConfidenceID {
+	if e.Confidence != "" && e.ConfidenceID != nil {
+		switch *e.ConfidenceID {
 		case 0:
 			if e.Confidence != "Unknown" {
 				return &ocsf.ValidationError{ClassUID: 2005, Field: "confidence", Rule: "enum", Reason: "sibling does not match enum caption"}
@@ -582,13 +586,15 @@ func (e IncidentFinding) Validate() error {
 			}
 		}
 	}
-	switch e.DispositionID {
-	case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 99:
-	default:
-		return &ocsf.ValidationError{ClassUID: 2005, Field: "disposition_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	if e.DispositionID != nil {
+		switch *e.DispositionID {
+		case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 99:
+		default:
+			return &ocsf.ValidationError{ClassUID: 2005, Field: "disposition_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+		}
 	}
-	if e.Disposition != "" {
-		switch e.DispositionID {
+	if e.Disposition != "" && e.DispositionID != nil {
+		switch *e.DispositionID {
 		case 0:
 			if e.Disposition != "Unknown" {
 				return &ocsf.ValidationError{ClassUID: 2005, Field: "disposition", Rule: "enum", Reason: "sibling does not match enum caption"}
@@ -703,13 +709,15 @@ func (e IncidentFinding) Validate() error {
 			}
 		}
 	}
-	switch e.ImpactID {
-	case 0, 1, 2, 3, 4, 99:
-	default:
-		return &ocsf.ValidationError{ClassUID: 2005, Field: "impact_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	if e.ImpactID != nil {
+		switch *e.ImpactID {
+		case 0, 1, 2, 3, 4, 99:
+		default:
+			return &ocsf.ValidationError{ClassUID: 2005, Field: "impact_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+		}
 	}
-	if e.Impact != "" {
-		switch e.ImpactID {
+	if e.Impact != "" && e.ImpactID != nil {
+		switch *e.ImpactID {
 		case 0:
 			if e.Impact != "Unknown" {
 				return &ocsf.ValidationError{ClassUID: 2005, Field: "impact", Rule: "enum", Reason: "sibling does not match enum caption"}
@@ -732,13 +740,15 @@ func (e IncidentFinding) Validate() error {
 			}
 		}
 	}
-	switch e.PriorityID {
-	case 0, 1, 2, 3, 4, 99:
-	default:
-		return &ocsf.ValidationError{ClassUID: 2005, Field: "priority_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	if e.PriorityID != nil {
+		switch *e.PriorityID {
+		case 0, 1, 2, 3, 4, 99:
+		default:
+			return &ocsf.ValidationError{ClassUID: 2005, Field: "priority_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+		}
 	}
-	if e.Priority != "" {
-		switch e.PriorityID {
+	if e.Priority != "" && e.PriorityID != nil {
+		switch *e.PriorityID {
 		case 0:
 			if e.Priority != "Unknown" {
 				return &ocsf.ValidationError{ClassUID: 2005, Field: "priority", Rule: "enum", Reason: "sibling does not match enum caption"}
@@ -761,13 +771,15 @@ func (e IncidentFinding) Validate() error {
 			}
 		}
 	}
-	switch e.RiskLevelID {
-	case 0, 1, 2, 3, 4, 99:
-	default:
-		return &ocsf.ValidationError{ClassUID: 2005, Field: "risk_level_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	if e.RiskLevelID != nil {
+		switch *e.RiskLevelID {
+		case 0, 1, 2, 3, 4, 99:
+		default:
+			return &ocsf.ValidationError{ClassUID: 2005, Field: "risk_level_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+		}
 	}
-	if e.RiskLevel != "" {
-		switch e.RiskLevelID {
+	if e.RiskLevel != "" && e.RiskLevelID != nil {
+		switch *e.RiskLevelID {
 		case 0:
 			if e.RiskLevel != "Info" {
 				return &ocsf.ValidationError{ClassUID: 2005, Field: "risk_level", Rule: "enum", Reason: "sibling does not match enum caption"}
@@ -864,13 +876,15 @@ func (e IncidentFinding) Validate() error {
 			}
 		}
 	}
-	switch e.VerdictID {
-	case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 99:
-	default:
-		return &ocsf.ValidationError{ClassUID: 2005, Field: "verdict_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+	if e.VerdictID != nil {
+		switch *e.VerdictID {
+		case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 99:
+		default:
+			return &ocsf.ValidationError{ClassUID: 2005, Field: "verdict_id", Rule: "enum", Reason: "value outside the schema's enum range"}
+		}
 	}
-	if e.Verdict != "" {
-		switch e.VerdictID {
+	if e.Verdict != "" && e.VerdictID != nil {
+		switch *e.VerdictID {
 		case 0:
 			if e.Verdict != "Unknown" {
 				return &ocsf.ValidationError{ClassUID: 2005, Field: "verdict", Rule: "enum", Reason: "sibling does not match enum caption"}

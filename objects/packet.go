@@ -27,13 +27,13 @@ type Packet struct {
 	// encoding method used to represent the packet data as a string.
 	//
 	// OCSF: encoding_id (type integer_t, requirement recommended)
-	EncodingID int `json:"encoding_id,omitempty"`
+	EncodingID *int `json:"encoding_id,omitempty"`
 
 	// EndOffset is the End Offset. The ending byte position of this packet
 	// within a capture file or stream.
 	//
 	// OCSF: end_offset (type long_t, requirement optional)
-	EndOffset int64 `json:"end_offset,omitempty"`
+	EndOffset *int64 `json:"end_offset,omitempty"`
 
 	// Format is the Format. The human-readable name of the packet capture
 	// file format in which the packet is stored. This should match the
@@ -47,7 +47,7 @@ type Packet struct {
 	// capture format.
 	//
 	// OCSF: format_id (type integer_t, requirement recommended)
-	FormatID int `json:"format_id,omitempty"`
+	FormatID *int `json:"format_id,omitempty"`
 
 	// SequenceNumber is the Sequence Number. The relative order number of
 	// this packet within its capture context (such as a PCAP file, network
@@ -56,7 +56,7 @@ type Packet struct {
 	// TCP sequence numbers).
 	//
 	// OCSF: sequence_number (type long_t, requirement optional)
-	SequenceNumber int64 `json:"sequence_number,omitempty"`
+	SequenceNumber *int64 `json:"sequence_number,omitempty"`
 
 	// Source is the Source. The human-readable name describing how or where
 	// the packet was obtained. This should match the caption associated with
@@ -70,13 +70,13 @@ type Packet struct {
 	// specifies how the packet was obtained or generated.
 	//
 	// OCSF: source_id (type integer_t, requirement recommended)
-	SourceID int `json:"source_id,omitempty"`
+	SourceID *int `json:"source_id,omitempty"`
 
 	// StartOffset is the Start Offset. The starting byte position of this
 	// packet within a capture file or stream.
 	//
 	// OCSF: start_offset (type long_t, requirement optional)
-	StartOffset int64 `json:"start_offset,omitempty"`
+	StartOffset *int64 `json:"start_offset,omitempty"`
 
 	// Value is the Value. The actual packet data, represented as a string.
 	// The format of this string is determined by the specified encoding_id

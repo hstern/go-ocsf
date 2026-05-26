@@ -48,31 +48,31 @@ type DeviceHwInfo struct {
 	// identifier of the CPU architecture.
 	//
 	// OCSF: cpu_architecture_id (type integer_t, requirement optional)
-	CPUArchitectureID int `json:"cpu_architecture_id,omitempty"`
+	CPUArchitectureID *int `json:"cpu_architecture_id,omitempty"`
 
 	// CPUBits is the CPU Bits. The cpu architecture, the number of bits used
 	// for addressing in memory. For example: 32 or 64.
 	//
 	// OCSF: cpu_bits (type integer_t, requirement optional)
-	CPUBits int `json:"cpu_bits,omitempty"`
+	CPUBits *int `json:"cpu_bits,omitempty"`
 
 	// CPUCores is the CPU Cores. The number of processor cores in all
 	// installed processors. For Example: 42.
 	//
 	// OCSF: cpu_cores (type integer_t, requirement optional)
-	CPUCores int `json:"cpu_cores,omitempty"`
+	CPUCores *int `json:"cpu_cores,omitempty"`
 
 	// CPUCount is the CPU Count. The number of physical processors on a
 	// system. For example: 1.
 	//
 	// OCSF: cpu_count (type integer_t, requirement optional)
-	CPUCount int `json:"cpu_count,omitempty"`
+	CPUCount *int `json:"cpu_count,omitempty"`
 
 	// CPUSpeed is the Processor Speed. The speed of the processor in Mhz.
 	// For Example: 4200.
 	//
 	// OCSF: cpu_speed (type integer_t, requirement optional)
-	CPUSpeed int `json:"cpu_speed,omitempty"`
+	CPUSpeed *int `json:"cpu_speed,omitempty"`
 
 	// CPUType is the Processor Type. The processor type. For example: x86
 	// Family 6 Model 37 Stepping 5.
@@ -90,7 +90,7 @@ type DeviceHwInfo struct {
 	// example: 1.
 	//
 	// OCSF: gpu_count (type integer_t, requirement optional)
-	GPUCount int `json:"gpu_count,omitempty"`
+	GPUCount *int `json:"gpu_count,omitempty"`
 
 	// GPUInfoList is the GPU information. A list of GPU objects describing
 	// the hardware properties of each graphics processor installed on the
@@ -109,7 +109,7 @@ type DeviceHwInfo struct {
 	// Megabytes. For example: 2048.
 	//
 	// OCSF: ram_size (type integer_t, requirement optional)
-	RAMSize int `json:"ram_size,omitempty"`
+	RAMSize *int `json:"ram_size,omitempty"`
 
 	// SerialNumber is the Serial Number. The device manufacturer serial
 	// number.

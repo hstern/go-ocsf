@@ -32,7 +32,7 @@ type Advisory struct {
 	// created.
 	//
 	// OCSF: created_time (type timestamp_t, requirement recommended)
-	CreatedTime int64 `json:"created_time,omitempty"`
+	CreatedTime *int64 `json:"created_time,omitempty"`
 
 	// Desc is the Description. A brief description of the Advisory Record.
 	//
@@ -48,19 +48,19 @@ type Advisory struct {
 	// ID of the Advisory.
 	//
 	// OCSF: install_state_id (type integer_t, requirement recommended)
-	InstallStateID int `json:"install_state_id,omitempty"`
+	InstallStateID *int `json:"install_state_id,omitempty"`
 
 	// IsSuperseded is the The patch is superseded.. The Advisory has been
 	// replaced by another.
 	//
 	// OCSF: is_superseded (type boolean_t, requirement optional)
-	IsSuperseded bool `json:"is_superseded,omitempty"`
+	IsSuperseded *bool `json:"is_superseded,omitempty"`
 
 	// ModifiedTime is the Modified Time. The time when the Advisory record
 	// was last updated.
 	//
 	// OCSF: modified_time (type timestamp_t, requirement optional)
-	ModifiedTime int64 `json:"modified_time,omitempty"`
+	ModifiedTime *int64 `json:"modified_time,omitempty"`
 
 	// OS is the OS. The operating system the Advisory applies to.
 	//
@@ -97,7 +97,7 @@ type Advisory struct {
 	// populated for a KB Article patch.
 	//
 	// OCSF: size (type long_t, requirement optional)
-	Size int64 `json:"size,omitempty"`
+	Size *int64 `json:"size,omitempty"`
 
 	// SrcURL is the Source URL. The Advisory link from the source vendor.
 	//

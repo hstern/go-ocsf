@@ -32,7 +32,7 @@ type Databucket struct {
 	// known to have been created.
 	//
 	// OCSF: created_time (type timestamp_t, requirement optional)
-	CreatedTime int64 `json:"created_time,omitempty"`
+	CreatedTime *int64 `json:"created_time,omitempty"`
 
 	// Criticality is the Criticality. The criticality of the databucket as
 	// defined by the event source.
@@ -109,19 +109,19 @@ type Databucket struct {
 	// with the AWS Backup service.
 	//
 	// OCSF: is_backed_up (type boolean_t, requirement optional)
-	IsBackedUp bool `json:"is_backed_up,omitempty"`
+	IsBackedUp *bool `json:"is_backed_up,omitempty"`
 
 	// IsEncrypted is the Encrypted. Indicates if the databucket is
 	// encrypted.
 	//
 	// OCSF: is_encrypted (type boolean_t, requirement optional)
-	IsEncrypted bool `json:"is_encrypted,omitempty"`
+	IsEncrypted *bool `json:"is_encrypted,omitempty"`
 
 	// IsPublic is the Public. Indicates if the databucket is publicly
 	// accessible.
 	//
 	// OCSF: is_public (type boolean_t, requirement recommended)
-	IsPublic bool `json:"is_public,omitempty"`
+	IsPublic *bool `json:"is_public,omitempty"`
 
 	// Labels is the Labels. The list of labels associated to the resource.
 	//
@@ -132,7 +132,7 @@ type Databucket struct {
 	// changes, updates, or modifications were made within the databucket.
 	//
 	// OCSF: modified_time (type timestamp_t, requirement optional)
-	ModifiedTime int64 `json:"modified_time,omitempty"`
+	ModifiedTime *int64 `json:"modified_time,omitempty"`
 
 	// Name is the Name. The databucket name.
 	//
@@ -167,7 +167,7 @@ type Databucket struct {
 	// Size is the Size. The size of the databucket in bytes.
 	//
 	// OCSF: size (type long_t, requirement optional)
-	Size int64 `json:"size,omitempty"`
+	Size *int64 `json:"size,omitempty"`
 
 	// Tags is the Tags. The list of tags; {key:value} pairs associated to
 	// the resource.

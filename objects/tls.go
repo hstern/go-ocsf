@@ -16,7 +16,7 @@ type TLS struct {
 	// present. The alerts are defined in the TLS specification in RFC-2246.
 	//
 	// OCSF: alert (type integer_t, requirement optional)
-	Alert int `json:"alert,omitempty"`
+	Alert *int `json:"alert,omitempty"`
 
 	// Certificate is the Certificate. The certificate object containing
 	// information about the digital certificate.
@@ -52,7 +52,7 @@ type TLS struct {
 	// including client-side delays, in milliseconds.
 	//
 	// OCSF: handshake_dur (type integer_t, requirement optional)
-	HandshakeDur int `json:"handshake_dur,omitempty"`
+	HandshakeDur *int `json:"handshake_dur,omitempty"`
 
 	// Ja3Hash is the JA3 Hash. The MD5 hash of a JA3 string.
 	//
@@ -67,7 +67,7 @@ type TLS struct {
 	// KeyLength is the Key Length. The length of the encryption key.
 	//
 	// OCSF: key_length (type integer_t, requirement optional)
-	KeyLength int `json:"key_length,omitempty"`
+	KeyLength *int `json:"key_length,omitempty"`
 
 	// Sans is the Subject Alternative Names. The list of subject alternative
 	// names that are secured by a specific certificate.

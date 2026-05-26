@@ -21,7 +21,7 @@ type Finding struct {
 	// created.
 	//
 	// OCSF: created_time (type timestamp_t, requirement optional)
-	CreatedTime int64 `json:"created_time,omitempty"`
+	CreatedTime *int64 `json:"created_time,omitempty"`
 
 	// Desc is the Description. The description of the reported finding.
 	//
@@ -32,19 +32,19 @@ type Finding struct {
 	// observed.
 	//
 	// OCSF: first_seen_time (type timestamp_t, requirement optional)
-	FirstSeenTime int64 `json:"first_seen_time,omitempty"`
+	FirstSeenTime *int64 `json:"first_seen_time,omitempty"`
 
 	// LastSeenTime is the Last Seen. The time when the finding was most
 	// recently observed.
 	//
 	// OCSF: last_seen_time (type timestamp_t, requirement optional)
-	LastSeenTime int64 `json:"last_seen_time,omitempty"`
+	LastSeenTime *int64 `json:"last_seen_time,omitempty"`
 
 	// ModifiedTime is the Modified Time. The time when the finding was last
 	// modified.
 	//
 	// OCSF: modified_time (type timestamp_t, requirement optional)
-	ModifiedTime int64 `json:"modified_time,omitempty"`
+	ModifiedTime *int64 `json:"modified_time,omitempty"`
 
 	// Product is the Product. Details about the product that reported the
 	// finding.

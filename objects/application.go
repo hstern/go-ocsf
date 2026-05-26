@@ -85,13 +85,13 @@ type Application struct {
 	// RiskLevelID is the Risk Level ID. The normalized risk level id.
 	//
 	// OCSF: risk_level_id (type integer_t, requirement optional)
-	RiskLevelID int `json:"risk_level_id,omitempty"`
+	RiskLevelID *int `json:"risk_level_id,omitempty"`
 
 	// RiskScore is the Risk Score. The risk score as reported by the event
 	// source.
 	//
 	// OCSF: risk_score (type integer_t, requirement optional)
-	RiskScore int `json:"risk_score,omitempty"`
+	RiskScore *int `json:"risk_score,omitempty"`
 
 	// Sbom is the Related SBOM. The Software Bill of Materials (SBOM)
 	// associated with the application

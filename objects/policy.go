@@ -37,7 +37,7 @@ type Policy struct {
 	// was applied to a target or request, or not.
 	//
 	// OCSF: is_applied (type boolean_t, requirement recommended)
-	IsApplied bool `json:"is_applied,omitempty"`
+	IsApplied *bool `json:"is_applied,omitempty"`
 
 	// Name is the Name. The policy name. For example: AdministratorAccess
 	// Policy.

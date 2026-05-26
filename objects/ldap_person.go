@@ -20,7 +20,7 @@ type LDAPPerson struct {
 	// created.
 	//
 	// OCSF: created_time (type timestamp_t, requirement optional)
-	CreatedTime int64 `json:"created_time,omitempty"`
+	CreatedTime *int64 `json:"created_time,omitempty"`
 
 	// DeletedTime is the Deleted Time. The timestamp when the user was
 	// deleted. In Active Directory (AD), when a user is deleted they are
@@ -29,7 +29,7 @@ type LDAPPerson struct {
 	// 30 days.
 	//
 	// OCSF: deleted_time (type timestamp_t, requirement optional)
-	DeletedTime int64 `json:"deleted_time,omitempty"`
+	DeletedTime *int64 `json:"deleted_time,omitempty"`
 
 	// Department is the Department. The name of the department in which the
 	// user works.
@@ -65,7 +65,7 @@ type LDAPPerson struct {
 	// hired by the organization.
 	//
 	// OCSF: hire_time (type timestamp_t, requirement optional)
-	HireTime int64 `json:"hire_time,omitempty"`
+	HireTime *int64 `json:"hire_time,omitempty"`
 
 	// JobTitle is the Job Title. The user's job title.
 	//
@@ -83,7 +83,7 @@ type LDAPPerson struct {
 	// in.
 	//
 	// OCSF: last_login_time (type timestamp_t, requirement optional)
-	LastLoginTime int64 `json:"last_login_time,omitempty"`
+	LastLoginTime *int64 `json:"last_login_time,omitempty"`
 
 	// LDAPCn is the LDAP Common Name. The LDAP and X.500 commonName
 	// attribute, typically the full name of the person. For example, John
@@ -104,7 +104,7 @@ type LDAPPerson struct {
 	// be leaving the organization.
 	//
 	// OCSF: leave_time (type timestamp_t, requirement optional)
-	LeaveTime int64 `json:"leave_time,omitempty"`
+	LeaveTime *int64 `json:"leave_time,omitempty"`
 
 	// Location is the Geo Location. The geographical location associated
 	// with a user. This is typically the user's usual work location.
@@ -124,7 +124,7 @@ type LDAPPerson struct {
 	// was last modified.
 	//
 	// OCSF: modified_time (type timestamp_t, requirement optional)
-	ModifiedTime int64 `json:"modified_time,omitempty"`
+	ModifiedTime *int64 `json:"modified_time,omitempty"`
 
 	// OfficeLocation is the Office Location. The primary office location
 	// associated with the user. This could be any string and isn't a

@@ -18,7 +18,7 @@ type HTTPResponse struct {
 	// existing Content-Length header.
 	//
 	// OCSF: body_length (type integer_t, requirement optional)
-	BodyLength int `json:"body_length,omitempty"`
+	BodyLength *int `json:"body_length,omitempty"`
 
 	// Code is the Response Code. The Hypertext Transfer Protocol (HTTP)
 	// status code returned from the web server to the client. For example,
@@ -44,13 +44,13 @@ type HTTPResponse struct {
 	// milliseconds.
 	//
 	// OCSF: latency (type integer_t, requirement optional)
-	Latency int `json:"latency,omitempty"`
+	Latency *int `json:"latency,omitempty"`
 
 	// Length is the Response Length. The length of the entire HTTP response,
 	// in number of bytes.
 	//
 	// OCSF: length (type integer_t, requirement optional)
-	Length int `json:"length,omitempty"`
+	Length *int `json:"length,omitempty"`
 
 	// Message is the Message. The description of the event/finding, as
 	// defined by the source.

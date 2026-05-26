@@ -28,5 +28,5 @@ type PortInfo struct {
 	// TCP and 17 for UDP.
 	//
 	// OCSF: protocol_num (type integer_t, requirement optional)
-	ProtocolNum int `json:"protocol_num,omitempty"`
+	ProtocolNum *int `json:"protocol_num,omitempty"`
 }

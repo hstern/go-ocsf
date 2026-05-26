@@ -33,7 +33,7 @@ type Ticket struct {
 	// ticket status.
 	//
 	// OCSF: status_id (type integer_t, requirement optional)
-	StatusID int `json:"status_id,omitempty"`
+	StatusID *int `json:"status_id,omitempty"`
 
 	// Title is the Title. The title of the ticket.
 	//
@@ -50,7 +50,7 @@ type Ticket struct {
 	// type.
 	//
 	// OCSF: type_id (type integer_t, requirement optional)
-	TypeID int `json:"type_id,omitempty"`
+	TypeID *int `json:"type_id,omitempty"`
 
 	// UID is the Unique ID. Unique identifier of the ticket.
 	//

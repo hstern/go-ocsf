@@ -18,61 +18,61 @@ type Timespan struct {
 	// in milliseconds.
 	//
 	// OCSF: duration (type long_t, requirement recommended)
-	Duration int64 `json:"duration,omitempty"`
+	Duration *int64 `json:"duration,omitempty"`
 
 	// DurationDays is the Duration Days. The duration of the time span in
 	// days.
 	//
 	// OCSF: duration_days (type integer_t, requirement recommended)
-	DurationDays int `json:"duration_days,omitempty"`
+	DurationDays *int `json:"duration_days,omitempty"`
 
 	// DurationHours is the Duration Hours. The duration of the time span in
 	// hours.
 	//
 	// OCSF: duration_hours (type integer_t, requirement recommended)
-	DurationHours int `json:"duration_hours,omitempty"`
+	DurationHours *int `json:"duration_hours,omitempty"`
 
 	// DurationMins is the Duration Minutes. The duration of the time span in
 	// minutes.
 	//
 	// OCSF: duration_mins (type integer_t, requirement recommended)
-	DurationMins int `json:"duration_mins,omitempty"`
+	DurationMins *int `json:"duration_mins,omitempty"`
 
 	// DurationMonths is the Duration Months. The duration of the time span
 	// in months.
 	//
 	// OCSF: duration_months (type integer_t, requirement recommended)
-	DurationMonths int `json:"duration_months,omitempty"`
+	DurationMonths *int `json:"duration_months,omitempty"`
 
 	// DurationSecs is the Duration Seconds. The duration of the time span in
 	// seconds.
 	//
 	// OCSF: duration_secs (type integer_t, requirement recommended)
-	DurationSecs int `json:"duration_secs,omitempty"`
+	DurationSecs *int `json:"duration_secs,omitempty"`
 
 	// DurationWeeks is the Duration Weeks. The duration of the time span in
 	// weeks.
 	//
 	// OCSF: duration_weeks (type integer_t, requirement recommended)
-	DurationWeeks int `json:"duration_weeks,omitempty"`
+	DurationWeeks *int `json:"duration_weeks,omitempty"`
 
 	// DurationYears is the Duration Years. The duration of the time span in
 	// years.
 	//
 	// OCSF: duration_years (type integer_t, requirement recommended)
-	DurationYears int `json:"duration_years,omitempty"`
+	DurationYears *int `json:"duration_years,omitempty"`
 
 	// EndTime is the End Time. The end time or conclusion of the timespan's
 	// interval.
 	//
 	// OCSF: end_time (type timestamp_t, requirement recommended)
-	EndTime int64 `json:"end_time,omitempty"`
+	EndTime *int64 `json:"end_time,omitempty"`
 
 	// StartTime is the Start Time. The start time or beginning of the
 	// timespan's interval.
 	//
 	// OCSF: start_time (type timestamp_t, requirement recommended)
-	StartTime int64 `json:"start_time,omitempty"`
+	StartTime *int64 `json:"start_time,omitempty"`
 
 	// Type is the Time Span Type. The type of time span duration the object
 	// represents.
@@ -84,5 +84,5 @@ type Timespan struct {
 	// time span duration type.
 	//
 	// OCSF: type_id (type integer_t, requirement recommended)
-	TypeID int `json:"type_id,omitempty"`
+	TypeID *int `json:"type_id,omitempty"`
 }

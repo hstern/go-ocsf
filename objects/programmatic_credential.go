@@ -24,7 +24,7 @@ type ProgrammaticCredential struct {
 	// successful authentication or API call using this credential.
 	//
 	// OCSF: last_used_time (type timestamp_t, requirement optional)
-	LastUsedTime int64 `json:"last_used_time,omitempty"`
+	LastUsedTime *int64 `json:"last_used_time,omitempty"`
 
 	// Type is the Type. The type or category of programmatic credential,
 	// normalized to the caption of the type_id value. In the case of

@@ -27,7 +27,7 @@ type Graph struct {
 	// or undirected (false).
 	//
 	// OCSF: is_directed (type boolean_t, requirement optional)
-	IsDirected bool `json:"is_directed,omitempty"`
+	IsDirected *bool `json:"is_directed,omitempty"`
 
 	// Name is the Name. The graph name - a human readable identifier for the
 	// graph.
@@ -51,7 +51,7 @@ type Graph struct {
 	// a graph query language that can be used to interact with the graph.
 	//
 	// OCSF: query_language_id (type integer_t, requirement recommended)
-	QueryLanguageID int `json:"query_language_id,omitempty"`
+	QueryLanguageID *int `json:"query_language_id,omitempty"`
 
 	// Type is the Type. The graph type. Typically useful to represent the
 	// specific type of graph that is used.

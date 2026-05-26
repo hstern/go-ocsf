@@ -59,7 +59,7 @@ type Check struct {
 	// CAT III maps to 3 (Medium).
 	//
 	// OCSF: severity_id (type integer_t, requirement optional)
-	SeverityID int `json:"severity_id,omitempty"`
+	SeverityID *int `json:"severity_id,omitempty"`
 
 	// Standards is the Compliance Standards: List. The regulatory or
 	// industry standard this check is associated with. E.g., PCI DSS 3.2.1,
@@ -81,7 +81,7 @@ type Check struct {
 	// compliance check.
 	//
 	// OCSF: status_id (type integer_t, requirement recommended)
-	StatusID int `json:"status_id,omitempty"`
+	StatusID *int `json:"status_id,omitempty"`
 
 	// UID is the Unique ID. The unique identifier of the compliance check
 	// within its standard or framework. For example, CIS Benchmark

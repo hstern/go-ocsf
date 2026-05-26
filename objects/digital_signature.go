@@ -35,7 +35,7 @@ type DigitalSignature struct {
 	// was created.
 	//
 	// OCSF: created_time (type timestamp_t, requirement optional)
-	CreatedTime int64 `json:"created_time,omitempty"`
+	CreatedTime *int64 `json:"created_time,omitempty"`
 
 	// DeveloperUID is the Developer UID. The developer ID on the certificate
 	// that signed the file.
@@ -61,5 +61,5 @@ type DigitalSignature struct {
 	// state.
 	//
 	// OCSF: state_id (type integer_t, requirement optional)
-	StateID int `json:"state_id,omitempty"`
+	StateID *int `json:"state_id,omitempty"`
 }

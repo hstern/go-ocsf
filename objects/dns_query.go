@@ -35,14 +35,14 @@ type DNSQuery struct {
 	// normalized query message type as defined in RFC-5395.
 	//
 	// OCSF: opcode_id (type integer_t, requirement recommended)
-	OpcodeID int `json:"opcode_id,omitempty"`
+	OpcodeID *int `json:"opcode_id,omitempty"`
 
 	// PacketUID is the Packet UID. The DNS packet identifier assigned by the
 	// program that generated the query. The identifier is copied to the
 	// response.
 	//
 	// OCSF: packet_uid (type integer_t, requirement recommended)
-	PacketUID int `json:"packet_uid,omitempty"`
+	PacketUID *int `json:"packet_uid,omitempty"`
 
 	// Type is the Resource Record Type. The type of resource records being
 	// queried. See RFC1035. For example: A, AAAA, CNAME, MX, and NS.

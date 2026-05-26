@@ -66,7 +66,7 @@ type Metadata struct {
 	// may have been omitted to fit within system constraints.
 	//
 	// OCSF: is_truncated (type boolean_t, requirement optional)
-	IsTruncated bool `json:"is_truncated,omitempty"`
+	IsTruncated *bool `json:"is_truncated,omitempty"`
 
 	// Labels is the Labels. The list of labels attached to the event. For
 	// example: ["sample", "dev"]
@@ -121,7 +121,7 @@ type Metadata struct {
 	// different.
 	//
 	// OCSF: logged_time (type timestamp_t, requirement optional)
-	LoggedTime int64 `json:"logged_time,omitempty"`
+	LoggedTime *int64 `json:"logged_time,omitempty"`
 
 	// Loggers is the Loggers. An array of Logger objects that describe the
 	// pipeline of devices and logging products between the event source and
@@ -136,7 +136,7 @@ type Metadata struct {
 	// modified or enriched.
 	//
 	// OCSF: modified_time (type timestamp_t, requirement optional)
-	ModifiedTime int64 `json:"modified_time,omitempty"`
+	ModifiedTime *int64 `json:"modified_time,omitempty"`
 
 	// OriginalEventUID is the Original Event ID. The unique identifier
 	// assigned to the event in its original logging system before
@@ -162,7 +162,7 @@ type Metadata struct {
 	// an ETL operation.
 	//
 	// OCSF: processed_time (type timestamp_t, requirement optional)
-	ProcessedTime int64 `json:"processed_time,omitempty"`
+	ProcessedTime *int64 `json:"processed_time,omitempty"`
 
 	// Product is the Product. The product that reported the event.
 	//
@@ -188,7 +188,7 @@ type Metadata struct {
 	// precision.
 	//
 	// OCSF: sequence (type integer_t, requirement optional)
-	Sequence int `json:"sequence,omitempty"`
+	Sequence *int `json:"sequence,omitempty"`
 
 	// Source is the Source. The source of the event or finding. This can be
 	// any distinguishing name for the logical origin of the data — for
@@ -229,7 +229,7 @@ type Metadata struct {
 	// transmitted from the logging device to it's next destination.
 	//
 	// OCSF: transmit_time (type timestamp_t, requirement optional)
-	TransmitTime int64 `json:"transmit_time,omitempty"`
+	TransmitTime *int64 `json:"transmit_time,omitempty"`
 
 	// Type is the Type. The type of the event or finding as a subset of the
 	// source of the event. This can be any distinguishing characteristic of
@@ -253,7 +253,7 @@ type Metadata struct {
 	// size of the original event.
 	//
 	// OCSF: untruncated_size (type integer_t, requirement optional)
-	UntruncatedSize int `json:"untruncated_size,omitempty"`
+	UntruncatedSize *int `json:"untruncated_size,omitempty"`
 
 	// Version is the Version. The version of the OCSF schema, using Semantic
 	// Versioning Specification (SemVer). For example: 1.0.0. Event consumers

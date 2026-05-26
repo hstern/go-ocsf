@@ -43,7 +43,7 @@ type Agent struct {
 	// etc.
 	//
 	// OCSF: type_id (type integer_t, requirement recommended)
-	TypeID int `json:"type_id,omitempty"`
+	TypeID *int `json:"type_id,omitempty"`
 
 	// UID is the Agent ID. The UID of the agent or sensor, sometimes known
 	// as a Sensor ID or aid.

@@ -38,7 +38,7 @@ type Idp struct {
 	// Factor Authentication (MFA).
 	//
 	// OCSF: has_mfa (type boolean_t, requirement optional)
-	HasMFA bool `json:"has_mfa,omitempty"`
+	HasMFA *bool `json:"has_mfa,omitempty"`
 
 	// Issuer is the Issuer Details. The unique identifier (often a URL) used
 	// by the Identity Provider as its issuer.
@@ -86,7 +86,7 @@ type Idp struct {
 	// Provider to reflect its configuration or activation status.
 	//
 	// OCSF: state_id (type integer_t, requirement optional)
-	StateID int `json:"state_id,omitempty"`
+	StateID *int `json:"state_id,omitempty"`
 
 	// TenantUID is the Tenant UID. The tenant ID associated with the
 	// Identity Provider.

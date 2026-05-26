@@ -30,7 +30,7 @@ type KbArticle struct {
 	// by the vendor.
 	//
 	// OCSF: created_time (type timestamp_t, requirement optional)
-	CreatedTime int64 `json:"created_time,omitempty"`
+	CreatedTime *int64 `json:"created_time,omitempty"`
 
 	// InstallState is the Install State. The install state of the kb
 	// article.
@@ -42,13 +42,13 @@ type KbArticle struct {
 	// ID of the kb article.
 	//
 	// OCSF: install_state_id (type integer_t, requirement recommended)
-	InstallStateID int `json:"install_state_id,omitempty"`
+	InstallStateID *int `json:"install_state_id,omitempty"`
 
 	// IsSuperseded is the The patch is superseded.. The kb article has been
 	// replaced by another.
 	//
 	// OCSF: is_superseded (type boolean_t, requirement optional)
-	IsSuperseded bool `json:"is_superseded,omitempty"`
+	IsSuperseded *bool `json:"is_superseded,omitempty"`
 
 	// OS is the OS. The operating system the kb article applies.
 	//
@@ -68,7 +68,7 @@ type KbArticle struct {
 	// Size is the Size. The size in bytes for the kb article.
 	//
 	// OCSF: size (type long_t, requirement optional)
-	Size int64 `json:"size,omitempty"`
+	Size *int64 `json:"size,omitempty"`
 
 	// SrcURL is the Source URL. The kb article link from the source vendor.
 	//
