@@ -268,6 +268,27 @@ func (NetworkRemediationActivity) OCSFCategoryUID() int { return 7 }
 // OCSFCategoryName returns the OCSF category_name (remediation).
 func (NetworkRemediationActivity) OCSFCategoryName() string { return "remediation" }
 
+// Validate checks the required-field rules for NetworkRemediationActivity.
+// Returns the first violation found, or nil if all required fields are present.
+func (e NetworkRemediationActivity) Validate() error {
+	if e.Cloud == nil {
+		return &ocsf.ValidationError{ClassUID: 7004, Field: "cloud", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.CommandUID == "" {
+		return &ocsf.ValidationError{ClassUID: 7004, Field: "command_uid", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.ConnectionInfo == nil {
+		return &ocsf.ValidationError{ClassUID: 7004, Field: "connection_info", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Metadata == nil {
+		return &ocsf.ValidationError{ClassUID: 7004, Field: "metadata", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.Osint) == 0 {
+		return &ocsf.ValidationError{ClassUID: 7004, Field: "osint", Rule: "required", Reason: "required field is missing"}
+	}
+	return nil
+}
+
 func init() {
 	ocsf.RegisterClass(7004, func() ocsf.Event { return &NetworkRemediationActivity{} })
 }

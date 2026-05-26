@@ -320,6 +320,30 @@ func (MemoryActivity) OCSFCategoryUID() int { return 1 }
 // OCSFCategoryName returns the OCSF category_name (system).
 func (MemoryActivity) OCSFCategoryName() string { return "system" }
 
+// Validate checks the required-field rules for MemoryActivity.
+// Returns the first violation found, or nil if all required fields are present.
+func (e MemoryActivity) Validate() error {
+	if e.Actor == nil {
+		return &ocsf.ValidationError{ClassUID: 1004, Field: "actor", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Cloud == nil {
+		return &ocsf.ValidationError{ClassUID: 1004, Field: "cloud", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Device == nil {
+		return &ocsf.ValidationError{ClassUID: 1004, Field: "device", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Metadata == nil {
+		return &ocsf.ValidationError{ClassUID: 1004, Field: "metadata", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.Osint) == 0 {
+		return &ocsf.ValidationError{ClassUID: 1004, Field: "osint", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Process == nil {
+		return &ocsf.ValidationError{ClassUID: 1004, Field: "process", Rule: "required", Reason: "required field is missing"}
+	}
+	return nil
+}
+
 func init() {
 	ocsf.RegisterClass(1004, func() ocsf.Event { return &MemoryActivity{} })
 }

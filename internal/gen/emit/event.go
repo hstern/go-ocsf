@@ -76,6 +76,14 @@ func writeEventFile(w io.Writer, s *schema.Schema, ec schema.EventClass) error {
 	if registers {
 		imports[rootPkg] = true
 	}
+	// Validate() constructs *ocsf.ValidationError on each
+	// required-field violation, so a class with any
+	// non-skippable required field also imports the root
+	// package. Abstract classes inherit required fields from
+	// base_event and need this even when they don't register.
+	if eventHasValidatableRequired(s, ec) {
+		imports[rootPkg] = true
+	}
 	if len(imports) > 0 {
 		impPaths := make([]string, 0, len(imports))
 		for p := range imports {
@@ -124,12 +132,156 @@ func writeEventFile(w io.Writer, s *schema.Schema, ec schema.EventClass) error {
 	if err := writeEventMethods(w, s, ec, typeName); err != nil {
 		return err
 	}
+	if err := writeEventValidate(w, s, ec, typeName); err != nil {
+		return err
+	}
 	if registers {
 		if err := writeEventRegistration(w, s, ec, typeName); err != nil {
 			return err
 		}
 	}
 	return nil
+}
+
+// writeEventValidate emits a Validate() method that checks each
+// required attribute for presence. The check varies by Go type:
+//
+//   - pointer fields (object references):     value == nil
+//   - string fields:                          value == ""
+//   - slice fields:                           len(value) == 0
+//   - json.RawMessage (special-case slice):   len(value) == 0
+//
+// Numeric (int, int64, float64) and boolean fields are
+// deliberately NOT checked. Go's encoding/json can't
+// distinguish "field absent" from "field present with zero
+// value" on these without a pointer wrapper, and Phase 2's
+// design chose plain int/bool over *int/*bool to keep the
+// wire-stable round-trip cheap. Required-but-zero is reported
+// as success here; a future strict mode could lift this.
+//
+// The method has a value receiver to match the existing
+// OCSF*-prefixed metadata accessors; consistency across a
+// type's method set is the Go discipline. Validation doesn't
+// mutate, so the value receiver imposes no semantic cost.
+//
+// Validate stops at the first violation and returns it,
+// matching the [ocsf.ValidationError] doc's "first violation"
+// rule. Exhaustive enumeration is a follow-up.
+func writeEventValidate(w io.Writer, s *schema.Schema, ec schema.EventClass, typeName string) error {
+	required, err := requiredFieldsForValidate(s, ec)
+	if err != nil {
+		return err
+	}
+	classUID := s.ClassUID(ec)
+	if _, err := fmt.Fprintln(w); err != nil {
+		return err
+	}
+	if _, err := fmt.Fprintf(w, "// Validate checks the required-field rules for %s.\n", typeName); err != nil {
+		return err
+	}
+	if _, err := fmt.Fprintln(w, "// Returns the first violation found, or nil if all required fields are present."); err != nil {
+		return err
+	}
+	if _, err := fmt.Fprintf(w, "func (e %s) Validate() error {\n", typeName); err != nil {
+		return err
+	}
+	emitted := 0
+	for _, rc := range required {
+		check, ok := requiredFieldCheck(rc.goType)
+		if !ok {
+			continue
+		}
+		if _, err := fmt.Fprintf(w, "\tif %s {\n", fmt.Sprintf(check, "e."+rc.goField)); err != nil {
+			return err
+		}
+		if _, err := fmt.Fprintf(w, "\t\treturn &ocsf.ValidationError{ClassUID: %d, Field: %q, Rule: \"required\", Reason: \"required field is missing\"}\n", classUID, rc.ocsfName); err != nil {
+			return err
+		}
+		if _, err := fmt.Fprintln(w, "\t}"); err != nil {
+			return err
+		}
+		emitted++
+	}
+	_ = emitted
+	if _, err := fmt.Fprintln(w, "\treturn nil"); err != nil {
+		return err
+	}
+	if _, err := fmt.Fprintln(w, "}"); err != nil {
+		return err
+	}
+	return nil
+}
+
+// eventHasValidatableRequired reports whether ec has at least
+// one required attribute whose Go type is something Validate
+// can meaningfully check (pointer, slice, string,
+// json.RawMessage). Used to decide whether to import the root
+// ocsf package on a class that only has required numeric/bool
+// fields (no validatable check, no import needed).
+func eventHasValidatableRequired(s *schema.Schema, ec schema.EventClass) bool {
+	required, err := requiredFieldsForValidate(s, ec)
+	if err != nil {
+		return true // conservative — let the emitter surface the error
+	}
+	for _, rc := range required { //nolint:gocritic // copy fine in codegen path
+		if _, ok := requiredFieldCheck(rc.goType); ok {
+			return true
+		}
+	}
+	return false
+}
+
+// requiredCheck describes one required-attribute slot at
+// codegen time.
+type requiredCheck struct {
+	ocsfName string // wire-format snake_case identifier
+	goField  string // Go struct field identifier
+	goType   string // Go type expression
+}
+
+// requiredFieldsForValidate returns the required attributes on
+// ec in attribute-name-sorted order, with their resolved Go
+// field name and Go type. Used by writeEventValidate to emit
+// the per-required-field checks.
+func requiredFieldsForValidate(s *schema.Schema, ec schema.EventClass) ([]requiredCheck, error) {
+	pkg := eventPackageName(ec)
+	out := make([]requiredCheck, 0, len(ec.Attributes))
+	for _, a := range ec.Attributes { //nolint:gocritic // copy fine in codegen path
+		if a.Requirement != "required" {
+			continue
+		}
+		typ, err := fieldGoType(s, a, pkg)
+		if err != nil {
+			return nil, fmt.Errorf("required attribute %q: %w", a.Name, err)
+		}
+		out = append(out, requiredCheck{
+			ocsfName: a.Name,
+			goField:  goFieldName(a.Name),
+			goType:   typ,
+		})
+	}
+	return out, nil
+}
+
+// requiredFieldCheck returns a fmt.Sprintf format string for
+// the "is missing" predicate appropriate to the given Go type
+// expression. The format string contains one %s placeholder
+// for the field access (e.g. "e.User"). Returns ok=false for
+// numeric and boolean types whose zero value is
+// indistinguishable from absence — those fields are skipped at
+// validate time.
+func requiredFieldCheck(goType string) (string, bool) {
+	switch {
+	case strings.HasPrefix(goType, "*"):
+		return "%s == nil", true
+	case strings.HasPrefix(goType, "[]"):
+		return "len(%s) == 0", true
+	case goType == "string":
+		return "%s == \"\"", true
+	case goType == "json.RawMessage":
+		return "len(%s) == 0", true
+	}
+	return "", false
 }
 
 // writeEventRegistration emits the init() function that puts a

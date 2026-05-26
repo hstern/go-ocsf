@@ -258,6 +258,24 @@ func (PeripheralDeviceQuery) OCSFCategoryUID() int { return 5 }
 // OCSFCategoryName returns the OCSF category_name (discovery).
 func (PeripheralDeviceQuery) OCSFCategoryName() string { return "discovery" }
 
+// Validate checks the required-field rules for PeripheralDeviceQuery.
+// Returns the first violation found, or nil if all required fields are present.
+func (e PeripheralDeviceQuery) Validate() error {
+	if e.Cloud == nil {
+		return &ocsf.ValidationError{ClassUID: 5014, Field: "cloud", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Metadata == nil {
+		return &ocsf.ValidationError{ClassUID: 5014, Field: "metadata", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.Osint) == 0 {
+		return &ocsf.ValidationError{ClassUID: 5014, Field: "osint", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.PeripheralDevice == nil {
+		return &ocsf.ValidationError{ClassUID: 5014, Field: "peripheral_device", Rule: "required", Reason: "required field is missing"}
+	}
+	return nil
+}
+
 func init() {
 	ocsf.RegisterClass(5014, func() ocsf.Event { return &PeripheralDeviceQuery{} })
 }

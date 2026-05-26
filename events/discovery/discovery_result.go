@@ -7,6 +7,7 @@ package discovery
 
 import (
 	"encoding/json"
+	"github.com/hstern/go-ocsf"
 	"github.com/hstern/go-ocsf/objects"
 )
 
@@ -249,3 +250,18 @@ func (DiscoveryResult) OCSFCategoryUID() int { return 5 }
 
 // OCSFCategoryName returns the OCSF category_name (discovery).
 func (DiscoveryResult) OCSFCategoryName() string { return "discovery" }
+
+// Validate checks the required-field rules for DiscoveryResult.
+// Returns the first violation found, or nil if all required fields are present.
+func (e DiscoveryResult) Validate() error {
+	if e.Cloud == nil {
+		return &ocsf.ValidationError{ClassUID: 0, Field: "cloud", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Metadata == nil {
+		return &ocsf.ValidationError{ClassUID: 0, Field: "metadata", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.Osint) == 0 {
+		return &ocsf.ValidationError{ClassUID: 0, Field: "osint", Rule: "required", Reason: "required field is missing"}
+	}
+	return nil
+}

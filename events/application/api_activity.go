@@ -248,6 +248,27 @@ func (APIActivity) OCSFCategoryUID() int { return 6 }
 // OCSFCategoryName returns the OCSF category_name (application).
 func (APIActivity) OCSFCategoryName() string { return "application" }
 
+// Validate checks the required-field rules for APIActivity.
+// Returns the first violation found, or nil if all required fields are present.
+func (e APIActivity) Validate() error {
+	if e.Actor == nil {
+		return &ocsf.ValidationError{ClassUID: 6003, Field: "actor", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Cloud == nil {
+		return &ocsf.ValidationError{ClassUID: 6003, Field: "cloud", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Metadata == nil {
+		return &ocsf.ValidationError{ClassUID: 6003, Field: "metadata", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.Osint) == 0 {
+		return &ocsf.ValidationError{ClassUID: 6003, Field: "osint", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.SrcEndpoint == nil {
+		return &ocsf.ValidationError{ClassUID: 6003, Field: "src_endpoint", Rule: "required", Reason: "required field is missing"}
+	}
+	return nil
+}
+
 func init() {
 	ocsf.RegisterClass(6003, func() ocsf.Event { return &APIActivity{} })
 }

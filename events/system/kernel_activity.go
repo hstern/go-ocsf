@@ -295,6 +295,30 @@ func (KernelActivity) OCSFCategoryUID() int { return 1 }
 // OCSFCategoryName returns the OCSF category_name (system).
 func (KernelActivity) OCSFCategoryName() string { return "system" }
 
+// Validate checks the required-field rules for KernelActivity.
+// Returns the first violation found, or nil if all required fields are present.
+func (e KernelActivity) Validate() error {
+	if e.Actor == nil {
+		return &ocsf.ValidationError{ClassUID: 1003, Field: "actor", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Cloud == nil {
+		return &ocsf.ValidationError{ClassUID: 1003, Field: "cloud", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Device == nil {
+		return &ocsf.ValidationError{ClassUID: 1003, Field: "device", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Kernel == nil {
+		return &ocsf.ValidationError{ClassUID: 1003, Field: "kernel", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Metadata == nil {
+		return &ocsf.ValidationError{ClassUID: 1003, Field: "metadata", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.Osint) == 0 {
+		return &ocsf.ValidationError{ClassUID: 1003, Field: "osint", Rule: "required", Reason: "required field is missing"}
+	}
+	return nil
+}
+
 func init() {
 	ocsf.RegisterClass(1003, func() ocsf.Event { return &KernelActivity{} })
 }

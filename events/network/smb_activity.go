@@ -446,6 +446,24 @@ func (SMBActivity) OCSFCategoryUID() int { return 4 }
 // OCSFCategoryName returns the OCSF category_name (network).
 func (SMBActivity) OCSFCategoryName() string { return "network" }
 
+// Validate checks the required-field rules for SMBActivity.
+// Returns the first violation found, or nil if all required fields are present.
+func (e SMBActivity) Validate() error {
+	if e.Cloud == nil {
+		return &ocsf.ValidationError{ClassUID: 4006, Field: "cloud", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.DstEndpoint == nil {
+		return &ocsf.ValidationError{ClassUID: 4006, Field: "dst_endpoint", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Metadata == nil {
+		return &ocsf.ValidationError{ClassUID: 4006, Field: "metadata", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.Osint) == 0 {
+		return &ocsf.ValidationError{ClassUID: 4006, Field: "osint", Rule: "required", Reason: "required field is missing"}
+	}
+	return nil
+}
+
 func init() {
 	ocsf.RegisterClass(4006, func() ocsf.Event { return &SMBActivity{} })
 }

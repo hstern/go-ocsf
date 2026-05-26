@@ -340,6 +340,24 @@ func (IncidentFinding) OCSFCategoryUID() int { return 2 }
 // OCSFCategoryName returns the OCSF category_name (findings).
 func (IncidentFinding) OCSFCategoryName() string { return "findings" }
 
+// Validate checks the required-field rules for IncidentFinding.
+// Returns the first violation found, or nil if all required fields are present.
+func (e IncidentFinding) Validate() error {
+	if e.Cloud == nil {
+		return &ocsf.ValidationError{ClassUID: 2005, Field: "cloud", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.FindingInfoList) == 0 {
+		return &ocsf.ValidationError{ClassUID: 2005, Field: "finding_info_list", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Metadata == nil {
+		return &ocsf.ValidationError{ClassUID: 2005, Field: "metadata", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.Osint) == 0 {
+		return &ocsf.ValidationError{ClassUID: 2005, Field: "osint", Rule: "required", Reason: "required field is missing"}
+	}
+	return nil
+}
+
 func init() {
 	ocsf.RegisterClass(2005, func() ocsf.Event { return &IncidentFinding{} })
 }

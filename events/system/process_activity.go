@@ -335,6 +335,30 @@ func (ProcessActivity) OCSFCategoryUID() int { return 1 }
 // OCSFCategoryName returns the OCSF category_name (system).
 func (ProcessActivity) OCSFCategoryName() string { return "system" }
 
+// Validate checks the required-field rules for ProcessActivity.
+// Returns the first violation found, or nil if all required fields are present.
+func (e ProcessActivity) Validate() error {
+	if e.Actor == nil {
+		return &ocsf.ValidationError{ClassUID: 1007, Field: "actor", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Cloud == nil {
+		return &ocsf.ValidationError{ClassUID: 1007, Field: "cloud", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Device == nil {
+		return &ocsf.ValidationError{ClassUID: 1007, Field: "device", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Metadata == nil {
+		return &ocsf.ValidationError{ClassUID: 1007, Field: "metadata", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.Osint) == 0 {
+		return &ocsf.ValidationError{ClassUID: 1007, Field: "osint", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Process == nil {
+		return &ocsf.ValidationError{ClassUID: 1007, Field: "process", Rule: "required", Reason: "required field is missing"}
+	}
+	return nil
+}
+
 func init() {
 	ocsf.RegisterClass(1007, func() ocsf.Event { return &ProcessActivity{} })
 }

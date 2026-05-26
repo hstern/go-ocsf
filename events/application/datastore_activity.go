@@ -346,6 +346,27 @@ func (DatastoreActivity) OCSFCategoryUID() int { return 6 }
 // OCSFCategoryName returns the OCSF category_name (application).
 func (DatastoreActivity) OCSFCategoryName() string { return "application" }
 
+// Validate checks the required-field rules for DatastoreActivity.
+// Returns the first violation found, or nil if all required fields are present.
+func (e DatastoreActivity) Validate() error {
+	if e.Actor == nil {
+		return &ocsf.ValidationError{ClassUID: 6005, Field: "actor", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Cloud == nil {
+		return &ocsf.ValidationError{ClassUID: 6005, Field: "cloud", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Metadata == nil {
+		return &ocsf.ValidationError{ClassUID: 6005, Field: "metadata", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.Osint) == 0 {
+		return &ocsf.ValidationError{ClassUID: 6005, Field: "osint", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.SrcEndpoint == nil {
+		return &ocsf.ValidationError{ClassUID: 6005, Field: "src_endpoint", Rule: "required", Reason: "required field is missing"}
+	}
+	return nil
+}
+
 func init() {
 	ocsf.RegisterClass(6005, func() ocsf.Event { return &DatastoreActivity{} })
 }

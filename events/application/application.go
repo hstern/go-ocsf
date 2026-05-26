@@ -7,6 +7,7 @@ package application
 
 import (
 	"encoding/json"
+	"github.com/hstern/go-ocsf"
 	"github.com/hstern/go-ocsf/objects"
 )
 
@@ -221,3 +222,18 @@ func (Application) OCSFCategoryUID() int { return 6 }
 
 // OCSFCategoryName returns the OCSF category_name (application).
 func (Application) OCSFCategoryName() string { return "application" }
+
+// Validate checks the required-field rules for Application.
+// Returns the first violation found, or nil if all required fields are present.
+func (e Application) Validate() error {
+	if e.Cloud == nil {
+		return &ocsf.ValidationError{ClassUID: 0, Field: "cloud", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Metadata == nil {
+		return &ocsf.ValidationError{ClassUID: 0, Field: "metadata", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.Osint) == 0 {
+		return &ocsf.ValidationError{ClassUID: 0, Field: "osint", Rule: "required", Reason: "required field is missing"}
+	}
+	return nil
+}

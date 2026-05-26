@@ -266,6 +266,27 @@ func (FileRemediationActivity) OCSFCategoryUID() int { return 7 }
 // OCSFCategoryName returns the OCSF category_name (remediation).
 func (FileRemediationActivity) OCSFCategoryName() string { return "remediation" }
 
+// Validate checks the required-field rules for FileRemediationActivity.
+// Returns the first violation found, or nil if all required fields are present.
+func (e FileRemediationActivity) Validate() error {
+	if e.Cloud == nil {
+		return &ocsf.ValidationError{ClassUID: 7002, Field: "cloud", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.CommandUID == "" {
+		return &ocsf.ValidationError{ClassUID: 7002, Field: "command_uid", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.File == nil {
+		return &ocsf.ValidationError{ClassUID: 7002, Field: "file", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Metadata == nil {
+		return &ocsf.ValidationError{ClassUID: 7002, Field: "metadata", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.Osint) == 0 {
+		return &ocsf.ValidationError{ClassUID: 7002, Field: "osint", Rule: "required", Reason: "required field is missing"}
+	}
+	return nil
+}
+
 func init() {
 	ocsf.RegisterClass(7002, func() ocsf.Event { return &FileRemediationActivity{} })
 }

@@ -261,6 +261,27 @@ func (ModuleQuery) OCSFCategoryUID() int { return 5 }
 // OCSFCategoryName returns the OCSF category_name (discovery).
 func (ModuleQuery) OCSFCategoryName() string { return "discovery" }
 
+// Validate checks the required-field rules for ModuleQuery.
+// Returns the first violation found, or nil if all required fields are present.
+func (e ModuleQuery) Validate() error {
+	if e.Cloud == nil {
+		return &ocsf.ValidationError{ClassUID: 5011, Field: "cloud", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Metadata == nil {
+		return &ocsf.ValidationError{ClassUID: 5011, Field: "metadata", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Module == nil {
+		return &ocsf.ValidationError{ClassUID: 5011, Field: "module", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.Osint) == 0 {
+		return &ocsf.ValidationError{ClassUID: 5011, Field: "osint", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Process == nil {
+		return &ocsf.ValidationError{ClassUID: 5011, Field: "process", Rule: "required", Reason: "required field is missing"}
+	}
+	return nil
+}
+
 func init() {
 	ocsf.RegisterClass(5011, func() ocsf.Event { return &ModuleQuery{} })
 }

@@ -323,6 +323,21 @@ func (EventLog) OCSFCategoryUID() int { return 1 }
 // OCSFCategoryName returns the OCSF category_name (system).
 func (EventLog) OCSFCategoryName() string { return "system" }
 
+// Validate checks the required-field rules for EventLog.
+// Returns the first violation found, or nil if all required fields are present.
+func (e EventLog) Validate() error {
+	if e.Cloud == nil {
+		return &ocsf.ValidationError{ClassUID: 1008, Field: "cloud", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Metadata == nil {
+		return &ocsf.ValidationError{ClassUID: 1008, Field: "metadata", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.Osint) == 0 {
+		return &ocsf.ValidationError{ClassUID: 1008, Field: "osint", Rule: "required", Reason: "required field is missing"}
+	}
+	return nil
+}
+
 func init() {
 	ocsf.RegisterClass(1008, func() ocsf.Event { return &EventLog{} })
 }

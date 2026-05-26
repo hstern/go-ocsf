@@ -336,6 +336,24 @@ func (Authentication) OCSFCategoryUID() int { return 3 }
 // OCSFCategoryName returns the OCSF category_name (iam).
 func (Authentication) OCSFCategoryName() string { return "iam" }
 
+// Validate checks the required-field rules for Authentication.
+// Returns the first violation found, or nil if all required fields are present.
+func (e Authentication) Validate() error {
+	if e.Cloud == nil {
+		return &ocsf.ValidationError{ClassUID: 3002, Field: "cloud", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Metadata == nil {
+		return &ocsf.ValidationError{ClassUID: 3002, Field: "metadata", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.Osint) == 0 {
+		return &ocsf.ValidationError{ClassUID: 3002, Field: "osint", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.User == nil {
+		return &ocsf.ValidationError{ClassUID: 3002, Field: "user", Rule: "required", Reason: "required field is missing"}
+	}
+	return nil
+}
+
 func init() {
 	ocsf.RegisterClass(3002, func() ocsf.Event { return &Authentication{} })
 }

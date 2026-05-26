@@ -293,6 +293,30 @@ func (ModuleActivity) OCSFCategoryUID() int { return 1 }
 // OCSFCategoryName returns the OCSF category_name (system).
 func (ModuleActivity) OCSFCategoryName() string { return "system" }
 
+// Validate checks the required-field rules for ModuleActivity.
+// Returns the first violation found, or nil if all required fields are present.
+func (e ModuleActivity) Validate() error {
+	if e.Actor == nil {
+		return &ocsf.ValidationError{ClassUID: 1005, Field: "actor", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Cloud == nil {
+		return &ocsf.ValidationError{ClassUID: 1005, Field: "cloud", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Device == nil {
+		return &ocsf.ValidationError{ClassUID: 1005, Field: "device", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Metadata == nil {
+		return &ocsf.ValidationError{ClassUID: 1005, Field: "metadata", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Module == nil {
+		return &ocsf.ValidationError{ClassUID: 1005, Field: "module", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.Osint) == 0 {
+		return &ocsf.ValidationError{ClassUID: 1005, Field: "osint", Rule: "required", Reason: "required field is missing"}
+	}
+	return nil
+}
+
 func init() {
 	ocsf.RegisterClass(1005, func() ocsf.Event { return &ModuleActivity{} })
 }

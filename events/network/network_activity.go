@@ -386,6 +386,24 @@ func (NetworkActivity) OCSFCategoryUID() int { return 4 }
 // OCSFCategoryName returns the OCSF category_name (network).
 func (NetworkActivity) OCSFCategoryName() string { return "network" }
 
+// Validate checks the required-field rules for NetworkActivity.
+// Returns the first violation found, or nil if all required fields are present.
+func (e NetworkActivity) Validate() error {
+	if e.Cloud == nil {
+		return &ocsf.ValidationError{ClassUID: 4001, Field: "cloud", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.DstEndpoint == nil {
+		return &ocsf.ValidationError{ClassUID: 4001, Field: "dst_endpoint", Rule: "required", Reason: "required field is missing"}
+	}
+	if e.Metadata == nil {
+		return &ocsf.ValidationError{ClassUID: 4001, Field: "metadata", Rule: "required", Reason: "required field is missing"}
+	}
+	if len(e.Osint) == 0 {
+		return &ocsf.ValidationError{ClassUID: 4001, Field: "osint", Rule: "required", Reason: "required field is missing"}
+	}
+	return nil
+}
+
 func init() {
 	ocsf.RegisterClass(4001, func() ocsf.Event { return &NetworkActivity{} })
 }
