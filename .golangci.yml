@@ -1,0 +1,87 @@
+version: "2"
+
+run:
+  timeout: 5m
+  tests: true
+
+linters:
+  default: none
+  enable:
+    - errcheck
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+    - revive
+    - gocritic
+    - misspell
+
+  settings:
+    govet:
+      enable-all: true
+      disable:
+        - fieldalignment
+    staticcheck:
+      checks:
+        - all
+    revive:
+      rules:
+        - name: blank-imports
+        - name: context-as-argument
+        - name: context-keys-type
+        - name: dot-imports
+        - name: empty-block
+        - name: error-naming
+        - name: error-return
+        - name: error-strings
+        - name: errorf
+        - name: exported
+        - name: increment-decrement
+        - name: indent-error-flow
+        - name: package-comments
+        - name: range
+        - name: receiver-naming
+        - name: redefines-builtin-id
+        - name: superfluous-else
+        - name: time-naming
+        - name: unexported-return
+        - name: unreachable-code
+        - name: unused-parameter
+        - name: var-declaration
+        - name: var-naming
+    gocritic:
+      enabled-tags:
+        - diagnostic
+        - performance
+        - style
+      disabled-checks:
+        - ifElseChain
+        - hugeParam
+
+  exclusions:
+    paths:
+      # Generated files: codegen output is reviewed via the codegen-diff
+      # gate (Phase 2), not direct lint. Excluded from all linter runs.
+      - "^events/"
+      - "^objects/"
+      - "^internal/schema/"
+      - "^internal/specfixtures/"
+    rules:
+      - path: _test\.go
+        linters:
+          - revive
+          - gocritic
+
+formatters:
+  enable:
+    - gofumpt
+  exclusions:
+    paths:
+      - "^events/"
+      - "^objects/"
+      - "^internal/schema/"
+      - "^internal/specfixtures/"
+
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
