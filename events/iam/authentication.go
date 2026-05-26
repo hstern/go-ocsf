@@ -461,32 +461,6 @@ func (e Authentication) Validate() error {
 			}
 		}
 	}
-	switch e.CategoryUID {
-	case 0:
-	default:
-		return &ocsf.ValidationError{ClassUID: 3002, Field: "category_uid", Rule: "enum", Reason: "value outside the schema's enum range"}
-	}
-	if e.CategoryName != "" {
-		switch e.CategoryUID {
-		case 0:
-			if e.CategoryName != "Uncategorized" {
-				return &ocsf.ValidationError{ClassUID: 3002, Field: "category_name", Rule: "enum", Reason: "sibling does not match enum caption"}
-			}
-		}
-	}
-	switch e.ClassUID {
-	case 0:
-	default:
-		return &ocsf.ValidationError{ClassUID: 3002, Field: "class_uid", Rule: "enum", Reason: "value outside the schema's enum range"}
-	}
-	if e.ClassName != "" {
-		switch e.ClassUID {
-		case 0:
-			if e.ClassName != "Base Event" {
-				return &ocsf.ValidationError{ClassUID: 3002, Field: "class_name", Rule: "enum", Reason: "sibling does not match enum caption"}
-			}
-		}
-	}
 	switch e.LogonTypeID {
 	case 0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 99:
 	default:
