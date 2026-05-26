@@ -48,6 +48,7 @@ type Options struct {
 // Result describes what an [Emit] run wrote.
 type Result struct {
 	ObjectFiles []string // sorted by file path
+	EventFiles  []string // sorted by file path
 }
 
 // Emit runs the codegen pass, writing one *.go file per OCSF
@@ -98,7 +99,59 @@ func Emit(opts Options) (*Result, error) {
 		written = append(written, out)
 	}
 	sort.Strings(written)
-	return &Result{ObjectFiles: written}, nil
+
+	eventFiles, err := emitEvents(opts)
+	if err != nil {
+		return nil, err
+	}
+	return &Result{ObjectFiles: written, EventFiles: eventFiles}, nil
+}
+
+// emitEvents writes one Go file per OCSF event class under
+// opts.OutDir/events/<package>/<name>.go. Each category gets its
+// own subpackage; the abstract base_event class lands in a
+// sibling `base` package.
+func emitEvents(opts Options) ([]string, error) {
+	events := sortedEvents(opts.Schema.Events)
+	var written []string
+	createdDirs := map[string]bool{}
+	for _, name := range events {
+		ec := opts.Schema.Events[name]
+		dir := filepath.Join(opts.OutDir, eventPackageDir(ec))
+		if !createdDirs[dir] {
+			if err := os.MkdirAll(dir, 0o755); err != nil {
+				return nil, fmt.Errorf("emit: mkdir %s: %w", dir, err)
+			}
+			createdDirs[dir] = true
+		}
+		buf := &bytes.Buffer{}
+		if err := writeEventFile(buf, opts.Schema, ec); err != nil {
+			return nil, fmt.Errorf("emit event %q: %w", name, err)
+		}
+		formatted, err := format.Source(buf.Bytes())
+		if err != nil {
+			return nil, fmt.Errorf("emit event %q: format: %w\n--- pre-format ---\n%s", name, err, buf.String())
+		}
+		out := filepath.Join(dir, eventFileName(ec))
+		if err := writeIfChanged(out, formatted); err != nil {
+			return nil, fmt.Errorf("emit event %q: write: %w", name, err)
+		}
+		written = append(written, out)
+	}
+	sort.Strings(written)
+	return written, nil
+}
+
+// sortedEvents returns the event names from m in name-sorted
+// order — the canonical iteration order for deterministic
+// output.
+func sortedEvents(m map[string]schema.EventClass) []string {
+	out := make([]string, 0, len(m))
+	for k := range m {
+		out = append(out, k)
+	}
+	sort.Strings(out)
+	return out
 }
 
 // shouldSkipObject reports whether an object should be omitted

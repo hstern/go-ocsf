@@ -43,7 +43,7 @@ func writeObjectFile(w io.Writer, s *schema.Schema, obj schema.ObjectClass) erro
 	// about grouping; one import block, sorted, is enough.
 	imports := map[string]bool{}
 	for _, a := range obj.Attributes { //nolint:gocritic // copy fine in codegen path
-		for _, imp := range fieldImports(a) {
+		for _, imp := range fieldImports(a, "objects") {
 			imports[imp] = true
 		}
 	}
@@ -82,7 +82,7 @@ func writeObjectFile(w io.Writer, s *schema.Schema, obj schema.ObjectClass) erro
 				return err
 			}
 		}
-		if err := writeField(w, s, a); err != nil {
+		if err := writeField(w, s, a, "objects"); err != nil {
 			return fmt.Errorf("attribute %q: %w", a.Name, err)
 		}
 	}
@@ -128,8 +128,8 @@ func writeObjectGodoc(w io.Writer, obj schema.ObjectClass, typeName string) erro
 // The godoc carries the OCSF attribute caption and description
 // (HTML-stripped, wrapped) plus a marker line citing the upstream
 // snake_case attribute name and OCSF type for provenance.
-func writeField(w io.Writer, s *schema.Schema, a schema.ClassAttr) error {
-	typ, err := fieldGoType(s, a)
+func writeField(w io.Writer, s *schema.Schema, a schema.ClassAttr, currentPkg string) error {
+	typ, err := fieldGoType(s, a, currentPkg)
 	if err != nil {
 		return err
 	}

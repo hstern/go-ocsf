@@ -47,6 +47,7 @@ var commonInitialisms = map[string]string{
 	"hmac":    "HMAC",
 	"http":    "HTTP",
 	"https":   "HTTPS",
+	"iam":     "IAM",
 	"icmp":    "ICMP",
 	"id":      "ID",
 	"imap":    "IMAP",
